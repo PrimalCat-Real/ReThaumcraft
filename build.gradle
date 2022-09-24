@@ -1,11 +1,18 @@
 buildscript {
     repositories {
         // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
-        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
+        maven {
+            url = 'https://repo.spongepowered.org/repository/maven-public/'
+
+        }
+        maven {
+            url = 'https://maven.parchmentmc.org'
+        }
         mavenCentral()
     }
     dependencies {
         classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
+        classpath 'org.parchmentmc:librarian:1.+'
     }
 }
 
@@ -14,8 +21,9 @@ plugins {
 }
 
 apply plugin: 'org.spongepowered.mixin'
+apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
-group = 'thaumcraft'
+        group = 'thaumcraft'
 version = '0.1-SNAPSHOT'
 
 java {
@@ -37,7 +45,8 @@ minecraft {
     //
     // Use non-default mappings at your own risk. They may not always work.
     // Simply re-run your setup task after changing the mappings to update your workspace.
-    mappings channel: 'official', version: '1.18.2'
+//    mappings channel: 'official', version: '1.18.2'
+    mappings channel: 'parchment', version: '1.18.1-2022.03.06-1.18.2'
 
     // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -141,6 +150,12 @@ repositories {
     // flatDir {
     //     dir 'libs'
     // }
+    maven {
+        url "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
 }
 
 dependencies {
@@ -148,6 +163,10 @@ dependencies {
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft 'net.minecraftforge:forge:1.18.2-40.1.80'
+    implementation fg.deobf("curse.maven:jei-238222:3969092")
+    implementation fg.deobf("curse.maven:patchouli-306770:3846086")
+    implementation fg.deobf("curse.maven:curios-309927:3841948")
+
 
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
