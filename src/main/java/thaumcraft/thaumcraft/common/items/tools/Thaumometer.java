@@ -38,7 +38,9 @@ public class Thaumometer extends ItemBase {
         if(player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == ItemInit.THAUMOMETER.get()){
             HitResult result;
             result = player.pick(20.0D, 0.0F, true);
-            System.out.println(result);
+            System.out.println(result.getType());
+            System.out.println(result.getLocation());
+
         }
         return super.useOn(context);
     }
