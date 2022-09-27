@@ -15,6 +15,7 @@ import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
+import thaumcraft.thaumcraft.init.BlockInit;
 import thaumcraft.thaumcraft.init.ItemInit;
 import thaumcraft.thaumcraft.sound.ModSounds;
 
@@ -40,6 +41,7 @@ public class Thaumcraft {
 
         ModSounds.register();
         ItemInit.register();
+        BlockInit.register();
 
     }
 
