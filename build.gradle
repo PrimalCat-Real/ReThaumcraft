@@ -157,7 +157,7 @@ dependencies {
     implementation fg.deobf("curse.maven:jei-238222:4030307")
 //    implementation fg.deobf("curse.maven:patchouli-306770:3846086")
 //    implementation fg.deobf("curse.maven:curios-309927:3841948")
-//    implementation fg.deobf("curse.maven:clothconfig-514135:3553599")
+    implementation fg.deobf("curse.maven:clothconfig-514135:3865779")
 
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
