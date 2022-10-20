@@ -13,4 +13,10 @@ public class AspectList {
     public Set getKeys(){
         return aspectList.keySet();
     }
+
+    public int getSize(){
+        return aspectList.size();
+    }
+
+
 }

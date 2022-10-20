@@ -4,7 +4,6 @@ package thaumcraft.thaumcraft.common.items.tools;
 import com.google.common.eventbus.Subscribe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -27,7 +26,7 @@ import thaumcraft.thaumcraft.common.items.ItemBase;
 import java.util.List;
 import java.util.Optional;
 
-public class Thaumometer extends ItemBase {
+public class Thaumometer extends ItemBase{
     public Thaumometer() {
         super(new Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
     }
@@ -42,6 +41,8 @@ public class Thaumometer extends ItemBase {
         return InteractionResult.PASS;
     }
 
+
+
     @Subscribe
     @Override
     public InteractionResult useOn(UseOnContext pContext) {
@@ -51,7 +52,7 @@ public class Thaumometer extends ItemBase {
             HitResult result = getEntityItemResult(player, mc);
             System.out.println(result);
 
-            // провера на предмет
+            // check item
             if(result.getType() == HitResult.Type.ENTITY){
                 System.out.println("Item");
                 ItemEntity entity = (ItemEntity) ((EntityHitResult) result).getEntity();
@@ -59,7 +60,13 @@ public class Thaumometer extends ItemBase {
             // check block
             }else if(result.getType() == HitResult.Type.BLOCK){
                 BlockPos blockpos = ((BlockHitResult)result).getBlockPos();
-                getAspectsFromItem(mc.level.getBlockState(blockpos).getBlock().asItem());
+                // check is block liquid
+                if(mc.level.getBlockState(blockpos).getMaterial().isLiquid()){
+                    System.out.println(mc.level.getBlockState(blockpos).getBlock());
+                    // TODO liquid scan
+                }else{
+                    getAspectsFromItem(mc.level.getBlockState(blockpos).getBlock().asItem());
+                }
             }
 
             }
@@ -67,6 +74,7 @@ public class Thaumometer extends ItemBase {
     }
 
     // check if player use Thaumometer
+    // TODO make solo class
     private boolean isHoldingThaumometer(Player player) {
         if (player == null) {
             return false;
@@ -107,7 +115,7 @@ public class Thaumometer extends ItemBase {
         System.out.println(look);
 
         // get block by vector
-        HitResult blockResult = mc.level.clip(new ClipContext(position, look, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
+        HitResult blockResult = mc.level.clip(new ClipContext(position, look, ClipContext.Block.COLLIDER, ClipContext.Fluid.ANY, player));
         if (blockResult != null){
             distance = Math.min(distance, blockResult.getLocation().distanceToSqr(position));
             AABB axisalignedbb = player.getBoundingBox().expandTowards(vec3d1.scale(distance)).inflate(1.0D, 1.0D, 1.0D);
