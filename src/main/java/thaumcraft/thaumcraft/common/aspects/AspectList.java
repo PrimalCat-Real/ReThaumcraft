@@ -10,12 +10,35 @@ public class AspectList {
     public AspectList(Aspect aspect, Integer amount) {
         this.aspectList.put(aspect, amount);
     }
+
+    public AspectList() {
+    }
+
+    public AspectList setPrimalAspects(){
+        this.aspectList.put(Aspect.AIR,16);
+        this.aspectList.put(Aspect.EARTH,16);
+        this.aspectList.put(Aspect.ORDER,16);
+        this.aspectList.put(Aspect.FIRE,16);
+        this.aspectList.put(Aspect.ENTROPY,16);
+        this.aspectList.put(Aspect.WATER,16);
+        return this;
+    }
+
     public Set getKeys(){
         return aspectList.keySet();
     }
 
+
     public int getSize(){
         return aspectList.size();
+    }
+
+    public void addAspect(Aspect aspect, int amount){
+        aspectList.put(aspect, amount);
+    }
+
+    public HashMap<Aspect, Integer> getAspectList() {
+        return aspectList;
     }
 
 

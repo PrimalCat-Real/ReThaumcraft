@@ -36,6 +36,7 @@ public class InventoryScanning {
     private static Slot lastScannedSlot;
     private static boolean canScan;
     private static DrawText dText = new DrawText();
+    private static DoScan doScan = new DoScan();
     /** Ticking event
      * for do scan **/
     @SubscribeEvent
@@ -56,17 +57,19 @@ public class InventoryScanning {
                     dText.setProgress(ticksHovered / (float) SCAN_TICK);
                     // play sound event while scan
                     if(ticksHovered > SOUND_TICKS && ticksHovered % 4 == 0){
-                        player.level.playSound(player,player.getX(), player.getY(), player.getZ(), ModSounds.cameraticks.get(), SoundSource.NEUTRAL, 0.2f,0.45f + player.level.random.nextFloat() * 0.1f);
+                        doScan.playScanningSound(player);
                     }
                     // scan 40 tick or 2 second
                     if(ticksHovered > SCAN_TICK){
                         Item scanItem = tempSlot.getItem().getItem();
                         lastScannedSlot = tempSlot;
+                        doScan.playScanCompleted(player);
                         // stop render scan process text
                         dText.setStartDraw(false);
                     }
                 }else{
                     // reset scan progress
+
                     ticksHovered = 0;
                     dText.setProgress(0);
                     dText.setStartDraw(false);

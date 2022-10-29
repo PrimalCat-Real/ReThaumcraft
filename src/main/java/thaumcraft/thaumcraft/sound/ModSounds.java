@@ -22,6 +22,7 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> alembicknock = registerSoundEvent("alembicknock");
     public static final RegistryObject<SoundEvent> cameraticks = registerSoundEvent("cameraticks");
     public static final RegistryObject<SoundEvent> cameraclack = registerSoundEvent("cameraclack");
+    public static final RegistryObject<SoundEvent> learn = registerSoundEvent("learn");
 
     private static RegistryObject<SoundEvent> registerSoundEvent(String name){
         return SOUND_EVENTS.register(name, () -> new SoundEvent(new ResourceLocation(Thaumcraft.MODID, name)));

@@ -2,46 +2,42 @@ package thaumcraft.thaumcraft.common.items.tools;
 
 
 import com.google.common.eventbus.Subscribe;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.InteractionHand;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.*;
+import net.minecraftforge.common.property.Properties;
 import thaumcraft.thaumcraft.common.aspects.Aspect;
 import thaumcraft.thaumcraft.common.aspects.AspectEventRegister;
 import thaumcraft.thaumcraft.common.aspects.AspectList;
 import thaumcraft.thaumcraft.common.items.ItemBase;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.world.item.Item;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import thaumcraft.thaumcraft.common.items.ItemThaumometerRenderer;
+import thaumcraft.thaumcraft.common.player.ScannedAspectsProvider;
 
-
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
-public class Thaumometer extends ItemBase{
+public class Thaumometer extends ShieldItem {
     public Thaumometer() {
         super(new Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
     }
-
-
-    @Override
-    public InteractionResult interactLivingEntity(ItemStack pStack, Player pPlayer, LivingEntity pInteractionTarget, InteractionHand pUsedHand){
-        if(isHoldingThaumometer(pPlayer)){
-            System.out.println(pInteractionTarget.getDisplayName());
-        }
-
-        return InteractionResult.PASS;
-    }
-
-
 
     @Subscribe
     @Override
@@ -51,7 +47,8 @@ public class Thaumometer extends ItemBase{
         if (mc != null && player != null && !mc.isPaused()) {
             HitResult result = getEntityItemResult(player, mc);
             System.out.println(result);
-
+            // test
+            player.getCapability(ScannedAspectsProvider.Player_Aspects).ifPresent(test -> System.out.println(test.getAspectList().getKeys()));
             // check item
             if(result.getType() == HitResult.Type.ENTITY){
                 System.out.println("Item");

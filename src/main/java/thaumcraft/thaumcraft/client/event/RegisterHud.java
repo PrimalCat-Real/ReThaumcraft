@@ -7,29 +7,41 @@ import com.mojang.math.Quaternion;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.renderer.*;
-import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.contents.TranslatableContents;
-import net.minecraft.world.phys.AABB;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import thaumcraft.thaumcraft.Thaumcraft;
-import thaumcraft.thaumcraft.client.RenderTypes;
 import thaumcraft.thaumcraft.common.init.ItemInit;
+import thaumcraft.thaumcraft.common.player.ScannedAspects;
+import thaumcraft.thaumcraft.common.player.ScannedAspectsProvider;
 
 @Mod.EventBusSubscriber(modid = Thaumcraft.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 
 public class RegisterHud {
     @SubscribeEvent
-    public static void renderSelectedBlocks(final RenderLevelStageEvent event) {
-        if(event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES)
+    public static void renderEvent(final RenderLevelStageEvent event) {
+        if(event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES )
             return;
-        if(Minecraft.getInstance().player != null) {
+        if(Minecraft.getInstance().player != null && Minecraft.getInstance().player.getMainHandItem().getItem() == ItemInit.THAUMOMETER.get()) {
             Minecraft mc = Minecraft.getInstance();
             PoseStack matrix = event.getPoseStack();
+//            mc.getCameraEntity().
             Vec3 playerPos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
             MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
             matrix.pushPose();
@@ -38,11 +50,34 @@ public class RegisterHud {
         }
     }
 
+
+
+
+    @SubscribeEvent
+    public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
+        event.register(ScannedAspects.class);
+    }
+
     private static void renderNameTag(Minecraft mc, PoseStack matrix, MultiBufferSource.BufferSource buffer, float partialTicks) {
         int combinedLightIn = mc.getEntityRenderDispatcher().getPackedLightCoords(mc.player, partialTicks);
-        matrix.translate(0, -60, 0);
+        //test
+        float pitch = Minecraft.getInstance().player.getXRot() * ((float) Math.PI / 180F);
+        // 12 degree clockwise rotation
+        float yaw = -(Minecraft.getInstance().player.getYRot() + 13.5f) * ((float) Math.PI / 180F);
+        float f2 = Mth.cos(yaw);
+        float f3 = Mth.sin(yaw);
+        float f4 = Mth.cos(pitch);
+        float f5 = Mth.sin(pitch);
+        Vec3 lookVec = new Vec3(f3 * f4, -f5, f2 * f4);
+        Vec3 testV = Minecraft.getInstance().player.getEyePosition(0f).add(lookVec.scale(2.2f)).subtract(0, .3, 0);
+        // test
+        matrix.translate(testV.x,testV.y,testV.z);
+//        System.out.println(matrix.last().pose());
+        Camera playerRenderer = Minecraft.getInstance().gameRenderer.getMainCamera();
+//        System.out.println(playerRenderer.getPosition());
         Quaternion q = mc.getEntityRenderDispatcher().cameraOrientation();
         matrix.mulPose(q);
+
         matrix.scale(-0.025F, -0.025F, 0.025F);
         Matrix4f matrix4f = matrix.last().pose();
         Font fontRenderer = Minecraft.getInstance().font;
