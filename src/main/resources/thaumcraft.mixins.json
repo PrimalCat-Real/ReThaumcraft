@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "hesio.thaumcraft.mixins",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "thaumcraft.refmap.json",
+  "mixins": [
+    "MixinTest",
+    "MixinItemStack"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
