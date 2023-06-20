@@ -2,6 +2,8 @@ package hesio.thaumcraft.api.aspects;
 
 import net.minecraft.resources.ResourceLocation;
 
+import java.util.LinkedHashMap;
+
 public class Aspect {
     private String name;
     private int color;
@@ -29,12 +31,16 @@ public class Aspect {
         return components;
     }
 
+
+    public static LinkedHashMap<String,Aspect> aspects = new LinkedHashMap<String,Aspect>();
+
     public Aspect(String name, int color, Aspect[] components, ResourceLocation image, int blend){
         this.name = name;
         this.color = color;
         this.components = components;
         this.aspectImage = image;
         this.blend = blend;
+        aspects.put(name, this);
     }
 
     public Aspect(String name, int color, Aspect[] components, int blend){
@@ -43,17 +49,26 @@ public class Aspect {
         this.components = components;
         this.aspectImage = new ResourceLocation("thaumcraft", "textures/aspects/" + name.toLowerCase() + ".png");
         this.blend = blend;
+        aspects.put(name, this);
     }
     public Aspect(String name, int color, Aspect[] components){
         this.name = name;
         this.color = color;
         this.components = components;
         this.aspectImage = new ResourceLocation("thaumcraft", "textures/aspects/" + name.toLowerCase() + ".png");
+        aspects.put(name, this);
+    }
+
+    public static Aspect getAspect(String tag) {
+        return aspects.get(tag);
     }
 
     public boolean isPrimal() {
         return (getComponents() == null) || (getComponents().length != 2);
     }
+
+
+    ///////////////////////////////
 
     // tier 0
     public static final Aspect AIR = new Aspect("aer", 16777086, null, 1);
