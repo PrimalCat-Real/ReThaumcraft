@@ -1,9 +1,13 @@
 package hesio.thaumcraft.api.aspects;
 
 import com.google.gson.*;
+import net.minecraft.nbt.CompoundTag;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class AspectList implements JsonSerializer<AspectList>, JsonDeserializer<AspectList> {
     public LinkedHashMap<Aspect,Integer> aspects;
@@ -12,6 +16,7 @@ public class AspectList implements JsonSerializer<AspectList>, JsonDeserializer<
     public AspectList(){
         this.aspects = new LinkedHashMap<Aspect,Integer>();
     }
+
 
     public AspectList add(Aspect aspect, int amount) {
         if (aspect != null && amount > 0) {
@@ -41,7 +46,15 @@ public class AspectList implements JsonSerializer<AspectList>, JsonDeserializer<
 
     @Override
     public AspectList deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        return null;
+        AspectList aspectList = new AspectList();
+        JsonObject jsonObject = json.getAsJsonObject();
+        for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
+            String aspectName = entry.getKey();
+            int amount = entry.getValue().getAsInt();
+            Aspect aspect = Aspect.getAspect(aspectName);
+            aspectList.add(aspect, amount);
+        }
+        return aspectList;
     }
 
     @Override

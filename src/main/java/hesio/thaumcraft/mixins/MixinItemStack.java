@@ -1,6 +1,12 @@
 package hesio.thaumcraft.mixins;
 
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import hesio.thaumcraft.api.aspects.Aspect;
+import hesio.thaumcraft.api.aspects.AspectList;
+import hesio.thaumcraft.configs.ConfigAspects;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -13,31 +19,36 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+
 @Mixin(ItemStack.class)
 public class MixinItemStack {
+
+    public MixinItemStack(){
+    }
+
     @Inject(method = "<init>(Lnet/minecraft/world/level/ItemLike;)V", at = @At("RETURN"))
-    private void modifyNBT(ItemLike p_41599_, CallbackInfo ci) {
+    private void modifyNBT(ItemLike p_41599_, CallbackInfo ci) throws IOException {
+        // Check if aspects exist for the specific item
         if (p_41599_ != null) {
             Item actualItem = p_41599_.asItem();
-            String itemId = Registries.ITEM.toString();
-
-            System.out.println(itemId);
+//            String itemId = Registries.ITEM.toString();
+            Map<String, AspectList> aspectItems = ConfigAspects.getReadConfig().get("items");
+            if(aspectItems != null && aspectItems.containsKey(actualItem.toString())){
+                ListTag list = new ListTag();
+                LinkedHashMap<Aspect, Integer> aspects = aspectItems.get(actualItem.toString()).aspects;
+                aspects.forEach((aspect, amount) -> {
+                    CompoundTag aspectTag = new CompoundTag();
+                    aspectTag.putInt(aspect.getName(), amount);
+                    list.add(aspectTag);
+                });
+                CompoundTag nbt = new CompoundTag();
+                nbt.put("aspects", list);
+                ((ItemStack)(Object)this).setTag(nbt);
+            }
         }
-
-        ListTag list = new ListTag();
-
-        // Create the first CompoundTag object
-        CompoundTag compound1 = new CompoundTag();
-        compound1.putInt("ordo", 20);
-        list.add(compound1);
-
-        // Create the second CompoundTag object
-        CompoundTag compound2 = new CompoundTag();
-        compound2.putInt("terra", 2);
-        list.add(compound2);
-
-        CompoundTag nbt = new CompoundTag();
-        nbt.put("aspects", list);
-        ((ItemStack) (Object) this).setTag(nbt);
     }
 }

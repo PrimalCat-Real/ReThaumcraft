@@ -49,6 +49,8 @@ public class Thaumcraft {
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onInterModEnqueue);
+
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
@@ -84,5 +86,22 @@ public class Thaumcraft {
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
         }
+    }
+
+    private void onInterModEnqueue(InterModEnqueueEvent event) {
+        try {
+            // Initialize the config file
+            System.out.println("Test before init items");
+//            ConfigAspects.initAspects();
+        } catch (Exception e) {
+            // Handle any exceptions that occur during initialization
+            LOGGER.error("Error initializing config file:", e);
+        }
+
+        // Here you can modify the ItemStack or perform any necessary setup before Minecraft starts
+        // For example:
+        // ItemStack itemStack = new ItemStack(Items.DIAMOND);
+        // itemStack.addEnchantment(Enchantments.SHARPNESS, 5);
+        // ...
     }
 }

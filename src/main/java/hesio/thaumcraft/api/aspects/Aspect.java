@@ -123,4 +123,14 @@ public class Aspect {
     public static final Aspect CLOTH = new Aspect("pannus", 15395522, new Aspect[] { TOOL, BEAST });
     public static final Aspect MECHANISM = new Aspect("machina", 8421536, new Aspect[] { MOTION, TOOL });
     public static final Aspect TRAP = new Aspect("vinculum", 10125440, new Aspect[] { MOTION, ENTROPY });
+
+
+    //TERTIARY
+    public static Aspect ALCHEMY = new Aspect("alkimia",0x23ac9d, new Aspect[] {MAGIC, WATER});
+    public static Aspect FLUX = new Aspect("vitium",0x800080, new Aspect[] {ENTROPY, MAGIC});
+    public static Aspect AVERSION = new Aspect("aversio",0xc05050, new Aspect[] {SOUL, ENTROPY});
+    public static Aspect PROTECT = new Aspect("praemunio",0x00c0c0, new Aspect[] {SOUL, EARTH});
+    public static Aspect DESIRE = new Aspect("desiderium",0xe6be44, new Aspect[] {SOUL, VOID});
+
+
 }
