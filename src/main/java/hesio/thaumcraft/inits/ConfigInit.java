@@ -1,4 +1,4 @@
-package hesio.thaumcraft.api.inits;
+package hesio.thaumcraft.inits;
 
 
 import hesio.thaumcraft.Thaumcraft;

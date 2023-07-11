@@ -19,9 +19,8 @@ public class AspectList implements JsonSerializer<AspectList>, JsonDeserializer<
 
 
     public AspectList add(Aspect aspect, int amount) {
-        if (aspect != null && amount > 0) {
-            int currentAmount = aspects.getOrDefault(aspect, 0);
-            aspects.put(aspect, currentAmount + amount);
+        if (aspect != null && amount > 0 && !aspects.containsKey(aspect)) {
+            aspects.put(aspect, amount);
         }
         return this;
     }
