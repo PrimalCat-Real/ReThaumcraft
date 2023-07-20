@@ -1,17 +1,17 @@
 package hesio.thaumcraft.common.Items.tools;
 
+import hesio.thaumcraft.client.fx.particle.BlockRunesParticle;
 import hesio.thaumcraft.common.Items.ItemBase;
-import net.minecraft.world.InteractionHand;
+import hesio.thaumcraft.inits.ParticlesInit;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.HitResult;
-
 public class Thaumometer extends ItemBase {
     public Thaumometer() {
         super(new Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
@@ -26,6 +26,7 @@ public class Thaumometer extends ItemBase {
         Player player = context.getPlayer();
         if (player != null) {
             player.startUsingItem(context.getHand());
+            spawnRunesParticles(context.getLevel(), context.getClickedPos());
         }
 
         return InteractionResult.CONSUME;
@@ -52,10 +53,21 @@ public class Thaumometer extends ItemBase {
     public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int count) {
         if (count == 1) { // Every second (20 ticks = 1 second)
             // Do something
+
             System.out.println("Test from use tick " + count);
         }
         System.out.println("tick " + count);
 //        System.out.println("Test from use tick");
+    }
+
+    private void spawnRunesParticles(Level world, BlockPos positionClicked) {
+        double motionX = 0;
+        double motionY = -0.2; // Set negative value to make particles fall
+        double motionZ = 0;
+
+        world.addParticle(ParticlesInit.BLOCKRUNE_PARTICLE.get(),
+                positionClicked.getX() + 0.5d, positionClicked.getY() + 1, positionClicked.getZ() + 0.5d,
+                motionX, motionY, motionZ);
     }
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {

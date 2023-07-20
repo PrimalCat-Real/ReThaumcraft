@@ -1,9 +1,10 @@
 package hesio.thaumcraft;
 
 import com.mojang.logging.LogUtils;
+import hesio.thaumcraft.client.fx.particle.CitrineParticles;
 import hesio.thaumcraft.inits.CreativeTabInit;
-import hesio.thaumcraft.inits.BlockInit;
 import hesio.thaumcraft.inits.ItemInit;
+import hesio.thaumcraft.inits.ParticlesInit;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -18,6 +19,7 @@ import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegisterEvent;
 import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -27,7 +29,7 @@ public class Thaumcraft {
     // Define mod id in a common place for everything to reference
     public static final String MODID = "thaumcraft";
     // Directly reference a slf4j logger
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
     // Create a Deferred Register to hold Blocks which will all be registered under the "thaumcraft" namespace
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
     // Create a Deferred Register to hold Items which will all be registered under the "thaumcraft" namespace
@@ -51,6 +53,7 @@ public class Thaumcraft {
 //        BlockInit.register();
         // Register the Deferred Register to the mod event bus so items get registered
         ItemInit.register();
+        ParticlesInit.register(modEventBus);
         CreativeTabInit.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in
@@ -63,7 +66,27 @@ public class Thaumcraft {
         LOGGER.info("DIRT BLOCK >> {}", ForgeRegistries.BLOCKS.getKey(Blocks.DIRT));
     }
 
-    // You can use SubscribeEvent and let the Event Bus discover methods to call
+
+    @SubscribeEvent
+    public static void registerParticleFactories(final RegisterEvent event) {
+        Minecraft.getInstance().particleEngine.register(ParticlesInit.CITRINE_PARTICLES.get(),
+                CitrineParticles.Provider::new);
+    }
+//    @SubscribeEvent
+//    public static void registerParticleFactories(final RegisterParticleProvidersEvent event) {
+//        Minecraft.getInstance().particleEngine.register(ParticlesInit.CITRINE_PARTICLES.get(),
+//                CitrineParticles.Provider::new);
+//    }
+//    public void setup(final FMLClientSetupEvent event) {
+//        // Register our new class to receive the Forge event.
+//        MinecraftForge.EVENT_BUS.register(CitrineParticles.class);
+//    }
+//    @SubscribeEvent
+//    public static void registerParticleFactory(RegisterParticleProvidersEvent evt) {
+//        Minecraft.getInstance().particleEngine.register(ParticlesInit.TEST_PARTICLES.get(),
+//                TestParticle.Provider::new);
+//    }
+        // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
         // Do something when the server starts
