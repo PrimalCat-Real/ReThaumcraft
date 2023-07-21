@@ -1,6 +1,10 @@
 package hesio.thaumcraft.common.Items.tools;
 
+//import hesio.thaumcraft.client.fx.particle.BlockRunesData;
+import hesio.thaumcraft.client.fx.particle.BlockRunesData;
 import hesio.thaumcraft.client.fx.particle.BlockRunesParticle;
+import hesio.thaumcraft.client.fx.particle.testing.MyParticleData;
+import hesio.thaumcraft.client.fx.particle.testing.MyParticleType;
 import hesio.thaumcraft.common.Items.ItemBase;
 import hesio.thaumcraft.inits.ParticlesInit;
 import net.minecraft.client.Minecraft;
@@ -12,6 +16,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+import org.joml.Vector3f;
+
 public class Thaumometer extends ItemBase {
     public Thaumometer() {
         super(new Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
@@ -61,13 +68,35 @@ public class Thaumometer extends ItemBase {
     }
 
     private void spawnRunesParticles(Level world, BlockPos positionClicked) {
-        double motionX = 0;
-        double motionY = -0.2; // Set negative value to make particles fall
-        double motionZ = 0;
+        Vector3f direction = new Vector3f(0f, -0.2f, 0f);  // North direction
 
-        world.addParticle(ParticlesInit.BLOCKRUNE_PARTICLE.get(),
-                positionClicked.getX() + 0.5d, positionClicked.getY() + 1, positionClicked.getZ() + 0.5d,
-                motionX, motionY, motionZ);
+        double x = positionClicked.getX() + 0.5d;
+        double y = positionClicked.getY() + 1;
+        double z = positionClicked.getZ() + 0.5d;
+
+//        BlockRunesData data = new BlockRunesData(direction, 1f, 1f, 1f, 0);
+//        world.addParticle(data, x, y, z, 0, -0.1f, 0);
+
+        double xSpeed = 0; // Скорость по X
+        double ySpeed = 0; // Скорость по Y
+        double zSpeed = 0; // Скорость по Z
+
+
+
+// Создание нового экземпляра MyParticleData с вашим уникальным значением
+        MyParticleType data = new MyParticleType(true,1);
+
+// Получение экземпляра клиентского мира
+
+// Создание частицы
+        world.addParticle(data, x, y, z, xSpeed, ySpeed, zSpeed);
+        System.out.println(direction);
+
+//
+//        world.addParticle();
+//        world.addParticle(ParticlesInit.BLOCKRUNE_PARTICLE.get(), new BlockRunesData(direction),
+//                positionClicked.getX() + 0.5d, positionClicked.getY() + 1, positionClicked.getZ() + 0.5d,
+//                x, y, z)
     }
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {

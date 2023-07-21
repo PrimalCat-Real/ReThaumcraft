@@ -4,6 +4,7 @@ import hesio.thaumcraft.Thaumcraft;
 import hesio.thaumcraft.client.fx.particle.BlockRuneType;
 import hesio.thaumcraft.client.fx.particle.TestParticle;
 import hesio.thaumcraft.client.fx.particle.TestParticleType;
+import hesio.thaumcraft.client.fx.particle.testing.MyParticleType;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -26,8 +27,10 @@ public class ParticlesInit {
             PARTICLE_TYPES.register("citrine_particles", () -> new SimpleParticleType(true));
 
     public static final RegistryObject<BlockRuneType> BLOCKRUNE_PARTICLE =
-            PARTICLE_TYPES.register("blockrunes_particle", BlockRuneType::new);
+            PARTICLE_TYPES.register("blockrunes_particle", () -> new BlockRuneType(true));
 
+    public static final RegistryObject<MyParticleType> MY_PARTICLE =
+            PARTICLE_TYPES.register("my_particle", () -> new MyParticleType(true, 1));
 
 
     // Добавьте функцию для регистрации фабрик частиц
