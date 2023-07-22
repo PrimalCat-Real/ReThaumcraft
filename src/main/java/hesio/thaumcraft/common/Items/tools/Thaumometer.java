@@ -87,7 +87,7 @@ public class Thaumometer extends ItemBase {
         double ySpeed = 0; // Скорость вдоль оси Y
         double zSpeed = 0; // Скорость вдоль оси Z
         if (world.isClientSide) {  // Убедитесь, что мы находимся на стороне клиента перед созданием частиц
-            double xRandomOffset = Math.random() * 0.9 - 0.4;
+            double xRandomOffset = Math.random() * 0.8 - 0.3;
             double xSouth = positionClicked.getX() + 0.5d + xRandomOffset;
             double zSouth = positionClicked.getZ() -1.02f; // сторона блока - Z
 

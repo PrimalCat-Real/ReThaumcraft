@@ -108,10 +108,10 @@ public class BlockRunesParticle extends TextureSheetParticle {
 
         int j = this.getLightColor(partialTicks);
 
-        vertexConsumer.vertex((double)(f - f3), (double)(f1 - f3), (double)f2).uv(f7, f5).color(1.0F, 0.5F, 0.8F, 0.5F).uv2(j).endVertex();
-        vertexConsumer.vertex((double)(f - f3), (double)(f1 + f3), (double)f2).uv(f7, f4).color(1.0F, 0.5F, 0.8F, 0.5F).uv2(j).endVertex();
-        vertexConsumer.vertex((double)(f + f3), (double)(f1 + f3), (double)f2).uv(f6, f4).color(1.0F, 0.5F, 0.8F, 0.5F).uv2(j).endVertex();
-        vertexConsumer.vertex((double)(f + f3), (double)(f1 - f3), (double)f2).uv(f6, f5).color(1.0F, 0.5F, 0.8F, 0.5F).uv2(j).endVertex();
+        vertexConsumer.vertex((double)(f - f3), (double)(f1 - f3), (double)f2).uv(f7, f5).color(1.0F, 0.5F, 0.8F, this.alpha).uv2(j).endVertex();
+        vertexConsumer.vertex((double)(f - f3), (double)(f1 + f3), (double)f2).uv(f7, f4).color(1.0F, 0.5F, 0.8F, this.alpha).uv2(j).endVertex();
+        vertexConsumer.vertex((double)(f + f3), (double)(f1 + f3), (double)f2).uv(f6, f4).color(1.0F, 0.5F, 0.8F, this.alpha).uv2(j).endVertex();
+        vertexConsumer.vertex((double)(f + f3), (double)(f1 - f3), (double)f2).uv(f6, f5).color(1.0F, 0.5F, 0.8F, this.alpha).uv2(j).endVertex();
     }
 
     @Override
