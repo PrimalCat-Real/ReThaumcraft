@@ -81,30 +81,46 @@ public class Thaumometer extends ItemBase {
 
     private void spawnRunesParticles(Level world, BlockPos positionClicked) {
 
-        double y = positionClicked.getY() + 1.1F;
+        double y = positionClicked.getY() + 1.0F;
 
         double xSpeed = 0; // Скорость вдоль оси X
         double ySpeed = 0; // Скорость вдоль оси Y
         double zSpeed = 0; // Скорость вдоль оси Z
         if (world.isClientSide) {  // Убедитесь, что мы находимся на стороне клиента перед созданием частиц
             double xRandomOffset = Math.random() * 0.8 - 0.3;
-            double xSouth = positionClicked.getX() + 0.5d + xRandomOffset;
-            double zSouth = positionClicked.getZ() -1.02f; // сторона блока - Z
+            double zRandomOffset = Math.random() * 0.8 - 0.3;
 
-            Vector3f directionNorth = new Vector3f(0f, 0f, 1.0f); // сторона втдимости частицы + Z
+            double xNorth = positionClicked.getX() + 0.5d + xRandomOffset;
+            double zNorth = positionClicked.getZ() + 0.99f; // сторона блока - Z
+
+            Vector3f directionNorth = new Vector3f(0f, 0f, -1.0f); // сторона частицы
             ParticleOptions particleDataNorth = BlockRuneData.createData(directionNorth.x(), directionNorth.y(), directionNorth.z());
-            world.addParticle(particleDataNorth, xSouth, y, zSouth, xSpeed, ySpeed, zSpeed);
+            world.addParticle(particleDataNorth, xNorth, y, zNorth, xSpeed, ySpeed, zSpeed);
+
+            double xSouth  = positionClicked.getX() + 0.5d + xRandomOffset;
+            double zSouth  = positionClicked.getZ() + 0.01f; // сторона блока + Z
+
+            Vector3f directionSouth  = new Vector3f(0f, 0f, 1.0f); // сторона частицы
+            ParticleOptions particleDataSouth = BlockRuneData.createData(directionSouth .x(), directionSouth.y(), directionSouth .z());
+            world.addParticle(particleDataSouth , xSouth , y, zSouth , xSpeed, ySpeed, zSpeed);
+
+
+            double xEast  = positionClicked.getX() - 1.01f; // сторона блока + X
+            double zEast  = positionClicked.getZ() + 0.5d + zRandomOffset;
+
+            Vector3f directionEast = new Vector3f(1.0f, 0f, 0f); // сторона частицы
+            ParticleOptions particleDataEast = BlockRuneData.createData(directionEast .x(), directionEast .y(), directionEast .z());
+            world.addParticle(particleDataEast , xEast , y, zEast , xSpeed, ySpeed, zSpeed);
+
+            double xWest  = positionClicked.getX() + 2.01f; // сторона блока - X
+            double zWest  = positionClicked.getZ() + 0.5d + zRandomOffset;
+
+            Vector3f directionWest = new Vector3f(-1.0f, 0f, 0f); // сторона частицы
+            ParticleOptions particleDataWest = BlockRuneData.createData(directionWest .x(), directionWest.y(), directionWest .z());
+            world.addParticle(particleDataWest , xWest , y, zWest , xSpeed, ySpeed, zSpeed);
         }
     }
-//    private void spawnRunesParticles(Level world, BlockPos positionClicked) {
-//        double motionX = 0;
-//        double motionY = -0.2; // Set negative value to make particles fall
-//        double motionZ = 0;
-//
-//        world.addParticle(ParticlesInit.BLOCKRUNE_PARTICLE.get(),
-//                positionClicked.getX() + 0.5d, positionClicked.getY() + 1, positionClicked.getZ() + 0.5d,
-//                motionX, motionY, motionZ);
-//    }
+
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
         ItemStack resultStack = super.finishUsingItem(stack, level, entity);

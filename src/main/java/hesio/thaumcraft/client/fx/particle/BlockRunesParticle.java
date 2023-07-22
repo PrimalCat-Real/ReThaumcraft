@@ -31,9 +31,9 @@ public class BlockRunesParticle extends TextureSheetParticle {
         this.xd = 0;
         this.yd = 0;
         this.zd = 0;
-        this.quadSize *= 1f;
+        this.quadSize *= 0.8f;
         this.gravity = 0.06F;
-        this.lifetime = 60; // Вы можете изменить это на желаемую продолжительность жизни
+        this.lifetime = 68; // Вы можете изменить это на желаемую продолжительность жизни
         this.setSpriteFromAge(sprite);
         this.forward = direction;
 
@@ -91,27 +91,33 @@ public class BlockRunesParticle extends TextureSheetParticle {
         Vector3f forward = this.getForward();
 
         // Calculate particle's current position with the forward offset
-        float f = (float)(Mth.lerp((double)partialTicks, this.xo, this.x) - vec3.x() + forward.x());
-        float f1 = (float)(Mth.lerp((double)partialTicks, this.yo, this.y) - vec3.y() + forward.y());
-        float f2 = (float)(Mth.lerp((double)partialTicks, this.zo, this.z) - vec3.z() + forward.z());
+        float px = (float)(Mth.lerp((double)partialTicks, this.xo, this.x) - vec3.x() + forward.x());
+        float py = (float)(Mth.lerp((double)partialTicks, this.yo, this.y) - vec3.y() + forward.y());
+        float pz = (float)(Mth.lerp((double)partialTicks, this.zo, this.z) - vec3.z() + forward.z());
 
         // Particle size
-        float f3 = this.getQuadSize(partialTicks);
+        float size = this.getQuadSize(partialTicks);
+
+        // Rotation around Y axis
+        float rotation = (float)Math.atan2(forward.z(), forward.x()) + (float)Math.PI / 2F;
+        float sinRot = Mth.sin(rotation);
+        float cosRot = Mth.cos(rotation);
 
         // Texture coordinates
         int uTexture = this.randomNumberX;
         int vTexture = this.randomNumberY;
-        float f6 = uTexture / 16.0f;
-        float f4 = vTexture / 16.0f;
-        float f7 = f6 + (1.0f / 16.0f);
-        float f5 = f4 + (1.0f / 16.0f);
+        float u0 = uTexture / 16.0f;
+        float v0 = vTexture / 16.0f;
+        float u1 = u0 + (1.0f / 16.0f);
+        float v1 = v0 + (1.0f / 16.0f);
 
         int j = this.getLightColor(partialTicks);
 
-        vertexConsumer.vertex((double)(f - f3), (double)(f1 - f3), (double)f2).uv(f7, f5).color(1.0F, 0.5F, 0.8F, this.alpha).uv2(j).endVertex();
-        vertexConsumer.vertex((double)(f - f3), (double)(f1 + f3), (double)f2).uv(f7, f4).color(1.0F, 0.5F, 0.8F, this.alpha).uv2(j).endVertex();
-        vertexConsumer.vertex((double)(f + f3), (double)(f1 + f3), (double)f2).uv(f6, f4).color(1.0F, 0.5F, 0.8F, this.alpha).uv2(j).endVertex();
-        vertexConsumer.vertex((double)(f + f3), (double)(f1 - f3), (double)f2).uv(f6, f5).color(1.0F, 0.5F, 0.8F, this.alpha).uv2(j).endVertex();
+        // Rotated vertices
+        vertexConsumer.vertex((double)(px - size * cosRot), (double)(py - size), (double)(pz + size * sinRot)).uv(u1, v1).color(1.0F, 0.5F, 0.8F, this.alpha).uv2(j).endVertex();
+        vertexConsumer.vertex((double)(px - size * cosRot), (double)(py + size), (double)(pz + size * sinRot)).uv(u1, v0).color(1.0F, 0.5F, 0.8F, this.alpha).uv2(j).endVertex();
+        vertexConsumer.vertex((double)(px + size * cosRot), (double)(py + size), (double)(pz - size * sinRot)).uv(u0, v0).color(1.0F, 0.5F, 0.8F, this.alpha).uv2(j).endVertex();
+        vertexConsumer.vertex((double)(px + size * cosRot), (double)(py - size), (double)(pz - size * sinRot)).uv(u0, v1).color(1.0F, 0.5F, 0.8F, this.alpha).uv2(j).endVertex();
     }
 
     @Override
