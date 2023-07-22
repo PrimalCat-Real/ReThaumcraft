@@ -25,6 +25,8 @@ import org.joml.Vector3f;
 import static hesio.thaumcraft.inits.ParticlesInit.BLOCKRUNE_PARTICLE;
 
 public class Thaumometer extends ItemBase {
+
+    private UseOnContext tempContext;
     public Thaumometer() {
         super(new Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
     }
@@ -38,7 +40,8 @@ public class Thaumometer extends ItemBase {
         Player player = context.getPlayer();
         if (player != null) {
             player.startUsingItem(context.getHand());
-            spawnRunesParticles(context.getLevel(), context.getClickedPos());
+            this.tempContext = context;
+//            spawnRunesParticles(context.getLevel(), context.getClickedPos());
         }
 
         return InteractionResult.CONSUME;
@@ -68,40 +71,30 @@ public class Thaumometer extends ItemBase {
 
             System.out.println("Test from use tick " + count);
         }
-        System.out.println("tick " + count);
+        if(count % 5 == 0){
+            spawnRunesParticles(level, tempContext.getClickedPos());
+        }
+
+        System.out.println("tick 1 " + count + " spawn: " + tempContext.getClickedPos());
 //        System.out.println("Test from use tick");
     }
 
     private void spawnRunesParticles(Level world, BlockPos positionClicked) {
-        double x = positionClicked.getX() + 0.5d;
-        double y = positionClicked.getY() + 1;
-        double z = positionClicked.getZ() + 0.5d;
 
-        double xSpeed = 0; // Speed along X
-        double ySpeed = 0; // Speed along Y
-        double zSpeed = 0; // Speed along Z
-        if (world.isClientSide) {  // Ensure we're on the client side before spawning particles
-            // Creating a new BlockRuneType instance with your custom value for each direction and adding the particle
-//            if (world.isClientSide) {  // Ensure we're on the client side before spawning particles
-//                world.addParticle(ParticlesInit.BLOCKRUNE_PARTICLE_NORTH.get(), x, y, z, xSpeed, ySpeed, zSpeed);
-//                world.addParticle(ParticlesInit.BLOCKRUNE_PARTICLE_SOUTH.get(), x, y, z, xSpeed, ySpeed, zSpeed);
-//                world.addParticle(ParticlesInit.BLOCKRUNE_PARTICLE_EAST.get(), x, y, z, xSpeed, ySpeed, zSpeed);
-//                world.addParticle(ParticlesInit.BLOCKRUNE_PARTICLE_WEST.get(), x, y, z, xSpeed, ySpeed, zSpeed);
-//                world.addParticle(ParticlesInit.BLOCKRUNE_PARTICLE_WEST.get(), x, y, z, xSpeed, ySpeed, zSpeed);
-//            }
-//            BlockRuneData data = new BlockRuneData(1f,0,0);
-//            BlockRuneData data = new BlockRuneData(1f,0,0);
-////            BlockRuneData data = new BlockRuneData(myVectorX, myVectorY, myVectorZ);
-////            Particle particle = BLOCKRUNE_PARTICLE.get();
-////            world.addParticle(particle, x, y, z, xSpeed, ySpeed, zSpeed);
-//            Minecraft.getInstance().particleEngine.add(new );
-            Vector3f direction = new Vector3f(0f, 0f, 1.0f); // Измените это на нужное вам направление
-            ParticleOptions particleData = BlockRuneData.createData(direction.x(), direction.y(), direction.z());
-            world.addParticle(particleData, x, y, z, 0, 0, 0);
+        double y = positionClicked.getY() + 1.1F;
+
+        double xSpeed = 0; // Скорость вдоль оси X
+        double ySpeed = 0; // Скорость вдоль оси Y
+        double zSpeed = 0; // Скорость вдоль оси Z
+        if (world.isClientSide) {  // Убедитесь, что мы находимся на стороне клиента перед созданием частиц
+            double xRandomOffset = Math.random() * 0.9 - 0.4;
+            double xSouth = positionClicked.getX() + 0.5d + xRandomOffset;
+            double zSouth = positionClicked.getZ() -1.02f; // сторона блока - Z
+
+            Vector3f directionNorth = new Vector3f(0f, 0f, 1.0f); // сторона втдимости частицы + Z
+            ParticleOptions particleDataNorth = BlockRuneData.createData(directionNorth.x(), directionNorth.y(), directionNorth.z());
+            world.addParticle(particleDataNorth, xSouth, y, zSouth, xSpeed, ySpeed, zSpeed);
         }
-
-        System.out.println("spawn particle");
-
     }
 //    private void spawnRunesParticles(Level world, BlockPos positionClicked) {
 //        double motionX = 0;

@@ -32,8 +32,8 @@ public class BlockRunesParticle extends TextureSheetParticle {
         this.yd = 0;
         this.zd = 0;
         this.quadSize *= 1f;
-        this.gravity = 0.02F;
-        this.lifetime = 80; // Вы можете изменить это на желаемую продолжительность жизни
+        this.gravity = 0.06F;
+        this.lifetime = 60; // Вы можете изменить это на желаемую продолжительность жизни
         this.setSpriteFromAge(sprite);
         this.forward = direction;
 
@@ -64,8 +64,22 @@ public class BlockRunesParticle extends TextureSheetParticle {
         super.tick();
         // Изменение цвета в радужном порядке
 
-        setAlpha(0.5F);
-        System.out.println("Current sprite: " + this.sprite.atlasLocation());
+        // Движение частицы, не взирая на блоки
+        this.x += this.xd;
+        this.y += this.yd;
+        this.z += this.zd;
+
+        // При необходимости уменьшите скорость
+        this.xd *= 0.9100000262260437D;
+        this.yd *= 0.9100000262260437D;
+        this.zd *= 0.9100000262260437D;
+        this.fadeOut(0.5F);
+//        this.setAlpha(0.5F);
+    }
+
+
+    private void fadeOut(float alpha) {
+        this.alpha = (-alpha/(float)lifetime) * age + alpha;
     }
 
     @Override
