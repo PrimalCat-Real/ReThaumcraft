@@ -14,6 +14,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import org.joml.Vector3f;
 
 public class ParticlesInit {
 
@@ -27,7 +28,20 @@ public class ParticlesInit {
             PARTICLE_TYPES.register("citrine_particles", () -> new SimpleParticleType(true));
 
     public static final RegistryObject<BlockRuneType> BLOCKRUNE_PARTICLE =
-            PARTICLE_TYPES.register("blockrunes_particle", () -> new BlockRuneType(true));
+            PARTICLE_TYPES.register("blockrunes_particle", () -> new BlockRuneType(true, new Vector3f(0f,0,1f)));
+
+//    public static final RegistryObject<BlockRuneType> BLOCKRUNE_PARTICLE_SOUTH =
+//            PARTICLE_TYPES.register("blockrunes_particle", () -> new BlockRuneType(true, new Vector3f(0f,0,-1f)));
+//
+//    public static final RegistryObject<BlockRuneType> BLOCKRUNE_PARTICLE_EAST =
+//            PARTICLE_TYPES.register("blockrunes_particle", () -> new BlockRuneType(true, new Vector3f(-1f,0,0f)));
+//
+//    public static final RegistryObject<BlockRuneType> BLOCKRUNE_PARTICLE_WEST =
+//            PARTICLE_TYPES.register("blockrunes_particle", () -> new BlockRuneType(true, new Vector3f(1f,0,0f)));
+//
+//    public static final RegistryObject<BlockRuneType> BLOCKRUNE_PARTICLE_NORTH =
+//            PARTICLE_TYPES.register("blockrunes_particle", () -> new BlockRuneType(true, new Vector3f(0f,0,1f)));
+
 
     public static final RegistryObject<MyParticleType> MY_PARTICLE =
             PARTICLE_TYPES.register("my_particle", () -> new MyParticleType(true, 1));

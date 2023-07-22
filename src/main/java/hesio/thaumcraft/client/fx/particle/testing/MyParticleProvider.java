@@ -1,12 +1,9 @@
 package hesio.thaumcraft.client.fx.particle.testing;
 
-import hesio.thaumcraft.client.fx.particle.BlockRunesData;
-import hesio.thaumcraft.client.fx.particle.BlockRunesParticle;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.core.particles.SimpleParticleType;
 import org.jetbrains.annotations.Nullable;
 
 public class MyParticleProvider implements ParticleProvider<MyParticleType> {
@@ -17,20 +14,6 @@ public class MyParticleProvider implements ParticleProvider<MyParticleType> {
         this.spriteSet = spriteSet;
     }
 
-//    @Nullable
-//    @Override
-//    public Particle createParticle(MyParticleType data, ClientLevel world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-//        try {
-//            System.out.println("Inside createParticle");
-//            MyParticle particle = new MyParticle(world, x, y, z, xSpeed, ySpeed, zSpeed, this.spriteSet);
-//            // Обратите внимание, что мы не устанавливаем параметр myParameter, так как у SimpleParticleType нет дополнительных параметров
-//            return particle;
-//        } catch (Exception e) {
-//            System.out.println("oshibka blyat");
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
     @Nullable
     @Override
     public Particle createParticle(MyParticleType data, ClientLevel world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
@@ -39,10 +22,10 @@ public class MyParticleProvider implements ParticleProvider<MyParticleType> {
             MyParticle particle = new MyParticle(world, x, y, z, xSpeed, ySpeed, zSpeed, this.spriteSet);
             // Обратите внимание, что мы не устанавливаем параметр myParameter, так как у SimpleParticleType нет дополнительных параметров
 
-            int additionalParameter = data.getAdditionalParameter(); // Получаем значение дополнительного параметра
-            System.out.println("Additional Parameter: " + additionalParameter); // Выводим значение дополнительного параметра в консоль
+            int additionalParameterX = data.getAdditionalParameter(); // Получаем значение дополнительного параметра
+            System.out.println("Additional Parameter: " + additionalParameterX); // Выводим значение дополнительного параметра в консоль
 
-            particle.setMyParameter(additionalParameter);
+            particle.setMyParameter(additionalParameterX);
             return particle;
         } catch (Exception e) {
             System.out.println("oshibka blyat");
