@@ -99,7 +99,18 @@ public class BlockRunesParticle extends TextureSheetParticle {
         float size = this.getQuadSize(partialTicks);
 
         // Rotation around Y axis
-        float rotation = (float)Math.atan2(forward.z(), forward.x()) + (float)Math.PI / 2F;
+        float rotation;
+        if (forward.z() > 0) {
+            rotation = (float)Math.PI; // South
+        } else if (forward.z() < 0) {
+            rotation = 0; // North
+        } else if (forward.x() > 0) {
+            rotation = (float)Math.PI / 2F; // East
+        } else if (forward.x() < 0) {
+            rotation = (float)Math.PI * 1.5F; // West
+        } else {
+            rotation = 0; // Default to North if something goes wrong
+        }
         float sinRot = Mth.sin(rotation);
         float cosRot = Mth.cos(rotation);
 
