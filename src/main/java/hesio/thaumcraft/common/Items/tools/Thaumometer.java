@@ -87,6 +87,7 @@ public class Thaumometer extends ItemBase {
 //                world.addParticle(ParticlesInit.BLOCKRUNE_PARTICLE_SOUTH.get(), x, y, z, xSpeed, ySpeed, zSpeed);
 //                world.addParticle(ParticlesInit.BLOCKRUNE_PARTICLE_EAST.get(), x, y, z, xSpeed, ySpeed, zSpeed);
 //                world.addParticle(ParticlesInit.BLOCKRUNE_PARTICLE_WEST.get(), x, y, z, xSpeed, ySpeed, zSpeed);
+//                world.addParticle(ParticlesInit.BLOCKRUNE_PARTICLE_WEST.get(), x, y, z, xSpeed, ySpeed, zSpeed);
 //            }
 //            BlockRuneData data = new BlockRuneData(1f,0,0);
 //            BlockRuneData data = new BlockRuneData(1f,0,0);
@@ -94,6 +95,9 @@ public class Thaumometer extends ItemBase {
 ////            Particle particle = BLOCKRUNE_PARTICLE.get();
 ////            world.addParticle(particle, x, y, z, xSpeed, ySpeed, zSpeed);
 //            Minecraft.getInstance().particleEngine.add(new );
+            Vector3f direction = new Vector3f(0f, 0f, 1.0f); // Измените это на нужное вам направление
+            ParticleOptions particleData = BlockRuneData.createData(direction.x(), direction.y(), direction.z());
+            world.addParticle(particleData, x, y, z, 0, 0, 0);
         }
 
         System.out.println("spawn particle");
