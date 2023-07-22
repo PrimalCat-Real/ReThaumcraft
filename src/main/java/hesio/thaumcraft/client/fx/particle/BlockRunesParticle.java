@@ -26,7 +26,7 @@ public class BlockRunesParticle extends TextureSheetParticle {
     private Vector3f forward;
     private int randomNumberX;
     private int randomNumberY;
-    protected BlockRunesParticle(ClientLevel world, double x, double y, double z, float scale, SpriteSet sprite) {
+    protected BlockRunesParticle(ClientLevel world, double x, double y, double z, float scale, SpriteSet sprite, Vector3f direction) {
         super(world, x, y, z);
         this.xd = 0;
         this.yd = 0;
@@ -35,6 +35,7 @@ public class BlockRunesParticle extends TextureSheetParticle {
         this.gravity = 0.02F;
         this.lifetime = 80; // Вы можете изменить это на желаемую продолжительность жизни
         this.setSpriteFromAge(sprite);
+        this.forward = direction;
 
 //        this.forward = new Vector3f(0, 0, 1);
 

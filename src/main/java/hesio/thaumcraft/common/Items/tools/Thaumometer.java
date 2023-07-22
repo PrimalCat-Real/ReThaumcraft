@@ -1,12 +1,18 @@
 package hesio.thaumcraft.common.Items.tools;
 
 //import hesio.thaumcraft.client.fx.particle.BlockRunesData;
+import hesio.thaumcraft.client.fx.particle.BlockRuneData;
 import hesio.thaumcraft.client.fx.particle.BlockRuneType;
+import hesio.thaumcraft.client.fx.particle.BlockRunesParticle;
 import hesio.thaumcraft.client.fx.particle.TestParticleType;
 import hesio.thaumcraft.client.fx.particle.testing.MyParticleType;
 import hesio.thaumcraft.common.Items.ItemBase;
 import hesio.thaumcraft.inits.ParticlesInit;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -15,6 +21,8 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.joml.Vector3f;
+
+import static hesio.thaumcraft.inits.ParticlesInit.BLOCKRUNE_PARTICLE;
 
 public class Thaumometer extends ItemBase {
     public Thaumometer() {
@@ -80,8 +88,12 @@ public class Thaumometer extends ItemBase {
 //                world.addParticle(ParticlesInit.BLOCKRUNE_PARTICLE_EAST.get(), x, y, z, xSpeed, ySpeed, zSpeed);
 //                world.addParticle(ParticlesInit.BLOCKRUNE_PARTICLE_WEST.get(), x, y, z, xSpeed, ySpeed, zSpeed);
 //            }
-            MyParticleType data = new MyParticleType(true, 1);
-            world.addParticle(data.getType(), x, y, z, xSpeed, ySpeed, zSpeed);
+//            BlockRuneData data = new BlockRuneData(1f,0,0);
+//            BlockRuneData data = new BlockRuneData(1f,0,0);
+////            BlockRuneData data = new BlockRuneData(myVectorX, myVectorY, myVectorZ);
+////            Particle particle = BLOCKRUNE_PARTICLE.get();
+////            world.addParticle(particle, x, y, z, xSpeed, ySpeed, zSpeed);
+//            Minecraft.getInstance().particleEngine.add(new );
         }
 
         System.out.println("spawn particle");

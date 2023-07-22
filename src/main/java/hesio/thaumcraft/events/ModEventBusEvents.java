@@ -23,7 +23,7 @@ public class ModEventBusEvents {
         particleEngine.register(ParticlesInit.CITRINE_PARTICLES.get(),
                 CitrineParticles.Provider::new);
         particleEngine.register(TEST_PARTICLE.get(), TestParticle.Factory::new);
-        particleEngine.register(BLOCKRUNE_PARTICLE.get(), BlockRuneProvider::new);
+//        particleEngine.register(BLOCKRUNE_PARTICLE.get(), BlockRuneType.Factory::new);
         particleEngine.register(ParticlesInit.MY_PARTICLE.get(), MyParticleProvider::new);
     }
 }

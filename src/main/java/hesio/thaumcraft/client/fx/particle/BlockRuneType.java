@@ -20,49 +20,16 @@ import org.joml.Vector3f;
 
 import java.util.Locale;
 
-public class BlockRuneType extends ParticleType<BlockRuneType> implements ParticleOptions {
-    public static BlockRuneType BLOCK_RUNE_TYPE = null;
+public class BlockRuneType extends ParticleType<VectorParticleTypeData> {
+//    public static final BlockRuneType BLOCK_RUNE_TYPE =  new BlockRuneType();
 
-    private static final ParticleOptions.Deserializer<BlockRuneType> DESERIALIZER = new ParticleOptions.Deserializer<BlockRuneType>() {
-        public BlockRuneType fromCommand(ParticleType<BlockRuneType> particleType, StringReader reader) {
-            return (BlockRuneType) particleType;
-        }
-
-        public BlockRuneType fromNetwork(ParticleType<BlockRuneType> particleType, FriendlyByteBuf buffer) {
-            return (BlockRuneType) particleType;
-        }
-    };
-
-    private final Codec<BlockRuneType> codec = Codec.unit(this::getType);
-
-    // replaced additionalParameter with vector
-    private final Vector3f vector;
-
-    public BlockRuneType(boolean alwaysShow, Vector3f vector) {
-        super(alwaysShow, DESERIALIZER);
-        this.vector = vector;
+    public BlockRuneType() {
+        super(true, VectorParticleTypeData.DESERIALIZER);
     }
 
-    public BlockRuneType getType() {
-        return this;
+    @Override
+    public Codec<VectorParticleTypeData> codec() {
+        return VectorParticleTypeData.CODEC;
     }
 
-    public Codec<BlockRuneType> codec() {
-        return this.codec;
-    }
-
-    // replaced getAdditionalParameter with getVector
-    public Vector3f getVector() {
-        return vector;
-    }
-
-    public void writeToNetwork(FriendlyByteBuf buffer) {
-        buffer.writeFloat(vector.x());
-        buffer.writeFloat(vector.y());
-        buffer.writeFloat(vector.z());
-    }
-
-    public String writeToString() {
-        return String.format(Locale.ROOT, "%s %.2f %.2f %.2f", BuiltInRegistries.PARTICLE_TYPE.getKey(this).toString(), vector.x(), vector.y(), vector.z());
-    }
 }

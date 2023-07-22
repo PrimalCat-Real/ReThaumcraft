@@ -28,19 +28,7 @@ public class ParticlesInit {
             PARTICLE_TYPES.register("citrine_particles", () -> new SimpleParticleType(true));
 
     public static final RegistryObject<BlockRuneType> BLOCKRUNE_PARTICLE =
-            PARTICLE_TYPES.register("blockrunes_particle", () -> new BlockRuneType(true, new Vector3f(0f,0,1f)));
-
-//    public static final RegistryObject<BlockRuneType> BLOCKRUNE_PARTICLE_SOUTH =
-//            PARTICLE_TYPES.register("blockrunes_particle", () -> new BlockRuneType(true, new Vector3f(0f,0,-1f)));
-//
-//    public static final RegistryObject<BlockRuneType> BLOCKRUNE_PARTICLE_EAST =
-//            PARTICLE_TYPES.register("blockrunes_particle", () -> new BlockRuneType(true, new Vector3f(-1f,0,0f)));
-//
-//    public static final RegistryObject<BlockRuneType> BLOCKRUNE_PARTICLE_WEST =
-//            PARTICLE_TYPES.register("blockrunes_particle", () -> new BlockRuneType(true, new Vector3f(1f,0,0f)));
-//
-//    public static final RegistryObject<BlockRuneType> BLOCKRUNE_PARTICLE_NORTH =
-//            PARTICLE_TYPES.register("blockrunes_particle", () -> new BlockRuneType(true, new Vector3f(0f,0,1f)));
+            PARTICLE_TYPES.register("blockrunes_particle", BlockRuneType::new);
 
 
     public static final RegistryObject<MyParticleType> MY_PARTICLE =
