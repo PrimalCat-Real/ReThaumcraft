@@ -1,7 +1,7 @@
 # ReThaumcraft
 ### This is my own try to port thaumcraft
 - I will not use the original textures (exception particles and maybe aspects)
-- There will be mechanics of 3 different thaumcrafts
+- There will be mechanics of 2 different thaumcrafts
   - Thaumcraft 4
   - Thaumcraft 6
 - I can also take mechanics from addons
