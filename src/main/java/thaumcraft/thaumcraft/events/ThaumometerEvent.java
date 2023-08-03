@@ -2,8 +2,6 @@ package thaumcraft.thaumcraft.events;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.logging.LogUtils;
-import mezz.jei.gui.GuiScreenHelper;
-import mezz.jei.input.GuiContainerWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.Screen;
@@ -13,7 +11,6 @@ import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -25,7 +22,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.event.TickEvent;
@@ -45,7 +41,7 @@ import java.awt.*;
 @Mod.EventBusSubscriber(modid = Thaumcraft.MOD_ID, value = Dist.CLIENT)
 public class ThaumometerEvent {
     private static Slot tempSlot = null;
-    private static ScreenEvent.DrawScreenEvent.Post drawScreenEvent = null;
+    private static ScreenEvent.Render.Post drawScreenEvent = null;
     private static final int SCAN_TICK = 40;
     private static final int SOUND_TICKS = 3;
     private static int ticksHovered;
@@ -126,7 +122,7 @@ public class ThaumometerEvent {
      * and set this to temp slot
      **/
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void onInventorySlotInteract(final ScreenEvent.DrawScreenEvent.Post event) {
+    public static void onInventorySlotInteract(final ScreenEvent.Render.Post event) {
         if(!event.isCanceled()) {
             Slot slot;
             Player player;
