@@ -1,8 +1,6 @@
-package thaumcraft.thaumcraft.api;
+package primalcat.thaumcraft.api;
 
 import net.minecraft.resources.ResourceLocation;
-
-import java.util.LinkedHashMap;
 
 public class Aspect {
     int color;

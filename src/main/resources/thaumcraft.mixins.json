@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "thaumcraft.thaumcraft.mixin",
+  "package": "primalcat.thaumcraft.mixin",
   "compatibilityLevel": "JAVA_8",
   "refmap": "thaumcraft.refmap.json",
   "mixins": [

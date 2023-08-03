@@ -1,10 +1,6 @@
-package thaumcraft.thaumcraft.events;
+package primalcat.thaumcraft.events;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.ContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
@@ -12,11 +8,8 @@ import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -25,17 +18,14 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import thaumcraft.thaumcraft.Thaumcraft;
-import thaumcraft.thaumcraft.init.ItemInit;
-import thaumcraft.thaumcraft.sound.ModSounds;
-import thaumcraft.thaumcraft.utilites.DoScan;
-import thaumcraft.thaumcraft.utilites.DrawText;
-
-import java.awt.*;
+import primalcat.thaumcraft.Thaumcraft;
+import primalcat.thaumcraft.init.ItemInit;
+import primalcat.thaumcraft.sound.ModSounds;
+import primalcat.thaumcraft.utilites.DoScan;
+import primalcat.thaumcraft.utilites.DrawText;
 
 
 @Mod.EventBusSubscriber(modid = Thaumcraft.MOD_ID, value = Dist.CLIENT)

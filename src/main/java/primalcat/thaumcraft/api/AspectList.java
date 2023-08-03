@@ -1,4 +1,4 @@
-package thaumcraft.thaumcraft.api;
+package primalcat.thaumcraft.api;
 
 import java.util.LinkedHashMap;
 

@@ -1,4 +1,4 @@
-package thaumcraft.thaumcraft.common;
+package primalcat.thaumcraft.common;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.player.Player;

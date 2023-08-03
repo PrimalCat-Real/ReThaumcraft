@@ -1,10 +1,7 @@
-package thaumcraft.thaumcraft;
+package primalcat.thaumcraft;
 
 import com.mojang.logging.LogUtils;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
@@ -14,9 +11,9 @@ import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
-import thaumcraft.thaumcraft.init.BlockInit;
-import thaumcraft.thaumcraft.init.ItemInit;
-import thaumcraft.thaumcraft.sound.ModSounds;
+import primalcat.thaumcraft.init.BlockInit;
+import primalcat.thaumcraft.init.ItemInit;
+import primalcat.thaumcraft.sound.ModSounds;
 
 import java.util.stream.Collectors;
 

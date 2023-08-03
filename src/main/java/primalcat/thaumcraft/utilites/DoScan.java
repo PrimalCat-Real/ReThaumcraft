@@ -1,4 +1,4 @@
-package thaumcraft.thaumcraft.utilites;
+package primalcat.thaumcraft.utilites;
 
 public class DoScan {
     public static boolean canScan(){

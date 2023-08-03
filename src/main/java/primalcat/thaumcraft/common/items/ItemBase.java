@@ -1,4 +1,4 @@
-package thaumcraft.thaumcraft.common.items;
+package primalcat.thaumcraft.common.items;
 
 
 import net.minecraft.world.InteractionResult;

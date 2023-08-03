@@ -1,4 +1,4 @@
-package thaumcraft.thaumcraft.common.blocks;
+package primalcat.thaumcraft.common.blocks;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
