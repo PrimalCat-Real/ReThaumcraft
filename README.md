@@ -9,9 +9,12 @@
 
 ## Main Priority
 - [ ] Config System
-- [ ] LoadStone particle render
+- [ ] LoadStone, Jei, Curios, ClothConfig, GekoLib dependency 
 - [ ] Items aspects
 - [ ] Entities aspects
 - [ ] Fluids aspects
 - [ ] Player aspects capacity
 - [ ] Thaumometer
+- [ ] Aspects nodes
+- [ ] Thamomicon
+- [ ] Researchers
