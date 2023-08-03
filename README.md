@@ -8,7 +8,7 @@
 
 ## Main Priority
 - [ ] Config System
-- [ ] LoadStone, Jei, Curios, ClothConfig, GekoLib dependency 
+- [ ] LoadStone, Jei, Curios, GekoLib dependency 
 - [ ] Items aspects
 - [ ] Entities aspects
 - [ ] Fluids aspects
