@@ -14,6 +14,7 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.*;
+import net.minecraftforge.common.ForgeMod;
 import primalcat.thaumcraft.common.items.ItemBase;
 
 import java.util.List;
@@ -76,7 +77,7 @@ public class Thaumometer extends ItemBase {
     }
 
     public static HitResult getEntityItemResult(Player player){
-        double distance = 5f;
+        double distance = player.getAttribute(ForgeMod.REACH_DISTANCE.get()).getValue();
         Minecraft mc = Minecraft.getInstance();
         float partialTicks = mc.getDeltaFrameTime();
         Vec3 position = player.getEyePosition(partialTicks);
