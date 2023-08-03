@@ -164,6 +164,11 @@ dependencies {
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft 'net.minecraftforge:forge:1.19.2-43.2.21'
+    implementation fg.deobf("curse.maven:jei-238222:4615177")
+    implementation fg.deobf("curse.maven:curios-309927:4523009")
+    implementation fg.deobf("curse.maven:loadstone-616457:4636991")
+    implementation fg.deobf("curse.maven:clothconfig-348521:4633416")
+    implementation fg.deobf("curse.maven:gekolib-388172:4407241")
 //    implementation fg.deobf("curse.maven:jei-238222:3969092")
 //    implementation fg.deobf("curse.maven:patchouli-306770:3846086")
 //    implementation fg.deobf("curse.maven:curios-309927:3841948")
