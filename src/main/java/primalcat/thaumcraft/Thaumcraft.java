@@ -1,7 +1,9 @@
 package primalcat.thaumcraft;
 
 import com.mojang.logging.LogUtils;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
@@ -10,8 +12,11 @@ import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.slf4j.Logger;
+import primalcat.thaumcraft.config.ConfigAspects;
 import primalcat.thaumcraft.init.BlockInit;
+import primalcat.thaumcraft.init.ConfigInit;
 import primalcat.thaumcraft.init.ItemInit;
 import primalcat.thaumcraft.sound.ModSounds;
 
@@ -22,9 +27,12 @@ import java.util.stream.Collectors;
 public class Thaumcraft {
     public static final String MOD_ID = "thaumcraft";
     // Directly reference a slf4j logger
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     public Thaumcraft() {
+
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
         // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         // Register the enqueueIMC method for modloading
@@ -32,6 +40,7 @@ public class Thaumcraft {
         // Register the processIMC method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
 
+//        modEventBus.addListener(this::commonSetup);
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
 
@@ -39,10 +48,13 @@ public class Thaumcraft {
         ItemInit.register();
         BlockInit.register();
 
+
     }
+
 
     private void setup(final FMLCommonSetupEvent event) {
         // Some preinit code
+        ConfigInit.setup();
         LOGGER.info("HELLO FROM PREINIT");
 //        LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
     }
