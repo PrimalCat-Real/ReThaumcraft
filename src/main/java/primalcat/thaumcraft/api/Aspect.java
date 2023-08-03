@@ -2,57 +2,73 @@ package primalcat.thaumcraft.api;
 
 import net.minecraft.resources.ResourceLocation;
 
+import java.util.LinkedHashMap;
+
 public class Aspect {
-    int color;
-    String name;
-    Aspect[] components;
-    ResourceLocation image;
-    int blend;
+    private String name;
+    private int color;
+    private ResourceLocation aspectImage;
+    private int blend;
+    private Aspect[] components;
+
+    public String getName() {
+        return name;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public ResourceLocation getAspectImage() {
+        return aspectImage;
+    }
+
+    public int getBlend() {
+        return blend;
+    }
+
+    public Aspect[] getComponents() {
+        return components;
+    }
+
+
+    public static LinkedHashMap<String,Aspect> aspects = new LinkedHashMap<String,Aspect>();
 
     public Aspect(String name, int color, Aspect[] components, ResourceLocation image, int blend){
         this.name = name;
         this.color = color;
         this.components = components;
-        this.image = image;
+        this.aspectImage = image;
         this.blend = blend;
+        aspects.put(name, this);
     }
 
     public Aspect(String name, int color, Aspect[] components, int blend){
         this.name = name;
         this.color = color;
         this.components = components;
-        this.image = new ResourceLocation("thaumcraft", "textures/aspects/" + name.toLowerCase() + ".png");
+        this.aspectImage = new ResourceLocation("thaumcraft", "textures/aspects/" + name.toLowerCase() + ".png");
         this.blend = blend;
+        aspects.put(name, this);
     }
     public Aspect(String name, int color, Aspect[] components){
         this.name = name;
         this.color = color;
         this.components = components;
-        this.image = new ResourceLocation("thaumcraft", "textures/aspects/" + name.toLowerCase() + ".png");
+        this.aspectImage = new ResourceLocation("thaumcraft", "textures/aspects/" + name.toLowerCase() + ".png");
+        aspects.put(name, this);
     }
 
+    public static Aspect getAspect(String tag) {
+        return aspects.get(tag);
+    }
 
     public boolean isPrimal() {
         return (getComponents() == null) || (getComponents().length != 2);
     }
 
-    public ResourceLocation getImage() {
-        return image;
-    }
 
-
-    public int getColor(){
-        return this.color;
-    }
-    public String getName(){
-        return this.name;
-    }
-    public Aspect[] getComponents() {
-        return this.components;
-    }
-
-    // public static LinkedHashMap<String, Aspect> aspects = new LinkedHashMap();
-
+    ///////////////////////////////
 
     // tier 0
     public static final Aspect AIR = new Aspect("aer", 16777086, null, 1);
@@ -107,4 +123,12 @@ public class Aspect {
     public static final Aspect CLOTH = new Aspect("pannus", 15395522, new Aspect[] { TOOL, BEAST });
     public static final Aspect MECHANISM = new Aspect("machina", 8421536, new Aspect[] { MOTION, TOOL });
     public static final Aspect TRAP = new Aspect("vinculum", 10125440, new Aspect[] { MOTION, ENTROPY });
+
+
+    //TERTIARY
+    public static Aspect ALCHEMY = new Aspect("alkimia",0x23ac9d, new Aspect[] {MAGIC, WATER});
+    public static Aspect FLUX = new Aspect("vitium",0x800080, new Aspect[] {ENTROPY, MAGIC});
+    public static Aspect AVERSION = new Aspect("aversio",0xc05050, new Aspect[] {SOUL, ENTROPY});
+    public static Aspect PROTECT = new Aspect("praemunio",0x00c0c0, new Aspect[] {SOUL, EARTH});
+    public static Aspect DESIRE = new Aspect("desiderium",0xe6be44, new Aspect[] {SOUL, VOID});
 }
