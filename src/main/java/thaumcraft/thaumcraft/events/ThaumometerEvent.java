@@ -11,8 +11,11 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.ContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.PlayerModel;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -21,7 +24,9 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -37,7 +42,7 @@ import thaumcraft.thaumcraft.utilites.DrawText;
 import java.awt.*;
 
 
-@Mod.EventBusSubscriber(modid = Thaumcraft.MOD_ID)
+@Mod.EventBusSubscriber(modid = Thaumcraft.MOD_ID, value = Dist.CLIENT)
 public class ThaumometerEvent {
     private static Slot tempSlot = null;
     private static ScreenEvent.DrawScreenEvent.Post drawScreenEvent = null;
@@ -154,6 +159,19 @@ public class ThaumometerEvent {
             }
 
         }
+    }
+
+    // Event for render player hand as crossbow in third person camera
+    @SubscribeEvent
+    public static void onPlayerRenderPre(RenderPlayerEvent.Pre event) {
+        Player player = (Player) event.getEntity();
+        PlayerModel<?> model = event.getRenderer().getModel();
+
+        // Check if the player is holding THAUMOMETER item in either hand
+        boolean holdingYourItem = player.isHolding(ItemInit.THAUMOMETER.get());
+
+        // Change the left arm pose based on whether the player is holding THAUMOMETER
+        model.leftArmPose = holdingYourItem ? HumanoidModel.ArmPose.BOW_AND_ARROW : HumanoidModel.ArmPose.EMPTY;
     }
     /** ивент посути для проверки на ховер предметов,
      * Должно показывать елементы предмета на шифте.
