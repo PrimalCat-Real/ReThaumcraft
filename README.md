@@ -5,6 +5,7 @@
   - Thaumcraft 4
   - Thaumcraft 6
 - I can also take mechanics from addons
+- I don't have permission, so it just project for me
 
 ## Main Priority
 - [ ] Config System
