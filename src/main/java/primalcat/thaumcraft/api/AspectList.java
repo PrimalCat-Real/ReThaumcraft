@@ -1,6 +1,7 @@
 package primalcat.thaumcraft.api;
 
 import com.google.gson.*;
+import primalcat.thaumcraft.init.AspectInit;
 
 import java.lang.reflect.Type;
 import java.util.LinkedHashMap;
@@ -47,7 +48,7 @@ public class AspectList implements JsonSerializer<AspectList>, JsonDeserializer<
         for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
             String aspectName = entry.getKey();
             int amount = entry.getValue().getAsInt();
-            Aspect aspect = Aspect.getAspect(aspectName);
+            Aspect aspect = AspectInit.getAspect(aspectName);
             aspectList.add(aspect, amount);
         }
         return aspectList;

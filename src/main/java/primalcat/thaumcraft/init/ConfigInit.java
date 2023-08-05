@@ -19,7 +19,7 @@ public class ConfigInit {
         // Register the config registration event
 //        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigAspects.COMMON_SPEC);
         try{
-            ConfigAspects.main();
+            ConfigAspects.initAspects();
         }catch (Exception e){
             LOGGER.error("Error register config " + e.getMessage());
         }

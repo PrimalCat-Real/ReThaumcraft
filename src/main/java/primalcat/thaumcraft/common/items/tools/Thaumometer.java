@@ -9,22 +9,26 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.*;
 import net.minecraftforge.common.ForgeMod;
+import primalcat.thaumcraft.api.AspectHelper;
+import primalcat.thaumcraft.api.AspectList;
 import primalcat.thaumcraft.common.items.ItemBase;
+import primalcat.thaumcraft.config.ConfigAspects;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class Thaumometer extends ItemBase {
+
     public Thaumometer() {
-
         super(new Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
-
     }
 
 
@@ -53,10 +57,17 @@ public class Thaumometer extends ItemBase {
         Player player = pContext.getPlayer();
         Minecraft mc = Minecraft.getInstance();
         if (mc != null && player != null && !mc.isPaused()) {
+
             HitResult result = getEntityItemResult(player);
             if (result != null && result.getType() == HitResult.Type.ENTITY) {
                 ItemEntity entity = (ItemEntity) ((EntityHitResult) result).getEntity();
+//                ItemStack testItem = entity.getItem().getTag();
+
                 System.out.println(entity.getItem().getItem());
+//                AspectList temp = AspectHelper.getObjectAspects(entity.getItem());
+//                if(temp != null){
+//                    System.out.println(temp.toString());
+//                }
             }else if(result != null && result.getType() == HitResult.Type.BLOCK){
                 BlockPos blockPos = (BlockPos) ((BlockHitResult) result).getBlockPos();
                 System.out.println(blockPos);

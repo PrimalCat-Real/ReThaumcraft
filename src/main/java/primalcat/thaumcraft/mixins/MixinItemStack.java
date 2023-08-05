@@ -29,6 +29,7 @@ public class MixinItemStack {
         // Check if aspects exist for the specific item
 //        if (itemLike != null && ConfigAspects.getReadConfig() != null) {
 //            Item actualItem = itemLike.asItem();
+//            System.out.println(actualItem.toString());
 //            Map<String, AspectList> aspectItems = ConfigAspects.getReadConfig().get("items");
 //            if(aspectItems != null && aspectItems.containsKey(actualItem.toString())){
 //                ListTag list = new ListTag();
