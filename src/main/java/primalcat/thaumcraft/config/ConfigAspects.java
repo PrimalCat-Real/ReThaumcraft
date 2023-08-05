@@ -70,6 +70,20 @@ public class ConfigAspects {
         }
     }
 
+    public static void registerObjectTag(String item, AspectList aspectList){
+        AspectInit.putItemAspects(item, aspectList);
+    }
+    public static void registerObjectTag(Item item, AspectList aspectList){
+        AspectInit.putItemAspects(item.toString(), aspectList);
+    }
+    public static void registerEntityTag(String entity, AspectList aspectList) {
+        AspectInit.putEntityAspects(entity, aspectList);
+
+//        aspects.put("oreLapis", new AspectList().add(Aspect.EARTH, 5).add(Aspect.SENSES, 15));
+//        aspects.put("oreRedstone", new AspectList().add(Aspect.EARTH, 5).add(Aspect.ENERGY, 15));
+//        aspects.put("oreQuartz", new AspectList().add(Aspect.EARTH, 5).add(Aspect.CRYSTAL, 10));
+    }
+
     private static String createDefaultConfigData(){
         Map<String, LinkedHashMap<String, AspectList>> categories = new HashMap<>();
         categories.put("items", AspectInit.getItemAspects());
@@ -91,7 +105,7 @@ public class ConfigAspects {
             e.printStackTrace();
         }
     }
-    public static void initAspects() throws IOException {
+    public static void initAspectsConfig() throws IOException {
         if (createConfigFile()){
             System.out.println("Config folder created");
             File configFile = new File(CONFIG_FILE_PATH);
@@ -99,9 +113,11 @@ public class ConfigAspects {
                 // The file does not exist, create it with your params
                 createAndFillConfigFile();
             }else {
-                String json = gson.toJson(readConfigFile());
-                if (isValid(json)){
+                Map<String, Map<String, AspectList>> configFileContent = readConfigFile();
+                if (isValid(gson.toJson(configFileContent))){
                     System.out.println("Only fill at least");
+                }else {
+
                 }
             }
         }
