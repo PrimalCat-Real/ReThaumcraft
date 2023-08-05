@@ -20,16 +20,16 @@ public class AspectInit {
         return itemAspects;
     }
 
-    public static void setItemAspects(LinkedHashMap<String, AspectList> itemAspects) {
-        AspectInit.itemAspects = itemAspects;
+    public static void putItemAspects(String itemName, AspectList itemAspects) {
+        AspectInit.itemAspects.put(itemName, itemAspects);
     }
 
     public static LinkedHashMap<String, AspectList> getEntityAspects() {
         return entityAspects;
     }
 
-    public static void setEntityAspects(LinkedHashMap<String, AspectList> entityAspects) {
-        AspectInit.entityAspects = entityAspects;
+    public static void putEntityAspects(String entityName, AspectList entityAspects) {
+        AspectInit.itemAspects.put(entityName, entityAspects);
     }
 
     public static LinkedHashMap<Tag, AspectList> getTagAspects() {
