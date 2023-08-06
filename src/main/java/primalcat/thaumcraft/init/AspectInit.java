@@ -13,6 +13,15 @@ public class AspectInit {
 
     private static LinkedHashMap<String, AspectList> itemAspects = new LinkedHashMap<>();
     private static LinkedHashMap<String, AspectList> entityAspects = new LinkedHashMap<>();
+
+    public static void setItemAspects(LinkedHashMap<String, AspectList> itemAspects) {
+        AspectInit.itemAspects = itemAspects;
+    }
+
+    public static void setEntityAspects(LinkedHashMap<String, AspectList> entityAspects) {
+        AspectInit.entityAspects = entityAspects;
+    }
+
     private static LinkedHashMap<Tag, AspectList> tagAspects = new LinkedHashMap<>();
 
 
@@ -29,7 +38,7 @@ public class AspectInit {
     }
 
     public static void putEntityAspects(String entityName, AspectList entityAspects) {
-        AspectInit.itemAspects.put(entityName, entityAspects);
+        AspectInit.entityAspects.put(entityName, entityAspects);
     }
 
     public static LinkedHashMap<Tag, AspectList> getTagAspects() {
@@ -46,6 +55,7 @@ public class AspectInit {
     public static void putAspect(String aspectName, Aspect aspect){
         aspectsHolder.put(aspectName, aspect);
     }
+
 
     // tier 0
     public static final Aspect AIR = new Aspect("aer", 16777086, null, 1);
@@ -100,5 +110,13 @@ public class AspectInit {
     public static final Aspect CLOTH = new Aspect("pannus", 15395522, new Aspect[] { TOOL, BEAST });
     public static final Aspect MECHANISM = new Aspect("machina", 8421536, new Aspect[] { MOTION, TOOL });
     public static final Aspect TRAP = new Aspect("vinculum", 10125440, new Aspect[] { MOTION, ENTROPY });
+
+    public static final Aspect AVERSION = new Aspect("aversio",12603472, new Aspect[] {SOUL, ENTROPY});
+
+    public static final Aspect DESIRE = new Aspect("desiderium",15121988, new Aspect[] {SOUL, VOID});
+
+    public static final Aspect ALCHEMY = new Aspect("alkimia",2337949, new Aspect[] {MAGIC, WATER});
+
+    public static final Aspect PROTECT = new Aspect("praemunio",49344, new Aspect[] {SOUL, EARTH});
 
 }
