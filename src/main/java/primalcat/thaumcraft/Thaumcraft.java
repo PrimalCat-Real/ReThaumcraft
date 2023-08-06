@@ -1,20 +1,23 @@
 package primalcat.thaumcraft;
 
 import com.mojang.logging.LogUtils;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.fml.loading.FMLPaths;
+import net.minecraftforge.fml.loading.FileUtils;
 import org.slf4j.Logger;
-import primalcat.thaumcraft.config.ConfigAspects;
+import primalcat.thaumcraft.config.ThaumcraftClientConfig;
+import primalcat.thaumcraft.config.ThaumcraftCommonConfig;
 import primalcat.thaumcraft.init.BlockInit;
 import primalcat.thaumcraft.init.ConfigInit;
 import primalcat.thaumcraft.init.ItemInit;
@@ -40,6 +43,10 @@ public class Thaumcraft {
         // Register the processIMC method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
 
+        FileUtils.getOrCreateDirectory(FMLPaths.CONFIGDIR.get().resolve(Thaumcraft.MOD_ID), Thaumcraft.MOD_ID);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ThaumcraftClientConfig.SPEC, Thaumcraft.MOD_ID + "/thaumcraft-client.toml");
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ThaumcraftCommonConfig.SPEC, Thaumcraft.MOD_ID + "/thaumcraft-common.toml");
+        LOGGER.info("common and client config");
 //        modEventBus.addListener(this::commonSetup);
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
