@@ -23,6 +23,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.Tags;
@@ -72,6 +74,7 @@ public class Thaumometer extends ItemBase {
         Minecraft mc = Minecraft.getInstance();
         if (mc != null && player != null && !mc.isPaused()) {
 
+            // drop items
             HitResult result = getEntityItemResult(player);
             if (result != null && result.getType() == HitResult.Type.ENTITY) {
                 ItemEntity entity = (ItemEntity) ((EntityHitResult) result).getEntity();
@@ -91,19 +94,45 @@ public class Thaumometer extends ItemBase {
                 BlockPos blockPos = (BlockPos) ((BlockHitResult) result).getBlockPos();
                 System.out.println(blockPos);
             }
+
+            // get fluid
+            Level world = Minecraft.getInstance().level;
+            Vec3 position = player.getEyePosition(1.0F);
+            double reachDistance = player.getAttribute(ForgeMod.REACH_DISTANCE.get()).getValue();
+
+            Vec3 look = player.getViewVector(1.0F).scale(reachDistance).add(position);
+
+            getAspectsFromBlock(position, look ,player, world);
+            // get fluid end
+
+            getAspectsFromEntity(position, look, player);
         }
-//        if(isHoldingThaumometer(player)){
-//            HitResult block =  player.pick(20.0D, 0.0F, false);
-//
-//            if(block.getType() == HitResult.Type.BLOCK)
-//            {
-//                BlockPos blockpos = (BlockPos)block.getLocation();
-//                BlockState blockstate = player.level.getBlockState(blockpos);
-//            }
-//        }
-        // сука как блять я не понимаю
 
         return InteractionResult.PASS;
+    }
+
+    public static void getAspectsFromBlock(Vec3 position, Vec3 look, Entity player, Level world){
+        ClipContext clipContext = new ClipContext(position, look, ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY, player);
+
+        HitResult hitResult = world.clip(clipContext);
+        BlockPos hitPosition = ((BlockHitResult) hitResult).getBlockPos();
+
+        BlockState blockState = world.getBlockState(hitPosition);
+        System.out.println(blockState);
+    }
+    public static void getAspectsFromEntity(Vec3 position, Vec3 look, Entity player){
+        // Set up clip context for entities
+        ClipContext clipContext = new ClipContext(position, look, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player);
+
+        // Perform ray tracing
+        HitResult hitResult = player.level.clip(clipContext);
+
+        if (hitResult.getType() == HitResult.Type.ENTITY) {
+            EntityHitResult entityHitResult = (EntityHitResult) hitResult;
+            Entity hitEntity = entityHitResult.getEntity();
+
+            System.out.println(hitEntity);
+        }
     }
 
     public static HitResult getEntityItemResult(Player player){
