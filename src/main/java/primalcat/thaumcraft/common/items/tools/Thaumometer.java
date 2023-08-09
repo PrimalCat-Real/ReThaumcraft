@@ -50,12 +50,11 @@ public class Thaumometer extends ItemBase {
 
 
     @Override
-    public InteractionResult interactLivingEntity(ItemStack pStack, Player pPlayer, LivingEntity pInteractionTarget, InteractionHand pUsedHand){
-        if(isHoldingThaumometer(pPlayer)){
-            String localizedName = pInteractionTarget.getDisplayName().getString();
-            localizedName = I18n.get(localizedName); // To remove formatting
+    public InteractionResult interactLivingEntity(ItemStack pStack, Player player, LivingEntity pInteractionTarget, InteractionHand pUsedHand){
+        if(isHoldingThaumometer(player)){
 
-            System.out.println(localizedName);
+//            AspectHelper.getEntityAspects(pInteractionTarget);
+            player.sendSystemMessage(Component.literal("Aspects: " +  pInteractionTarget));
         }
 
         return InteractionResult.PASS;

@@ -1,10 +1,12 @@
 package primalcat.thaumcraft.api;
 
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import primalcat.thaumcraft.config.ConfigAspects;
@@ -48,8 +50,21 @@ public class AspectHelper {
 
         return objectAspects;
     }
-    public static AspectList getEntityAspects(Entity entity) {
-        return null;
+    public static AspectList getEntityAspects(LivingEntity entity) {
+        AspectList objectAspects = new AspectList();
+        String localizedName = entity.getDisplayName().getString();
+        localizedName = I18n.get(localizedName); // To remove formatting
+        LinkedHashMap<String, AspectList> entityAspects = AspectInit.getEntityAspects();
+        if(entityAspects.get(localizedName) != null){
+//            LinkedHashMap<Aspect, Integer> tempAspects = AspectInit.getItemAspects().get(itemStack.toString()).aspects;
+            LinkedHashMap<Aspect, Integer> tempAspects = AspectInit.getEntityAspects().get(localizedName).aspects;
+            for (Aspect aspect : tempAspects.keySet()) {
+                int amount = tempAspects.get(aspect);
+                objectAspects.add(aspect, amount);
+            }
+        }
+        System.out.println(localizedName);
+        return objectAspects;
     }
 //    private static Map<String, AspectList> aspectItems = ConfigAspects.getReadConfig().get("items");
 //    public static AspectList getObjectAspects(ItemStack itemStack) {
