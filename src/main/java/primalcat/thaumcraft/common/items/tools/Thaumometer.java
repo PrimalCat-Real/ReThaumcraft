@@ -3,6 +3,7 @@ package primalcat.thaumcraft.common.items.tools;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.ChatComponent;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -50,19 +51,11 @@ public class Thaumometer extends ItemBase {
 
     @Override
     public InteractionResult interactLivingEntity(ItemStack pStack, Player pPlayer, LivingEntity pInteractionTarget, InteractionHand pUsedHand){
-//        Player player = context.getPlayer();
-//        System.out.println(context.getTarget().getDisplayName());
-//        player.sendMessage(new TextComponent(Screen.hasShiftDown() + " Test " + isHoldingThaumometer(player)), player.getUUID());
-//        if(player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == ItemInit.THAUMOMETER.get()){
-//            HitResult result;
-//            result = player.pick(20.0D, 0.0F, true);
-//            System.out.println(result.getType());
-//            System.out.println(result.getLocation());
-//
-//
-//        }
         if(isHoldingThaumometer(pPlayer)){
-            System.out.println(pInteractionTarget.getDisplayName());
+            String localizedName = pInteractionTarget.getDisplayName().getString();
+            localizedName = I18n.get(localizedName); // To remove formatting
+
+            System.out.println(localizedName);
         }
 
         return InteractionResult.PASS;
@@ -76,6 +69,7 @@ public class Thaumometer extends ItemBase {
 
             // drop items
             HitResult result = getEntityItemResult(player);
+
             if (result != null && result.getType() == HitResult.Type.ENTITY) {
                 ItemEntity entity = (ItemEntity) ((EntityHitResult) result).getEntity();
 //                ItemStack testItem = entity.getItem().getTag();
@@ -104,8 +98,6 @@ public class Thaumometer extends ItemBase {
 
             getAspectsFromBlock(position, look ,player, world);
             // get fluid end
-
-            getAspectsFromEntity(position, look, player);
         }
 
         return InteractionResult.PASS;
@@ -119,20 +111,6 @@ public class Thaumometer extends ItemBase {
 
         BlockState blockState = world.getBlockState(hitPosition);
         System.out.println(blockState);
-    }
-    public static void getAspectsFromEntity(Vec3 position, Vec3 look, Entity player){
-        // Set up clip context for entities
-        ClipContext clipContext = new ClipContext(position, look, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player);
-
-        // Perform ray tracing
-        HitResult hitResult = player.level.clip(clipContext);
-
-        if (hitResult.getType() == HitResult.Type.ENTITY) {
-            EntityHitResult entityHitResult = (EntityHitResult) hitResult;
-            Entity hitEntity = entityHitResult.getEntity();
-
-            System.out.println(hitEntity);
-        }
     }
 
     public static HitResult getEntityItemResult(Player player){

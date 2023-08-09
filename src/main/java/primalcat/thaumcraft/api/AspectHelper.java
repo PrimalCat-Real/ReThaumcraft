@@ -10,6 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import primalcat.thaumcraft.config.ConfigAspects;
 import primalcat.thaumcraft.init.AspectInit;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -46,6 +47,9 @@ public class AspectHelper {
         }
 
         return objectAspects;
+    }
+    public static AspectList getEntityAspects(Entity entity) {
+        return null;
     }
 //    private static Map<String, AspectList> aspectItems = ConfigAspects.getReadConfig().get("items");
 //    public static AspectList getObjectAspects(ItemStack itemStack) {
