@@ -5,6 +5,9 @@ import com.google.gson.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
 import primalcat.thaumcraft.Thaumcraft;
 import primalcat.thaumcraft.api.AspectList;
 import primalcat.thaumcraft.init.AspectInit;
@@ -26,6 +29,7 @@ public class ConfigAspects {
             .create();
 
     private static Map<String, Map<String, AspectList>> readConfig;
+
 
 
     // check if json config is correct
@@ -70,6 +74,9 @@ public class ConfigAspects {
         AspectInit.putItemAspects(item, aspectList);
     }
     public static void registerObjectTag(Item item, AspectList aspectList){
+        AspectInit.putItemAspects(item.toString(), aspectList);
+    }
+    public static void registerObjectTag(ItemStack item, AspectList aspectList){
         AspectInit.putItemAspects(item.toString(), aspectList);
     }
     public static void registerEntityTag(Entity entity, AspectList aspectList) {
@@ -201,6 +208,10 @@ public class ConfigAspects {
 //        registerEntityTag("Thaumcraft.EldritchGolem", new AspectList().add(AspectInit.ELDRITCH, 40).add(AspectInit.ENERGY, 40).add(AspectInit.MECHANISM, 40));
 //        registerEntityTag("Thaumcraft.CultistLeader", new AspectList().add(AspectInit.ELDRITCH, 40).add(AspectInit.AVERSION, 40).add(AspectInit.MAN, 40));
 //        registerEntityTag("Thaumcraft.TaintacleGiant", new AspectList().add(AspectInit.ELDRITCH, 40).add(AspectInit.BEAST, 40).add(AspectInit.TAINT, 40));
+
+        // items
+        registerObjectTag(Items.GHAST_TEAR, new AspectList().add(AspectInit.UNDEAD, 5).add(AspectInit.SOUL, 10).add(AspectInit.ALCHEMY, 10));
+        registerObjectTag("forge:ingots/iron", new AspectList().add(AspectInit.METAL, 5).add(AspectInit.SOUL, 10).add(AspectInit.ALCHEMY, 10));
     }
 
 

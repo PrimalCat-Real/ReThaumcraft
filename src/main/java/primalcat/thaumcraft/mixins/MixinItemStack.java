@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import primalcat.thaumcraft.api.Aspect;
 import primalcat.thaumcraft.api.AspectList;
 import primalcat.thaumcraft.config.ConfigAspects;
+import primalcat.thaumcraft.init.AspectInit;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -27,7 +28,16 @@ public class MixinItemStack {
     @Inject(method = "<init>(Lnet/minecraft/world/level/ItemLike;)V", at = @At("RETURN"))
     private void modifyNBT(ItemLike itemLike, CallbackInfo ci) throws IOException {
         // Check if aspects exist for the specific item
-//        if (itemLike != null && ConfigAspects.getReadConfig() != null) {
+//        if (itemLike != null && AspectInit.getItemAspects() != null) {
+////            System.out.println(ConfigAspects.getReadConfig().toString());
+//            LinkedHashMap<String, AspectList> aspectsItems = AspectInit.getItemAspects();
+//            Item actualItem = itemLike.asItem();
+//            if(aspectsItems != null && aspectsItems.containsKey(actualItem.toString())){
+//                System.out.println("Containe aspects");
+//                System.out.println(aspectsItems.get(actualItem.toString()));
+//            }
+//
+//        }
 //            Item actualItem = itemLike.asItem();
 //            System.out.println(actualItem.toString());
 //            Map<String, AspectList> aspectItems = ConfigAspects.getReadConfig().get("items");

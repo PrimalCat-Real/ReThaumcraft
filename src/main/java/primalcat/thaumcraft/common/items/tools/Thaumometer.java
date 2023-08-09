@@ -1,7 +1,16 @@
 package primalcat.thaumcraft.common.items.tools;
 
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.ChatComponent;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -16,10 +25,15 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.*;
 import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.data.ForgeItemTagsProvider;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.tags.ITag;
 import primalcat.thaumcraft.api.AspectHelper;
 import primalcat.thaumcraft.api.AspectList;
 import primalcat.thaumcraft.common.items.ItemBase;
 import primalcat.thaumcraft.config.ConfigAspects;
+import primalcat.thaumcraft.init.AspectInit;
 
 import java.util.List;
 import java.util.Map;
@@ -68,6 +82,11 @@ public class Thaumometer extends ItemBase {
 //                if(temp != null){
 //                    System.out.println(temp.toString());
 //                }
+
+                System.out.println(AspectHelper.getObjectAspects(entity.getItem()));
+                player.sendSystemMessage(Component.literal("Aspects: " +  AspectHelper.getObjectAspects(entity.getItem())));
+
+
             }else if(result != null && result.getType() == HitResult.Type.BLOCK){
                 BlockPos blockPos = (BlockPos) ((BlockHitResult) result).getBlockPos();
                 System.out.println(blockPos);

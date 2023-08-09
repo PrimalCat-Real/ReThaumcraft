@@ -15,6 +15,10 @@ public class AspectList implements JsonSerializer<AspectList>, JsonDeserializer<
         this.aspects = new LinkedHashMap<Aspect,Integer>();
     }
 
+    public boolean isEmpty() {
+        return aspects.isEmpty();
+    }
+
 
     public AspectList add(Aspect aspect, int amount) {
         if (aspect != null && amount > 0 && !aspects.containsKey(aspect)) {
