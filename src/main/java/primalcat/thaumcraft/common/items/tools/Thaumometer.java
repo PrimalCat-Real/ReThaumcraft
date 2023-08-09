@@ -54,7 +54,7 @@ public class Thaumometer extends ItemBase {
         if(isHoldingThaumometer(player)){
 
 //            AspectHelper.getEntityAspects(pInteractionTarget);
-            player.sendSystemMessage(Component.literal("Aspects: " +  pInteractionTarget));
+            player.sendSystemMessage(Component.literal("Aspects: " +  AspectHelper.getEntityAspects(pInteractionTarget)));
         }
 
         return InteractionResult.PASS;
