@@ -54,7 +54,7 @@ public class Thaumometer extends ItemBase {
         if(isHoldingThaumometer(player)){
 
 //            AspectHelper.getEntityAspects(pInteractionTarget);
-            player.sendSystemMessage(Component.literal("Aspects: " +  AspectHelper.getEntityAspects(pInteractionTarget)));
+            player.sendSystemMessage(Component.literal("Aspects: " +  AspectHelper.getAspectsFromEntity(pInteractionTarget)));
         }
 
         return InteractionResult.PASS;
@@ -79,8 +79,7 @@ public class Thaumometer extends ItemBase {
 //                    System.out.println(temp.toString());
 //                }
 
-                System.out.println(AspectHelper.getObjectAspects(entity.getItem()));
-                player.sendSystemMessage(Component.literal("Aspects: " +  AspectHelper.getObjectAspects(entity.getItem())));
+                player.sendSystemMessage(Component.literal("Aspects: " +  AspectHelper.getAspectsFromObject(entity.getItem())));
 
 
             }else if(result != null && result.getType() == HitResult.Type.BLOCK){
@@ -109,8 +108,9 @@ public class Thaumometer extends ItemBase {
         BlockPos hitPosition = ((BlockHitResult) hitResult).getBlockPos();
 
         BlockState blockState = world.getBlockState(hitPosition);
-        System.out.println(blockState);
+        player.sendSystemMessage(Component.literal("Aspects: " +  AspectHelper.getAspectsFromBlock(blockState)));
     }
+
 
     public static HitResult getEntityItemResult(Player player){
         double distance = player.getAttribute(ForgeMod.REACH_DISTANCE.get()).getValue();

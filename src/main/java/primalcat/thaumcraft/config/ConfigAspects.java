@@ -7,6 +7,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import primalcat.thaumcraft.Thaumcraft;
 import primalcat.thaumcraft.api.AspectList;
@@ -75,6 +76,9 @@ public class ConfigAspects {
     }
     public static void registerObjectTag(Item item, AspectList aspectList){
         AspectInit.putItemAspects(item.toString(), aspectList);
+    }
+    public static void registerObjectTag(Block block, AspectList aspectList){
+        AspectInit.putItemAspects(block.toString(), aspectList);
     }
     public static void registerObjectTag(ItemStack item, AspectList aspectList){
         AspectInit.putItemAspects(item.toString(), aspectList);
@@ -212,6 +216,9 @@ public class ConfigAspects {
         // items
         registerObjectTag(Items.GHAST_TEAR, new AspectList().add(AspectInit.UNDEAD, 5).add(AspectInit.SOUL, 10).add(AspectInit.ALCHEMY, 10));
         registerObjectTag("forge:ingots/iron", new AspectList().add(AspectInit.METAL, 5).add(AspectInit.SOUL, 10).add(AspectInit.ALCHEMY, 10));
+        registerObjectTag(Items.CAKE, new AspectList().add(AspectInit.DESIRE, 1).add(AspectInit.LIFE, 2));
+        registerObjectTag(Blocks.DARK_OAK_FENCE_GATE, new AspectList().add(AspectInit.TRAP, 5).add(AspectInit.MECHANISM, 5));
+        registerObjectTag("minecraft:water", new AspectList().add(AspectInit.WATER, 5));
     }
 
 

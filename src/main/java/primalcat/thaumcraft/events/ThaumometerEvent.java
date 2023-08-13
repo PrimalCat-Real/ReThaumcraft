@@ -17,11 +17,14 @@ import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.ScreenEvent;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.server.command.ConfigCommand;
 import primalcat.thaumcraft.Thaumcraft;
+import primalcat.thaumcraft.common.commands.GiveAspectCommand;
 import primalcat.thaumcraft.init.ItemInit;
 import primalcat.thaumcraft.sound.ModSounds;
 import primalcat.thaumcraft.utilites.DoScan;
@@ -174,4 +177,11 @@ public class ThaumometerEvent {
 //        return true;
 //        //return gui instanceof InventoryScreen && mouseX >= ((InventoryScreen) gui).getGuiLeft() + ((InventoryScreen) gui).getYSize() && mouseX < ((InventoryScreen) gui).getGuiLeft() + ((InventoryScreen) gui).getXSize() + gui.get && mouseY >= ((InventoryScreen) gui).getGuiTop() + INVENTORY_PLAYER_Y && mouseY < ((InventoryScreen) gui).getGuiTop() + INVENTORY_PLAYER_Y + INVENTORY_PLAYER_HEIGHT;
 //    } /
+
+
+    @SubscribeEvent
+    public static void onCommandRegister(RegisterCommandsEvent event){
+        new GiveAspectCommand(event.getDispatcher());
+        ConfigCommand.register(event.getDispatcher());
+    }
 }

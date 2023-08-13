@@ -9,6 +9,9 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import primalcat.thaumcraft.config.ConfigAspects;
 import primalcat.thaumcraft.init.AspectInit;
 
@@ -18,7 +21,7 @@ import java.util.Map;
 
 public class AspectHelper {
 
-    public static AspectList getObjectAspects(ItemStack itemStack) {
+    public static AspectList getAspectsFromObject(ItemStack itemStack) {
 //        itemStack.getTags().toList();
 //        String tagName = "forge:ores/emerald";
 //        TagKey<Item> testTag = ItemTags.create(new ResourceLocation(tagName));
@@ -50,7 +53,7 @@ public class AspectHelper {
 
         return objectAspects;
     }
-    public static AspectList getEntityAspects(LivingEntity entity) {
+    public static AspectList getAspectsFromEntity(LivingEntity entity) {
         AspectList objectAspects = new AspectList();
         String localizedName = entity.getDisplayName().getString();
         localizedName = I18n.get(localizedName); // To remove formatting
@@ -65,6 +68,36 @@ public class AspectHelper {
         }
         System.out.println(localizedName);
         return objectAspects;
+    }
+
+    public static AspectList getAspectsFromBlock(BlockState blockState) {
+        AspectList objectAspects = new AspectList();
+        FluidState fluidState = blockState.getFluidState();
+        String localizedName;
+        if (fluidState.getType() != Fluids.EMPTY) {
+            System.out.println();
+            localizedName =  fluidState.getFluidType().toString();
+        }else{
+            Item item = Item.byBlock(blockState.getBlock());
+            localizedName = item.toString();
+        }
+
+//        System.out.println(blockState.getBlock());
+        LinkedHashMap<String, AspectList> itemsAspects = AspectInit.getItemAspects();
+        if(itemsAspects.get(localizedName) != null){
+//            LinkedHashMap<Aspect, Integer> tempAspects = AspectInit.getItemAspects().get(itemStack.toString()).aspects;
+            LinkedHashMap<Aspect, Integer> tempAspects = AspectInit.getItemAspects().get(localizedName).aspects;
+            for (Aspect aspect : tempAspects.keySet()) {
+                int amount = tempAspects.get(aspect);
+                objectAspects.add(aspect, amount);
+            }
+        }
+        return objectAspects;
+//        localizedName = I18n.get(localizedName); // To remove formatting
+//        LinkedHashMap<String, AspectList> entityAspects = AspectInit.getEntityAspects();
+
+//        System.out.println(localizedName);
+//        return objectAspects;
     }
 //    private static Map<String, AspectList> aspectItems = ConfigAspects.getReadConfig().get("items");
 //    public static AspectList getObjectAspects(ItemStack itemStack) {
