@@ -21,6 +21,7 @@ import primalcat.thaumcraft.config.ThaumcraftCommonConfig;
 import primalcat.thaumcraft.init.BlockInit;
 import primalcat.thaumcraft.init.ConfigInit;
 import primalcat.thaumcraft.init.ItemInit;
+import primalcat.thaumcraft.networking.ModMessages;
 import primalcat.thaumcraft.sound.ModSounds;
 
 import java.util.stream.Collectors;
@@ -54,6 +55,9 @@ public class Thaumcraft {
         ModSounds.register();
         ItemInit.register();
         BlockInit.register();
+
+        // test packet register
+        ModMessages.register();
 
 
     }

@@ -1,5 +1,6 @@
 package primalcat.thaumcraft.api;
 
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import primalcat.thaumcraft.init.AspectInit;
 
@@ -56,6 +57,40 @@ public class Aspect implements IAspect{
         this.components = components;
         this.aspectImage = new ResourceLocation("thaumcraft", "textures/aspects/" + name.toLowerCase() + ".png");
         AspectInit.putAspect(name, this);
+    }
+
+    public static Aspect fromBytes(FriendlyByteBuf buf) {
+        String name = buf.readUtf();
+        int color = buf.readInt();
+        ResourceLocation aspectImage = buf.readResourceLocation();
+        int blend = buf.readInt();
+        int componentCount = buf.readInt();
+
+        Aspect[] components = new Aspect[componentCount];
+        for (int i = 0; i < componentCount; i++) {
+            components[i] = fromBytes(buf);
+        }
+
+        // Create and return the Aspect instance
+        return new Aspect(name, color, components, aspectImage, blend);
+    }
+
+    public void toBytes(FriendlyByteBuf buf) {
+        buf.writeUtf(name);
+        buf.writeInt(color);
+        buf.writeResourceLocation(aspectImage);
+        buf.writeInt(blend);
+
+        // Serialize the component count
+        if (components != null) {
+            buf.writeInt(components.length);
+            for (Aspect component : components) {
+                // Recursively serialize each component
+                component.toBytes(buf);
+            }
+        } else {
+            buf.writeInt(0); // No components, write zero
+        }
     }
 
     public boolean isPrimal() {

@@ -1,17 +1,8 @@
 package primalcat.thaumcraft.common.items.tools;
 
-import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.ChatComponent;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
-import net.minecraft.data.tags.ItemTagsProvider;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -19,7 +10,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.context.UseOnContext;
@@ -28,19 +18,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.data.ForgeItemTagsProvider;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.tags.ITag;
 import primalcat.thaumcraft.api.AspectHelper;
-import primalcat.thaumcraft.api.AspectList;
 import primalcat.thaumcraft.common.items.ItemBase;
-import primalcat.thaumcraft.config.ConfigAspects;
 import primalcat.thaumcraft.init.AspectInit;
+import primalcat.thaumcraft.networking.ModMessages;
+import primalcat.thaumcraft.networking.packets.SyncPlayerApsectsCapability;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class Thaumometer extends ItemBase {
 
@@ -97,6 +81,30 @@ public class Thaumometer extends ItemBase {
             getAspectsFromBlock(position, look ,player, world);
             // get fluid end
         }
+        HashMap<String, Integer> testting = new HashMap<String, Integer>();
+        testting.put(AspectInit.FIRE.getName(), 10);
+//        ModMessages.sendToServer(new SyncPlayerApsectsCapability(testting, testList));
+        ModMessages.sendToServer(new SyncPlayerApsectsCapability(testting, "testblock"));
+
+//        ModMessages.sendToServer(new DrinkWaterC2SPacket());
+
+
+
+
+//        // Create a sample PlayerAspects instance
+//        PlayerAspects playerAspects = new PlayerAspects();
+//        playerAspects.getAspects().put(AspectInit.FIRE.getName(), 5);
+//
+//        CompoundTag nbt = new CompoundTag();
+//        playerAspects.saveNBTData(nbt);
+//
+//        // Load NBT data
+//        PlayerAspects loadedAspects = new PlayerAspects();
+//        loadedAspects.loadNBTData(nbt);
+//
+//        // Retrieve the value using the originalAspect instance as the key
+//        System.out.println("Value for originalAspect: " + loadedAspects.getAspects().get(AspectInit.FIRE.getName()));
+//        System.out.println("Value for originalAspect: " + loadedAspects.getAspects().keySet());
 
         return InteractionResult.PASS;
     }
