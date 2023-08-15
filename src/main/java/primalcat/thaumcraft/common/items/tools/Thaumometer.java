@@ -27,6 +27,10 @@ import primalcat.thaumcraft.networking.packets.SyncPlayerApsectsCapability;
 import java.util.*;
 
 public class Thaumometer extends ItemBase {
+    private static final int RIGHT_CLICK_HOLD_DURATION = 40;
+    private boolean isHoldingRightClick = false;
+
+    private UseOnContext tempContext;
 
     public Thaumometer() {
         super(new Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
@@ -45,11 +49,46 @@ public class Thaumometer extends ItemBase {
     }
 
     @Override
+    public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int count) {
+        if (count == 1) { // Every second (20 ticks = 1 second)
+            // Do something
+
+            System.out.println("Test from use tick " + count);
+        }
+        if(count % 5 == 0){
+//            spawnRunesParticles(level, tempContext.getClickedPos());
+        }
+        System.out.println("tick");
+
+//        System.out.println("tick 1 " + count + " spawn: " + tempContext.getClickedPos());
+//        System.out.println("Test from use tick");
+    }
+    @Override
+    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
+        ItemStack resultStack = super.finishUsingItem(stack, level, entity);
+        if (this.isEdible()) {
+            System.out.println("Item finished using: " + stack.getItem());
+            // Add your desired logging or code here
+        }
+        return resultStack;
+    }
+    @Override
+    public int getUseDuration(ItemStack itemStack) {
+        return this.RIGHT_CLICK_HOLD_DURATION;
+    }
+    @Override
+    public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int duration) {
+        super.releaseUsing(stack, level, entity, duration);
+        System.out.println("dur: "+duration);
+    }
+
+    @Override
     public InteractionResult useOn(UseOnContext pContext) {
         Player player = pContext.getPlayer();
+
         Minecraft mc = Minecraft.getInstance();
         if (mc != null && player != null && !mc.isPaused()) {
-
+            player.startUsingItem(pContext.getHand());
             // drop items
             HitResult result = getEntityItemResult(player);
 
