@@ -53,7 +53,7 @@ public class PlayerAspects {
                 aspectMap.put(aspect.getName(), value);
             }
         }
-        CompoundTag scannedTag = nbt.getCompound("StringList");
+        CompoundTag scannedTag = nbt.getCompound("Scanned"); // Corrected line
         for (String key : scannedTag.getAllKeys()) {
             stringList.add(scannedTag.getString(key));
         }

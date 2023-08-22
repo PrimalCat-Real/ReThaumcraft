@@ -4,6 +4,7 @@ import com.google.gson.*;
 import primalcat.thaumcraft.init.AspectInit;
 
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -25,6 +26,15 @@ public class AspectList implements JsonSerializer<AspectList>, JsonDeserializer<
             aspects.put(aspect, amount);
         }
         return this;
+    }
+
+    public Map<String, Integer> toMap() {
+        Map<String, Integer> resultMap = new HashMap<>();
+        for (Aspect aspect : aspects.keySet()) {
+            int amount = aspects.get(aspect);
+            resultMap.put(aspect.getName(), amount);
+        }
+        return resultMap;
     }
 
 
@@ -57,6 +67,7 @@ public class AspectList implements JsonSerializer<AspectList>, JsonDeserializer<
         }
         return aspectList;
     }
+
 
     @Override
     public JsonElement serialize(AspectList src, Type typeOfSrc, JsonSerializationContext context) {

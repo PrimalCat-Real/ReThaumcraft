@@ -10,6 +10,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkEvent;
 import primalcat.thaumcraft.api.Aspect;
+import primalcat.thaumcraft.api.AspectList;
 import primalcat.thaumcraft.common.aspects.PlayerAspectsProvider;
 import primalcat.thaumcraft.init.AspectInit;
 
@@ -27,6 +28,12 @@ public class SyncPlayerApsectsCapability {
         this.aspectMap = aspectMap;
         this.targetName = target;
 
+    }
+
+
+    public SyncPlayerApsectsCapability(AspectList aspectList, String target) {
+        this.aspectMap = aspectList.toMap();
+        this.targetName = target;
     }
 
     public SyncPlayerApsectsCapability(FriendlyByteBuf buf) {
@@ -57,11 +64,16 @@ public class SyncPlayerApsectsCapability {
             player.getCapability(PlayerAspectsProvider.PLAYER_ASPECTS).ifPresent(aspectsProvider -> {
                 // Handle the received data, for example:
 //                aspectsProvider.setAspects(new ArrayList<>(aspectMap.keySet()), aspectMap);
-                aspectsProvider.mergeMaps(aspectMap);
-                aspectsProvider.addTarget(targetName);
+//                System.out.println(aspectsProvider.getTargetsList().contains(targetName) + " " + targetName + " " + aspectsProvider.getTargetsList().toString());
+                if (!aspectsProvider.getTargetsList().contains(targetName)){
+                    aspectsProvider.mergeMaps(aspectMap);
+                    aspectsProvider.addTarget(targetName);
+                }
+
 //                aspectsProvider.addAspect(AspectInit.FIRE.getName(), 5);
-                player.sendSystemMessage(Component.literal("Received aspect data from client "+aspectsProvider.getAspects().get(AspectInit.FIRE.getName())));
+                player.sendSystemMessage(Component.literal("Received aspect data from client "+aspectsProvider.getAspects().toString()));
                 player.sendSystemMessage(Component.literal("Received target data from client "+aspectsProvider.getTargetsList()));
+
             });
         });
         return true;
