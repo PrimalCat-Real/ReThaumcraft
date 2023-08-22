@@ -26,6 +26,7 @@ import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import primalcat.thaumcraft.init.ItemInit;
 import primalcat.thaumcraft.utilites.Variables;
 
 @Mixin(ItemInHandRenderer.class)
@@ -34,41 +35,49 @@ public class ItemInHandRendererMixin {
 
     @Inject(method = "renderItem", at = @At("HEAD"), cancellable = true)
     private void renderFirstPersonItem(LivingEntity livingEntity, ItemStack itemStack, ItemTransforms.TransformType transformType, boolean leftHanded, PoseStack poseStack, MultiBufferSource buffers, int light, CallbackInfo ci) {
+        if (Minecraft.getInstance().getCameraEntity() instanceof Player) {
+            Player player = (Player)Minecraft.getInstance().getCameraEntity();
+            if (player != null && Minecraft.getInstance().options.getCameraType().isFirstPerson() && player.getMainHandItem().getItem().asItem().equals(ItemInit.THAUMOMETER.get().asItem()) ){
+                Font font = Minecraft.getInstance().font;
+                // Custom font rendering code
+                String textToDisplay = "Hello World!";
+                int textWidth = font.width(textToDisplay);
+                int xOffset = -110 - textWidth / 2; // Set  X offset
+                int yOffset = -138; // Set Y offset
 
+                float f = player.walkDist - player.walkDistO;
+                float f1 = -(player.walkDist + f * Variables.partialTick);
+                float f2 = Mth.lerp(Variables.partialTick, player.oBob, player.bob);
+                poseStack.pushPose();
+
+                // Apply scaling
+                poseStack.scale(0.005F, 0.005F, 0.005F);
+
+                // Calculate the inverse scaling factor
+                float inverseScaleFactor = 1.0F / 0.00579F;
+
+                // Apply inverse transformation for translation
+                poseStack.translate((double)(-Mth.sin(f1 * (float)Math.PI) * f2 * 0.5F * inverseScaleFactor), (double)(Math.abs(Mth.cos(f1 * (float)Math.PI) * f2 * inverseScaleFactor)), 0.0D);
+
+                // Apply inverse rotation for Vector3f.ZP.rotationDegrees
+                poseStack.mulPose(Vector3f.ZP.rotationDegrees(-Mth.sin(f1 * (float)Math.PI) * f2 * 3.0F));
+
+                // Apply inverse rotation for Vector3f.XP.rotationDegrees
+                poseStack.mulPose(Vector3f.XP.rotationDegrees(-Math.abs(Mth.cos(f1 * (float)Math.PI - 0.2F) * f2) * 5.0F));
+
+                // rotate text for firth person view
+                poseStack.mulPose(Vector3f.XN.rotationDegrees(180));
+
+                // Render the text
+                font.drawInBatch(textToDisplay, xOffset,yOffset,0x79ff92,false, poseStack.last().pose(),buffers,false, 0, light);
+
+                // Pop the original transformations
+                poseStack.popPose();
+            }
+
+        }
 //        poseStack.pushPose();
-        Font font = Minecraft.getInstance().font;
-        // Your custom font rendering code
-        String textToDisplay = "Hello World!";
-        int textWidth = font.width(textToDisplay);
-        int xOffset = -110 - textWidth / 2; // Set your desired X offset
-        int yOffset = -138; // Set your desired Y offset
-//
-        Player player = (Player)Minecraft.getInstance().getCameraEntity();
-        float f = player.walkDist - player.walkDistO;
-        float f1 = -(player.walkDist + f * Variables.partialTick);
-        float f2 = Mth.lerp(Variables.partialTick, player.oBob, player.bob);
-        poseStack.pushPose();
 
-        poseStack.scale(0.005F, 0.005F, 0.005F); // Scale down by 8000%
-
-        float inverseScaleFactor = 1.0F / 0.00579F;
-
-// Apply inverse transformation for translation
-        poseStack.translate((double)(-Mth.sin(f1 * (float)Math.PI) * f2 * 0.5F * inverseScaleFactor), (double)(Math.abs(Mth.cos(f1 * (float)Math.PI) * f2 * inverseScaleFactor)), 0.0D);
-//
-// Apply inverse rotation for Vector3f.ZP.rotationDegrees
-        poseStack.mulPose(Vector3f.ZP.rotationDegrees(-Mth.sin(f1 * (float)Math.PI) * f2 * 3.0F));
-
-// Apply inverse rotation for Vector3f.XP.rotationDegrees
-        poseStack.mulPose(Vector3f.XP.rotationDegrees(-Math.abs(Mth.cos(f1 * (float)Math.PI - 0.2F) * f2) * 5.0F));
-
-
-        poseStack.mulPose(Vector3f.XN.rotationDegrees(180));
-        font.drawInBatch(textToDisplay, xOffset,yOffset,0x79ff92,false, poseStack.last().pose(),buffers,false, 0, light);
-
-        poseStack.popPose();
-        poseStack.pushPose();
-        poseStack.last().pose();
     }
 }
 
