@@ -5,7 +5,9 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "thaumcraft.refmap.json",
   "mixins": [
-    "MixinItemStack"
+    "MixinItemStack",
+    "ItemInHandRendererMixin",
+    "GameRenderMixin"
   ],
   "client": [
   ],
