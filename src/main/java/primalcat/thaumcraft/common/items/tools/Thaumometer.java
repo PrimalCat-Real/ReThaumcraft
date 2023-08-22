@@ -1,6 +1,7 @@
 package primalcat.thaumcraft.common.items.tools;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -19,8 +20,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 import net.minecraftforge.common.ForgeMod;
 import primalcat.thaumcraft.api.AspectHelper;
+import primalcat.thaumcraft.api.AspectList;
 import primalcat.thaumcraft.common.items.ItemBase;
-import primalcat.thaumcraft.init.AspectInit;
 import primalcat.thaumcraft.networking.ModMessages;
 import primalcat.thaumcraft.networking.packets.SyncPlayerApsectsCapability;
 
@@ -28,6 +29,7 @@ import java.util.*;
 
 public class Thaumometer extends ItemBase {
     private static final int RIGHT_CLICK_HOLD_DURATION = 40;
+
     private boolean isHoldingRightClick = false;
 
     private UseOnContext tempContext;
@@ -37,12 +39,21 @@ public class Thaumometer extends ItemBase {
     }
 
 
+
     @Override
     public InteractionResult interactLivingEntity(ItemStack pStack, Player player, LivingEntity pInteractionTarget, InteractionHand pUsedHand){
         if(isHoldingThaumometer(player)){
 
 //            AspectHelper.getEntityAspects(pInteractionTarget);
-            player.sendSystemMessage(Component.literal("Aspects: " +  AspectHelper.getAspectsFromEntity(pInteractionTarget)));
+            String targetName = AspectHelper.getTarget(pInteractionTarget);
+            AspectList  aspectList = AspectHelper.getAspectsFromEntity(pInteractionTarget);
+            player.sendSystemMessage(Component.literal("Aspects: " +  aspectList));
+            player.sendSystemMessage(Component.literal("Target " + aspectList));
+
+            if(!aspectList.isEmpty() && targetName != null){
+                ModMessages.sendToServer(new SyncPlayerApsectsCapability(aspectList, targetName));
+            }
+//            player.sendSystemMessage(Component.literal("Aspects: " +  AspectHelper.getAspectsFromEntity(pInteractionTarget)));
         }
 
         return InteractionResult.PASS;
@@ -59,6 +70,13 @@ public class Thaumometer extends ItemBase {
 //            spawnRunesParticles(level, tempContext.getClickedPos());
         }
         System.out.println("tick");
+        BakedModel itemModel = Minecraft.getInstance().getItemRenderer().getModel(stack, level, entity, 4);
+        if(itemModel != null){
+            System.out.println(itemModel.isCustomRenderer());
+        }else{
+            System.out.println("model is null");
+        }
+
 
 //        System.out.println("tick 1 " + count + " spawn: " + tempContext.getClickedPos());
 //        System.out.println("Test from use tick");
@@ -102,7 +120,15 @@ public class Thaumometer extends ItemBase {
 //                    System.out.println(temp.toString());
 //                }
 
-                player.sendSystemMessage(Component.literal("Aspects: " +  AspectHelper.getAspectsFromObject(entity.getItem())));
+                String targetName = AspectHelper.getTarget(entity.getItem());
+                AspectList  aspectList = AspectHelper.getAspectsFromObject(entity.getItem());
+                player.sendSystemMessage(Component.literal("Aspects: " +  aspectList));
+                player.sendSystemMessage(Component.literal("Target " + aspectList));
+
+                if(!aspectList.isEmpty() && targetName != null){
+                    ModMessages.sendToServer(new SyncPlayerApsectsCapability(aspectList, targetName));
+                }
+//                player.sendSystemMessage(Component.literal("Aspects: " +  AspectHelper.getAspectsFromObject(entity.getItem())));
 
 
             }else if(result != null && result.getType() == HitResult.Type.BLOCK){
@@ -117,18 +143,10 @@ public class Thaumometer extends ItemBase {
 
             Vec3 look = player.getViewVector(1.0F).scale(reachDistance).add(position);
 
+
             getAspectsFromBlock(position, look ,player, world);
             // get fluid end
         }
-        HashMap<String, Integer> testting = new HashMap<String, Integer>();
-        testting.put(AspectInit.FIRE.getName(), 10);
-//        ModMessages.sendToServer(new SyncPlayerApsectsCapability(testting, testList));
-        ModMessages.sendToServer(new SyncPlayerApsectsCapability(testting, "testblock"));
-
-//        ModMessages.sendToServer(new DrinkWaterC2SPacket());
-
-
-
 
 //        // Create a sample PlayerAspects instance
 //        PlayerAspects playerAspects = new PlayerAspects();
@@ -155,7 +173,16 @@ public class Thaumometer extends ItemBase {
         BlockPos hitPosition = ((BlockHitResult) hitResult).getBlockPos();
 
         BlockState blockState = world.getBlockState(hitPosition);
-        player.sendSystemMessage(Component.literal("Aspects: " +  AspectHelper.getAspectsFromBlock(blockState)));
+
+        String targetName = AspectHelper.getTarget(blockState);
+        AspectList  aspectList = AspectHelper.getAspectsFromBlock(blockState);
+        player.sendSystemMessage(Component.literal("Aspects: " +  aspectList));
+        player.sendSystemMessage(Component.literal("Target " + AspectHelper.getTarget(blockState)));
+
+        if(!aspectList.isEmpty() && targetName != null){
+//           ModMessages.sendToServer(new SyncPlayerApsectsCapability(testting, testList));
+            ModMessages.sendToServer(new SyncPlayerApsectsCapability(aspectList, targetName));
+        }
     }
 
 
@@ -219,7 +246,4 @@ public class Thaumometer extends ItemBase {
         return !mouseItem.isEmpty() && mouseItem.getItem() == this;
 
     }
-
-
-
 }
