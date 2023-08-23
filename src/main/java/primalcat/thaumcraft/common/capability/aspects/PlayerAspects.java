@@ -1,8 +1,6 @@
-package primalcat.thaumcraft.common.aspects;
+package primalcat.thaumcraft.common.capability.aspects;
 
-import io.netty.buffer.Unpooled;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import primalcat.thaumcraft.api.Aspect;
 import primalcat.thaumcraft.init.AspectInit;
 
@@ -21,6 +19,14 @@ public class PlayerAspects {
 
     public Map<String, Integer> getAspects() {
         return aspectMap;
+    }
+    public Integer getAspectCount(String aspectName){
+        if(aspectMap.containsKey(aspectName)){
+            return aspectMap.get(aspectName);
+        }else {
+            return 0;
+        }
+
     }
     public void saveNBTData(CompoundTag nbt) {
         CompoundTag aspectsTag = new CompoundTag();
@@ -70,7 +76,9 @@ public class PlayerAspects {
     }
 
     public void putAll(Map<String, Integer> map){
-        aspectMap.putAll(map);
+        if(!map.isEmpty()){
+            aspectMap.putAll(map);
+        }
     }
     public void mergeMaps(Map<String, Integer> targetMap) {
         for (Map.Entry<String, Integer> entry : targetMap.entrySet()) {
@@ -84,6 +92,25 @@ public class PlayerAspects {
             }
         }
     }
+    public void subtractMaps(Map<String, Integer> targetMap) {
+        for (Map.Entry<String, Integer> entry : targetMap.entrySet()) {
+            String key = entry.getKey();
+            int value = entry.getValue();
+
+            if (aspectMap.containsKey(key)) {
+                int currentValue = aspectMap.get(key);
+                int newValue = currentValue - value;
+
+                // Make sure the new value is not negative
+                if (newValue >= 0) {
+                    aspectMap.put(key, newValue);
+                } else {
+                    aspectMap.put(key, 0); // Set the value to zero if it would be negative
+                }
+            }
+            // No else branch here, so if the key is not present, it's just skipped
+        }
+    }
 
     public void addTarget(String value) {
         if (!stringList.contains(value)) {
@@ -91,9 +118,9 @@ public class PlayerAspects {
         }
     }
 
-    public void setAspects(ArrayList<String> stringList, Map<String, Integer> aspectMap) {
+    public void setAspects(Map<String, Integer> aspectMap) {
         this.aspectMap.clear();
-        this.aspectMap.putAll(aspectMap);
+//        this.aspectMap.putAll(aspectMap);
     }
 
     public void copyFrom(PlayerAspects source) {

@@ -1,4 +1,4 @@
-package primalcat.thaumcraft.common.aspects;
+package primalcat.thaumcraft.common.capability.aspects;
 
 public class RegistryAspects {
     public RegistryAspects() {
