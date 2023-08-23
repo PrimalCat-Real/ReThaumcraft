@@ -8,6 +8,7 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 import primalcat.thaumcraft.Thaumcraft;
 import primalcat.thaumcraft.networking.packets.ExampleC2SPacket;
+import primalcat.thaumcraft.networking.packets.PlayerAspectsActionPacket;
 import primalcat.thaumcraft.networking.packets.SyncPlayerApsectsCapability;
 
 public class ModMessages {
@@ -39,6 +40,12 @@ public class ModMessages {
                 .decoder(SyncPlayerApsectsCapability::new)
                 .encoder(SyncPlayerApsectsCapability::toBytes)
                 .consumerMainThread(SyncPlayerApsectsCapability::handle)
+                .add();
+
+        net.messageBuilder(PlayerAspectsActionPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(PlayerAspectsActionPacket::new)
+                .encoder(PlayerAspectsActionPacket::toBytes)
+                .consumerMainThread(PlayerAspectsActionPacket::handle)
                 .add();
     }
 

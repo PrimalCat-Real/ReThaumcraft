@@ -4,9 +4,7 @@ import net.minecraft.nbt.Tag;
 import primalcat.thaumcraft.api.Aspect;
 import primalcat.thaumcraft.api.AspectList;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class AspectInit {
     private static LinkedHashMap<String, Aspect> aspectsHolder = new LinkedHashMap<>();
@@ -47,6 +45,21 @@ public class AspectInit {
 
     public static void setTagAspects(LinkedHashMap<Tag, AspectList> tagAspects) {
         AspectInit.tagAspects = tagAspects;
+    }
+
+
+    public static boolean checkAspectExist(String aspectName){
+        return aspectsHolder.keySet().contains(aspectName);
+    }
+
+    public static Collection<Aspect> getAspectsStringsNames(){
+        return aspectsHolder.values();
+    }
+    public static boolean checkAspectExist(Aspect aspect){
+        return aspectsHolder.values().contains(aspect);
+    }
+    public static Set<String> getAspectsInitStringsNames(){
+        return aspectsHolder.keySet();
     }
 
     public static Aspect getAspect(String aspectName){

@@ -2,21 +2,12 @@ package primalcat.thaumcraft.networking.packets;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkEvent;
-import primalcat.thaumcraft.api.Aspect;
 import primalcat.thaumcraft.api.AspectList;
-import primalcat.thaumcraft.common.aspects.PlayerAspectsProvider;
-import primalcat.thaumcraft.init.AspectInit;
+import primalcat.thaumcraft.common.capability.aspects.PlayerAspectsProvider;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
