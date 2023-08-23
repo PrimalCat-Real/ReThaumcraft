@@ -7,7 +7,6 @@ import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 
@@ -25,7 +24,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.server.command.ConfigCommand;
 import primalcat.thaumcraft.Thaumcraft;
-import primalcat.thaumcraft.common.commands.GiveAspectCommand;
+import primalcat.thaumcraft.common.commands.AspectCommand;
 import primalcat.thaumcraft.init.ItemInit;
 import primalcat.thaumcraft.sound.ModSounds;
 import primalcat.thaumcraft.utilites.DoScan;
@@ -180,9 +179,5 @@ public class ThaumometerEvent {
 //    } /
 
 
-    @SubscribeEvent
-    public static void onCommandRegister(RegisterCommandsEvent event){
-        new GiveAspectCommand(event.getDispatcher());
-        ConfigCommand.register(event.getDispatcher());
-    }
+
 }

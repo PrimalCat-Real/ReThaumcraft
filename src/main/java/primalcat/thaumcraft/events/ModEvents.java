@@ -5,11 +5,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.server.command.ConfigCommand;
 import primalcat.thaumcraft.Thaumcraft;
-import primalcat.thaumcraft.common.aspects.PlayerAspectsProvider;
+import primalcat.thaumcraft.common.capability.aspects.PlayerAspectsProvider;
+import primalcat.thaumcraft.common.commands.AspectCommand;
 
 @Mod.EventBusSubscriber(modid = Thaumcraft.MOD_ID)
 public class ModEvents {
@@ -39,6 +42,11 @@ public class ModEvents {
             event.getOriginal().invalidateCaps();
         }
 
+    }
+    @SubscribeEvent
+    public static void onCommandRegister(RegisterCommandsEvent event){
+        new AspectCommand(event.getDispatcher());
+        ConfigCommand.register(event.getDispatcher());
     }
 //    @SubscribeEvent
 //    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
