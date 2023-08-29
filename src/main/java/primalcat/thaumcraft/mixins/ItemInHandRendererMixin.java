@@ -8,6 +8,7 @@ import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -26,12 +27,14 @@ import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import primalcat.thaumcraft.Thaumcraft;
 import primalcat.thaumcraft.init.ItemInit;
 import primalcat.thaumcraft.utilites.Variables;
 
 @Mixin(ItemInHandRenderer.class)
 public class ItemInHandRendererMixin {
 
+    private static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(Thaumcraft.MOD_ID, "textures/aspects/aer.png");
 
     @Inject(method = "renderItem", at = @At("HEAD"), cancellable = true)
     private void renderFirstPersonItem(LivingEntity livingEntity, ItemStack itemStack, ItemTransforms.TransformType transformType, boolean leftHanded, PoseStack poseStack, MultiBufferSource buffers, int light, CallbackInfo ci) {
@@ -70,6 +73,20 @@ public class ItemInHandRendererMixin {
 
                 // Render the text
                 font.drawInBatch(textToDisplay, xOffset,yOffset,0x79ff92,false, poseStack.last().pose(),buffers,false, 0, light);
+
+                RenderType renderType = RenderType.text(TEXTURE_LOCATION);
+
+                VertexConsumer vertexConsumer = buffers.getBuffer(renderType);
+
+                // Push transformations onto the PoseStack if needed
+//                poseStack.pushPose();
+//                // Draw vertices
+//                vertexConsumer.vertex(poseStack.last().pose(), xOffset, yOffset, 0)
+//                        .color(1.0F, 1.0F, 1.0F, 1.0F)
+//                        .uv(0F, 0F)
+//                        .endVertex();
+
+
 
                 // Pop the original transformations
                 poseStack.popPose();
