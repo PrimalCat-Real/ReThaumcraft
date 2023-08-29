@@ -17,4 +17,4 @@
 - [ ] Thaumometer
 - [ ] Aspects nodes
 - [ ] Thamomicon
-- [ ] Researchers
+- [ ] Researches
