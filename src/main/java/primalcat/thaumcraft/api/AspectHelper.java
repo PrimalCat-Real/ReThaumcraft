@@ -8,6 +8,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
@@ -45,6 +46,13 @@ public class AspectHelper {
             }
         }
 
+        return objectAspects;
+    }
+
+    public static AspectList getAspectsFromPlayer(Player player){
+        AspectList objectAspects = new AspectList();
+        LinkedHashMap<String, AspectList> entityAspects = AspectInit.getEntityAspects();
+        objectAspects.add(AspectInit.MAN, 4);
         return objectAspects;
     }
     public static AspectList getAspectsFromEntity(LivingEntity entity) {
