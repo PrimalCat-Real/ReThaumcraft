@@ -14,6 +14,8 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> scan = registerSoundEvent("scan");
     public static final RegistryObject<SoundEvent> alembicknock = registerSoundEvent("alembicknock");
     public static final RegistryObject<SoundEvent> cameraticks = registerSoundEvent("cameraticks");
+
+    public static final RegistryObject<SoundEvent> learn = registerSoundEvent("learn");
     public static final RegistryObject<SoundEvent> cameraclack = registerSoundEvent("cameraclack");
 //    public static final RegistryObject<SoundEvent> SCAN = registerSoundEvent("scan");
 //    public static final RegistryObject<SoundEvent> SCAN = registerSoundEvent("scan");

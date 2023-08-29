@@ -154,12 +154,7 @@
     },
     "learn": {
         "category": "master",
-        "sounds": [
-            {
-                "name": "thaumcraft:learn",
-                "stream": false
-            }
-        ]
+        "sounds": [{ "name": "thaumcraft:learn", "stream": false }]
     },
     "write": {
         "category": "master",
