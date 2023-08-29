@@ -5,49 +5,38 @@ import net.minecraft.client.Minecraft;
 
 import java.awt.*;
 
-public class DrawText {
-    public float progress = 0;
-    public boolean startDraw = false;
+public class DrawScanProgress {
+    private boolean canDraw = false;
+
+    public boolean isCanDraw() {
+        return canDraw;
+    }
+
+    public void setCanDraw(boolean canDraw) {
+        this.canDraw = canDraw;
+    }
+
     public static PoseStack poseStack;
 
-    public static PoseStack getPoseStack() {
-        return poseStack;
-    }
-
-    public static void setPoseStack(PoseStack poseStack) {
-        DrawText.poseStack = poseStack;
-    }
-
-    public void setProgress(float progress){
-        this.progress= progress;
-    }
-
-    public void setStartDraw(boolean startDraw){
-        this.startDraw= startDraw;
-    }
-
-
-    // method special for scanning process
-    public void renderScanningProgress(PoseStack poseStack, int mouseX, int mouseY) {
-        if(this.startDraw){
+    public void renderScanningProgress(PoseStack poseStack, int mouseX, int mouseY, float progress) {
+        if(this.canDraw){
             StringBuilder sb = new StringBuilder("Scanning");
-            if (this.progress >= 0.75f) {
+            if(progress == 1.0f){
+                this.setCanDraw(false);
+            }
+            if (progress >= 0.75f) {
                 sb.append("...");
                 System.out.println(sb);
-            } else if (this.progress >= 0.5f) {
+            } else if (progress >= 0.5f) {
                 sb.append("..");
                 System.out.println(sb);
-            } else if (this.progress >= 0.25f) {
+            } else if (progress >= 0.25f) {
                 sb.append(".");
                 System.out.println(sb);
             }
             drawText(poseStack, mouseX-10 , mouseY-20, sb.toString(), new Color(234,186,43));
         }
-
-
     }
-
-    // simple draw text method realisation
     public static void drawText(PoseStack poseStack, int mouseX, int mouseY, String text, Color color){
         poseStack.pushPose();
         poseStack.last();
