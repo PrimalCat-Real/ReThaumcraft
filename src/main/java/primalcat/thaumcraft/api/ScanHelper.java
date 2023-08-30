@@ -7,6 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.level.block.state.BlockState;
 import primalcat.thaumcraft.Thaumcraft;
+import primalcat.thaumcraft.client.ClientAspectManager;
 import primalcat.thaumcraft.sound.ModSounds;
 import primalcat.thaumcraft.networking.ModMessages;
 import primalcat.thaumcraft.networking.packets.SyncPlayerApsectsCapability;
@@ -77,21 +78,20 @@ public class ScanHelper {
     private Slot lastScannedSlot;
 
 
-    public boolean isValidScanTarget(String targetName){
 
-        return false;
-    }
-
-    public void doInventoryScan(int tick, Player player){
-        System.out.println(tick);
-//        if(this.isValidScanTarget()){
-//
-//        }
-        if(tick == SCAN_DURATION){
+    public void doInventoryScan(int tick, Player player, String targetName){
+        if(ClientAspectManager.checkTarget(targetName)){
+            this.setCanDoScan(false);
+        }else {
+            this.setCanDoScan(true);
+        }
+        if(tick == SCAN_DURATION && this.canDoScan){
             player.getLevel().playSound(player,player.getX(), player.getY(), player.getZ(), ModSounds.learn.get(), SoundSource.MASTER, 0.4f,0.45f + player.level.random.nextFloat() * 0.1f);
             System.out.println("Scan done");
+            ClientAspectManager.addTarget(targetName);
             this.setScanCompleted(true);
-        }else if (tick % 5 == 0){
+
+        }else if (tick % 5 == 0 && this.canDoScan){
             player.getLevel().playSound(player,player.getX(), player.getY(), player.getZ(), ModSounds.cameraticks.get(), SoundSource.MASTER, 0.2f,0.45f + player.level.random.nextFloat() * 0.1f);
         }
 //        dText.setStartDraw(true);

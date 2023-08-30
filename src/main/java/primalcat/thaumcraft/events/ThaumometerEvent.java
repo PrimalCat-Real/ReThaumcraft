@@ -26,6 +26,8 @@ import primalcat.thaumcraft.init.ItemInit;
 import primalcat.thaumcraft.utilites.DoScan;
 import primalcat.thaumcraft.utilites.DrawScanProgress;
 
+import java.awt.*;
+
 
 @Mod.EventBusSubscriber(modid = Thaumcraft.MOD_ID, value = Dist.CLIENT)
 public class ThaumometerEvent {
@@ -53,33 +55,21 @@ public class ThaumometerEvent {
             Player player = Minecraft.getInstance().player;
             if (player != null && isHoldingThaumometer(player) && drawScreenEvent != null) {
                 tempSlot = ((AbstractContainerScreen<?>) drawScreenEvent.getScreen()).getSlotUnderMouse();
-                if(tempSlot != null && !tempSlot.getItem().getItem().equals(Items.AIR)){
-//                    System.out.println(tempSlot.getItem().getItem());
-                    if(scanHelper.isCanDoScan() && !scanHelper.isScanCompleted() && tempSlot != lastScannedSlot){
-                        scanHelper.doInventoryScan(ticksHovered, player);
-                        drawScanProgress.setCanDraw(true);
-//
-                        ticksHovered ++;
-//                        dText.setProgress(ticksHovered / (float) SCAN_TICK);
-                    }else if(scanHelper.isScanCompleted()){
-                        ticksHovered = 0;
-                        lastScannedSlot = tempSlot;
-                        scanHelper.setScanCompleted(false);
-                        drawScanProgress.setCanDraw(false);
-                    }
-
-                } else if (isHoveringPlayer(drawScreenEvent.getScreen(), drawScreenEvent.getMouseX(), drawScreenEvent.getMouseY())) {
-                    System.out.println(player.getStringUUID());
-                }else if (tempSlot != null && tempSlot.getItem().getItem().equals(Items.AIR)) {
+                if (tempSlot != null && !tempSlot.getItem().getItem().equals(Items.AIR) && scanHelper.isCanDoScan()) {
+                    scanHelper.doInventoryScan(ticksHovered, player, tempSlot.getItem().getItem().toString());
+                    drawScanProgress.setCanDraw(true);
+                    ticksHovered++;
+                    System.out.println(ticksHovered);
                     lastScannedSlot = tempSlot;
-                    drawScanProgress.setCanDraw(false);
-                    scanHelper.setScanCompleted(false);
+                } else if (isHoveringPlayer(drawScreenEvent.getScreen(), drawScreenEvent.getMouseX(), drawScreenEvent.getMouseY()) && scanHelper.isCanDoScan()) {
+                    System.out.println(ticksHovered);
+                    scanHelper.doInventoryScan(ticksHovered, player, player.getStringUUID());
+                    drawScanProgress.setCanDraw(true);
+                    ticksHovered++;
+                } else if (lastScannedSlot != tempSlot) {
+                    scanHelper.setCanDoScan(true);
                     ticksHovered = 0;
-                }else{
                     drawScanProgress.setCanDraw(false);
-                    lastScannedSlot = null;
-                    scanHelper.setScanCompleted(false);
-                    ticksHovered = 0;
                 }
             }
         }
@@ -88,9 +78,11 @@ public class ThaumometerEvent {
     public static void onInventorySlotInteract(final ScreenEvent.Render.Post event) {
         if(event.getScreen() instanceof InventoryScreen || event.getScreen() instanceof AbstractContainerScreen<?> || event.getScreen() instanceof ContainerScreen || event.getScreen() instanceof CreativeModeInventoryScreen){
             drawScreenEvent = event;
-            if(tempSlot != null && Minecraft.getInstance().player != null){
+
+            if(Minecraft.getInstance().player != null && (isHoldingThaumometer(Minecraft.getInstance().player) || tempSlot != null) && scanHelper.isCanDoScan()){
                 drawScanProgress.renderScanningProgress(drawScreenEvent.getPoseStack(), drawScreenEvent.getMouseX(), drawScreenEvent.getMouseY(), ticksHovered / (float) SCAN_TICK);
-//                Minecraft.getInstance().font.drawShadow(drawScreenEvent.getPoseStack(),"test", 140-10 , 150-20, new Color(250,0,0).getRGB());
+
+//                Minecraft.getInstance().font.drawShadow(drawScreenEvent.getPoseStack(),"test", drawScreenEvent.getMouseX() , drawScreenEvent.getMouseY(), new Color(250,0,0).getRGB());
             }
 
         }
@@ -106,70 +98,7 @@ public class ThaumometerEvent {
         }
         return false;
     }
-//    private static void handleThaumometerUsage(Player player) {
-//        tempSlot = getSlotUnderMouse(drawScreenEvent.getScreen());
-//
-//        if (tempSlot != null && !tempSlot.isEmpty()) {
-//            if (lastScannedSlot != tempSlot) {
-//                handleNewSlotScanned(player);
-//            } else {
-//                resetScanProgress();
-//            }
-//        } else {
-//            resetScanProgress();
-//        }
-//    }
 
-//    @SubscribeEvent
-//    public static void onClientTick(final TickEvent.ClientTickEvent event) {
-//
-//        Player player = Minecraft.getInstance().player;
-//        if(isHoldingThaumometer(player)){
-//            /** Get working slot,
-//             * empty slot,
-//             * null slot**/
-//            tempSlot = ((AbstractContainerScreen<?>) drawScreenEvent.getScreen()).getSlotUnderMouse();
-//            if(tempSlot != null && !tempSlot.getItem().getItem().equals(Items.AIR)){
-//                if(lastScannedSlot != tempSlot){
-//                    dText.setStartDraw(true);
-//                    // custom tick for tick logic
-//                    ticksHovered ++;
-//                    // set progress for dot animation in Scaning text
-//                    dText.setProgress(ticksHovered / (float) SCAN_TICK);
-//                    // play sound event while scan
-//                    if(ticksHovered > SOUND_TICKS && ticksHovered % 4 == 0){
-//                        player.level.playSound(player,player.getX(), player.getY(), player.getZ(), ModSounds.cameraticks.get(), SoundSource.NEUTRAL, 0.2f,0.45f + player.level.random.nextFloat() * 0.1f);
-//                    }
-//                    // scan 40 tick or 2 second
-//                    if(ticksHovered > SCAN_TICK){
-//                        Item scanItem = tempSlot.getItem().getItem();
-//                        lastScannedSlot = tempSlot;
-//                        // stop render scan process text
-//                        dText.setStartDraw(false);
-//                    }
-//                }else{
-//                    // reset scan progress
-//                    ticksHovered = 0;
-//                    dText.setProgress(0);
-//                    dText.setStartDraw(false);
-//                }
-//            }else if(tempSlot == null || tempSlot.getItem().getItem().equals(Items.AIR)){
-//                lastScannedSlot = null;
-//                dText.setProgress(0);
-//                dText.setStartDraw(false);
-//                ticksHovered = 0;
-//                // reset scan progress and draw process text
-//            }
-//        }else if(!isHoldingThaumometer(player)){
-//            // reset scan progress and draw process text when not hold thaumometer
-//            ticksHovered = 0;
-//            currentScan = null;
-//            canScan = true;
-//            dText.setStartDraw(false);
-//            dText.setProgress(0);
-//        }
-//
-//    }
 
 
 
