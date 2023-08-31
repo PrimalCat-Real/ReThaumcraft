@@ -1,7 +1,7 @@
 package primalcat.thaumcraft.common.capability.aspects;
 
 import net.minecraft.nbt.CompoundTag;
-import primalcat.thaumcraft.api.Aspect;
+import primalcat.thaumcraft.aspects.Aspect;
 import primalcat.thaumcraft.init.AspectInit;
 
 import java.util.ArrayList;

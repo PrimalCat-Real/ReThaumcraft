@@ -1,4 +1,4 @@
-package primalcat.thaumcraft.api;
+package primalcat.thaumcraft.aspects;
 
 import net.minecraft.resources.ResourceLocation;
 

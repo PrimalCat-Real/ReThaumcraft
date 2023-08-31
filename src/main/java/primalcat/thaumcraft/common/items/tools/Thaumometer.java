@@ -1,18 +1,13 @@
 package primalcat.thaumcraft.common.items.tools;
 
-import com.mojang.math.Vector3d;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.Pig;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -21,18 +16,18 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BasePressurePlateBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 import net.minecraftforge.common.ForgeMod;
-import primalcat.thaumcraft.Thaumcraft;
-import primalcat.thaumcraft.api.AspectHelper;
-import primalcat.thaumcraft.api.AspectList;
-import primalcat.thaumcraft.api.ScanHelper;
+import primalcat.thaumcraft.aspects.Aspect;
+import primalcat.thaumcraft.aspects.AspectHelper;
+import primalcat.thaumcraft.aspects.AspectList;
+import primalcat.thaumcraft.aspects.ScanHelper;
+import primalcat.thaumcraft.client.ClientAspectManager;
 import primalcat.thaumcraft.common.items.ItemBase;
-import primalcat.thaumcraft.networking.ModMessages;
-import primalcat.thaumcraft.networking.packets.SyncPlayerApsectsCapability;
+import primalcat.thaumcraft.init.AspectInit;
 import primalcat.thaumcraft.sound.ModSounds;
+import primalcat.thaumcraft.utilites.Variables;
 
 import java.util.*;
 
@@ -81,10 +76,28 @@ public class Thaumometer extends ItemBase {
         if (player != null && isHoldingThaumometer(player)) {
             // Your code here
             HitResult result = getEntityItemResult(player);
-            if (result != null && result.getType() == HitResult.Type.ENTITY) {
-                System.out.println(result);
-                ItemEntity entity = (ItemEntity) ((EntityHitResult) result).getEntity();
+            if(getEntityLookedAt(player) != null){
+
+                AspectList aspectList = AspectHelper.getAspectFromObject(getEntityLookedAt(player));
+                System.out.println(getEntityLookedAt(player));
+                if(scanHelper.IsValidAspect(aspectList)) {
+                    scanHelper.setCanDoScan(!ClientAspectManager.checkTarget(scanTargetName));
+                    Variables.tempAspects = AspectHelper.getAspectFromObject(getEntityLookedAt(player) );
+                }else{
+                    scanHelper.setCanDoScan(false);
+                }
+            }else  if (result != null && result.getType() == HitResult.Type.ENTITY) {
+                ItemEntity entityItem = (ItemEntity) ((EntityHitResult) result).getEntity();
+//                Variables.tempAspects = AspectHelper.getAspectsFromObject(entity.getItem());
 //                scanHelper.setItemEntityTarget(entity);
+                AspectList aspectList = AspectHelper.getAspectFromObject(entityItem.getItem());
+                System.out.println(aspectList);
+                if(scanHelper.IsValidAspect(aspectList)) {
+                    scanHelper.setCanDoScan(!ClientAspectManager.checkTarget(scanTargetName));
+                    Variables.tempAspects = AspectHelper.getAspectFromObject(entityItem.getItem());
+                }else{
+                    scanHelper.setCanDoScan(false);
+                }
             }else{
                 Vec3 position = player.getEyePosition(1.0F);
                 double reachDistance = player.getAttribute(ForgeMod.REACH_DISTANCE.get()).getValue();
@@ -92,9 +105,18 @@ public class Thaumometer extends ItemBase {
                 Vec3 look = player.getViewVector(1.0F).scale(reachDistance).add(position);
 
                 BlockState targetBlock = getTargetBlock(position, look, player, level);
-//                System.out.println(targetBlock);
-//                scanHelper.setBlockTarget(targetBlock);
-//                scanHelper.setScanning(true);
+
+
+//                scanTargetName = AspectHelper.getTarget(targetBlock);
+                AspectList aspectList = AspectHelper.getAspectFromObject(targetBlock);
+
+                if(scanHelper.IsValidAspect(aspectList)) {
+                    scanHelper.setCanDoScan(!ClientAspectManager.checkTarget(scanTargetName));
+                    Variables.tempAspects = AspectHelper.getAspectFromObject(targetBlock);
+                }else{
+                    scanHelper.setCanDoScan(false);
+                }
+
             }
         }
         ItemStack held = player.getItemInHand(hand);
@@ -105,29 +127,7 @@ public class Thaumometer extends ItemBase {
         return InteractionResultHolder.pass(held);
     }
 
-    public static LivingEntity getEntityLookedAt(Player player) {
-        Vec3 position = player.getEyePosition(1.0F);
-        double reachDistance = player.getAttribute(ForgeMod.REACH_DISTANCE.get()).getValue();
 
-        Vec3 look = player.getViewVector(1.0F).scale(reachDistance).add(position);
-//        Vec3 endVec = position.add(look.x * reachDistance, look.y * reachDistance, look.z * reachDistance);
-//        System.out.println(look);
-//        System.out.println("player " + endVec);
-//
-        AABB bb2 = new AABB(position, look);
-//        Level world = player.getLevel();
-//
-//        System.out.println(world.getEntities(player, bb, e -> e.canBeCollidedWith() && e != player));
-        double radius = 3.0; // Adjust the radius as needed
-        AABB bb = player.getBoundingBox().inflate(radius);
-        Level world = player.getLevel();
-        for (Entity entity : world.getEntities(player, bb2)) {
-            System.out.println(entity.canCollideWith(player));
-            return (LivingEntity)entity;
-        }
-
-        return null;
-    }
 //    @Override
 //    public void (ItemStack stack, LivingEntity entity, int count) {
 //        if (entity instanceof Player && !entity.level().isClientSide) {
@@ -143,23 +143,27 @@ public class Thaumometer extends ItemBase {
     }
 
     @Override
-    public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int count) {
+    public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int tick) {
         if (level.isClientSide() && entity instanceof Player player && level != null) {
-            if(count % 5 == 0){
-//            spawnRunesParticles(level, tempContext.getClickedPos());
-                Vec3 position = player.getEyePosition(1.0F);
-                double reachDistance = player.getAttribute(ForgeMod.REACH_DISTANCE.get()).getValue();
-                Vec3 look = player.getViewVector(1.0F).scale(reachDistance).add(position);
-                BlockState targetBlock = getTargetBlock(position, look, player, level);
-//                ItemEntity targetItem = (ItemEntity) ((EntityHitResult) getEntityItemResult(player)).getEntity();
-//                scanHelper.setItemEntityTarget(targetItem);
-//                scanHelper.setBlockTarget(targetBlock);
-                LivingEntity entityTarget = getEntityLookedAt(player);
-//                System.out.println(entityTarget);
-//                scanHelper.setEntityTarget(entityTarget);
+            System.out.println(RIGHT_CLICK_HOLD_DURATION - tick);
+            scanHelper.doScan(RIGHT_CLICK_HOLD_DURATION - tick, (Player) entity, scanTargetName);
 
-//                level.playSound(player,player.getX(), player.getY(), player.getZ(), ModSounds.cameraticks.get(), SoundSource.MASTER, 0.2f,0.45f + player.level.random.nextFloat() * 0.1f);
-            }
+//            if(count % 5 == 0){
+////            spawnRunesParticles(level, tempContext.getClickedPos());
+//                Vec3 position = player.getEyePosition(1.0F);
+//                double reachDistance = player.getAttribute(ForgeMod.REACH_DISTANCE.get()).getValue();
+//                Vec3 look = player.getViewVector(1.0F).scale(reachDistance).add(position);
+//                BlockState targetBlock = getTargetBlock(position, look, player, level);
+////                ItemEntity targetItem = (ItemEntity) ((EntityHitResult) getEntityItemResult(player)).getEntity();
+////                scanHelper.setItemEntityTarget(targetItem);
+////                scanHelper.setBlockTarget(targetBlock);
+//                LivingEntity entityTarget = getEntityLookedAt(player);
+//                Variables.tempAspects = AspectHelper.getAspectsFromEntity(entityTarget);
+////                System.out.println(entityTarget);
+////                scanHelper.setEntityTarget(entityTarget);
+//
+////                level.playSound(player,player.getX(), player.getY(), player.getZ(), ModSounds.cameraticks.get(), SoundSource.MASTER, 0.2f,0.45f + player.level.random.nextFloat() * 0.1f);
+//            }
 //            scanHelper.doScan();
 
         }
@@ -193,71 +197,6 @@ public class Thaumometer extends ItemBase {
         System.out.println("dur: "+duration);
     }
 
-//    @Override
-//    public InteractionResult useOn(UseOnContext pContext) {
-//        Player player = pContext.getPlayer();
-//
-//        Minecraft mc = Minecraft.getInstance();
-//        if (mc != null && player != null && !mc.isPaused()) {
-//            player.startUsingItem(pContext.getHand());
-//            // drop items
-//            HitResult result = getEntityItemResult(player);
-//
-//            if (result != null && result.getType() == HitResult.Type.ENTITY) {
-//                ItemEntity entity = (ItemEntity) ((EntityHitResult) result).getEntity();
-////                ItemStack testItem = entity.getItem().getTag();
-//
-//                System.out.println(entity.getItem().getItem());
-////                AspectList temp = AspectHelper.getObjectAspects(entity.getItem());
-////                if(temp != null){
-////                    System.out.println(temp.toString());
-////                }
-//                scanHelper.setItemEntityTarget(entity);
-//                String targetName = AspectHelper.getTarget(entity.getItem());
-//                AspectList  aspectList = AspectHelper.getAspectsFromObject(entity.getItem());
-//                player.sendSystemMessage(Component.literal("Aspects: " +  aspectList));
-//                player.sendSystemMessage(Component.literal("Target " + aspectList));
-//
-//                if(!aspectList.isEmpty() && targetName != null){
-//                    ModMessages.sendToServer(new SyncPlayerApsectsCapability(aspectList, targetName));
-//                }
-////                player.sendSystemMessage(Component.literal("Aspects: " +  AspectHelper.getAspectsFromObject(entity.getItem())));
-//
-//
-//            }else if(result != null && result.getType() == HitResult.Type.BLOCK){
-//                BlockPos blockPos = (BlockPos) ((BlockHitResult) result).getBlockPos();
-//                System.out.println(blockPos);
-//            }
-//
-//            // get fluid
-//            Level world = Minecraft.getInstance().level;
-//            Vec3 position = player.getEyePosition(1.0F);
-//            double reachDistance = player.getAttribute(ForgeMod.REACH_DISTANCE.get()).getValue();
-//
-//            Vec3 look = player.getViewVector(1.0F).scale(reachDistance).add(position);
-//
-//
-//            getAspectsFromBlock(position, look ,player, world);
-//            // get fluid end
-//        }
-//
-////        // Create a sample PlayerAspects instance
-////        PlayerAspects playerAspects = new PlayerAspects();
-////        playerAspects.getAspects().put(AspectInit.FIRE.getName(), 5);
-////
-////        CompoundTag nbt = new CompoundTag();
-////        playerAspects.saveNBTData(nbt);
-////
-////        // Load NBT data
-////        PlayerAspects loadedAspects = new PlayerAspects();
-////        loadedAspects.loadNBTData(nbt);
-////
-////        // Retrieve the value using the originalAspect instance as the key
-////        System.out.println("Value for originalAspect: " + loadedAspects.getAspects().get(AspectInit.FIRE.getName()));
-////        System.out.println("Value for originalAspect: " + loadedAspects.getAspects().keySet());
-//
-//        return InteractionResult.PASS;
-//    }
 
     public static BlockState getTargetBlock(Vec3 position, Vec3 look, Entity player, Level world){
         ClipContext clipContext = new ClipContext(position, look, ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY, player);
@@ -324,6 +263,27 @@ public class Thaumometer extends ItemBase {
 
             }
         }
+        return null;
+    }
+    public static LivingEntity getEntityLookedAt(Player player) {
+        Vec3 position = player.getEyePosition(1.0F);
+        double reachDistance = player.getAttribute(ForgeMod.REACH_DISTANCE.get()).getValue();
+
+        Vec3 look = player.getViewVector(1.0F).scale(reachDistance).add(position);
+        AABB bb2 = new AABB(position, look);
+//
+//        System.out.println(world.getEntities(player, bb, e -> e.canBeCollidedWith() && e != player));
+        double radius = 3.0; // Adjust the radius as needed
+        AABB bb = player.getBoundingBox().inflate(radius);
+        Level world = player.getLevel();
+        for (Entity entity : world.getEntities(player, bb2)) {
+            System.out.println(entity.canCollideWith(player));
+            if(entity instanceof ItemEntity){
+                return null;
+            }
+            return (LivingEntity)entity;
+        }
+
         return null;
     }
 

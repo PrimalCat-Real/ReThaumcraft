@@ -1,10 +1,8 @@
 package primalcat.thaumcraft.mixins;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -13,21 +11,16 @@ import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
-import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.resources.model.Material;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.ForgeRenderTypes;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import primalcat.thaumcraft.Thaumcraft;
+import primalcat.thaumcraft.aspects.Aspect;
 import primalcat.thaumcraft.init.ItemInit;
 import primalcat.thaumcraft.utilites.Variables;
 
@@ -85,6 +78,27 @@ public class ItemInHandRendererMixin {
 //                        .color(1.0F, 1.0F, 1.0F, 1.0F)
 //                        .uv(0F, 0F)
 //                        .endVertex();
+                int i = 1;
+                if(Variables.tempAspects != null){
+                    for (Aspect aspect: Variables.tempAspects.aspects.keySet()) {
+                        int colorValue = aspect.getColor();  // Color value (decimal)
+                        int alpha = (colorValue >> 24) & 0xFF;
+                        int red = (colorValue >> 16) & 0xFF;
+                        int green = (colorValue >> 8) & 0xFF;
+                        int blue = colorValue & 0xFF;
+                        float normalizedAlpha = (float) alpha / 255f;
+                        float normalizedRed = (float) red / 255f;
+                        float normalizedGreen = (float) green / 255f;
+                        float normalizedBlue = (float) blue / 255f;
+                        RenderSystem.setShaderColor(normalizedRed, normalizedGreen, normalizedBlue, normalizedAlpha);
+                        RenderSystem.setShaderTexture(0, aspect.getAspectImage());
+                        GuiComponent.blit(poseStack, xOffset + i * 20, yOffset, 0, 0, 0, 16, 16, 16, 16);
+                        i +=1;
+                    }
+
+                }
+
+
 
 
 

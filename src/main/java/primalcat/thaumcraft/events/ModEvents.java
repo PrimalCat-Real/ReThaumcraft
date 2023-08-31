@@ -63,44 +63,51 @@ public class ModEvents {
         new AspectCommand(event.getDispatcher());
         ConfigCommand.register(event.getDispatcher());
     }
-
-    private static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(Thaumcraft.MOD_ID, "textures/aspects/aer.png");
-
     @SubscribeEvent
-    public static void renderSelectedBlocks(final RenderLevelStageEvent event) {
-        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES)
-            return;
-        if(Minecraft.getInstance().player != null) {
-            Minecraft mc = Minecraft.getInstance();
-            PoseStack matrix = event.getPoseStack();
-            Vec3 playerPos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
-            MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
-            matrix.pushPose();
-            matrix.translate(-playerPos.x, -playerPos.y, -playerPos.z);
-            int combinedLightIn = mc.getEntityRenderDispatcher().getPackedLightCoords(mc.player, event.getPartialTick());
-            matrix.translate(0, -59, 0);
-            Quaternion q = mc.getEntityRenderDispatcher().cameraOrientation();
-            matrix.mulPose(q);
-            matrix.scale(-0.125F, -0.125F, 0.125F);
-            Matrix4f matrix4f = matrix.last().pose();
-            float opacity = Minecraft.getInstance().options.getBackgroundOpacity(0.5F);
-            Font fontRenderer = Minecraft.getInstance().font;
-            float width = (float) (-fontRenderer.width("test") / 2);
-            fontRenderer.drawInBatch("test", width, 0f, -1, false, matrix4f, buffer, true, 0, combinedLightIn);
+    public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
+        // Get the player's username
+        String playerName = event.getEntity().getDisplayName().getString();
 
 
-
-//            VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityTranslucent(TEXTURE_LOCATION));
-//            vertexConsumer.vertex(matrix.last().pose(), 0.0F, -59F, 0.0F)
-//                    .color(255, 255, 255, 255) // Set your desired color and opacity
-//                    .uv(0F, 0F)
-//                    .overlayCoords(OverlayTexture.NO_OVERLAY)
-//                    .uv2(combinedLightIn)
-//                    .normal(matrix.last().normal(), 0.0F, 1.0F, 0.0F)
-//                    .endVertex();
-            matrix.popPose();
-        }
     }
+
+//    private static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(Thaumcraft.MOD_ID, "textures/aspects/aer.png");
+//
+//    @SubscribeEvent
+//    public static void renderSelectedBlocks(final RenderLevelStageEvent event) {
+//        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES)
+//            return;
+//        if(Minecraft.getInstance().player != null) {
+//            Minecraft mc = Minecraft.getInstance();
+//            PoseStack matrix = event.getPoseStack();
+//            Vec3 playerPos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
+//            MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
+//            matrix.pushPose();
+//            matrix.translate(-playerPos.x, -playerPos.y, -playerPos.z);
+//            int combinedLightIn = mc.getEntityRenderDispatcher().getPackedLightCoords(mc.player, event.getPartialTick());
+//            matrix.translate(0, -59, 0);
+//            Quaternion q = mc.getEntityRenderDispatcher().cameraOrientation();
+//            matrix.mulPose(q);
+//            matrix.scale(-0.125F, -0.125F, 0.125F);
+//            Matrix4f matrix4f = matrix.last().pose();
+//            float opacity = Minecraft.getInstance().options.getBackgroundOpacity(0.5F);
+//            Font fontRenderer = Minecraft.getInstance().font;
+//            float width = (float) (-fontRenderer.width("test") / 2);
+//            fontRenderer.drawInBatch("test", width, 0f, -1, false, matrix4f, buffer, true, 0, combinedLightIn);
+//
+//
+//
+////            VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityTranslucent(TEXTURE_LOCATION));
+////            vertexConsumer.vertex(matrix.last().pose(), 0.0F, -59F, 0.0F)
+////                    .color(255, 255, 255, 255) // Set your desired color and opacity
+////                    .uv(0F, 0F)
+////                    .overlayCoords(OverlayTexture.NO_OVERLAY)
+////                    .uv2(combinedLightIn)
+////                    .normal(matrix.last().normal(), 0.0F, 1.0F, 0.0F)
+////                    .endVertex();
+//            matrix.popPose();
+//        }
+//    }
 //    @SubscribeEvent
 //    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
 //        if(event.side == LogicalSide.SERVER) {

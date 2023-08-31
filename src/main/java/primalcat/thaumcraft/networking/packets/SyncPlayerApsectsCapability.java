@@ -4,7 +4,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
-import primalcat.thaumcraft.api.AspectList;
+import primalcat.thaumcraft.aspects.AspectList;
 import primalcat.thaumcraft.common.capability.aspects.PlayerAspectsProvider;
 
 import java.util.HashMap;

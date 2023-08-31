@@ -1,8 +1,8 @@
 package primalcat.thaumcraft.init;
 
 import net.minecraft.nbt.Tag;
-import primalcat.thaumcraft.api.Aspect;
-import primalcat.thaumcraft.api.AspectList;
+import primalcat.thaumcraft.aspects.Aspect;
+import primalcat.thaumcraft.aspects.AspectList;
 
 import java.util.*;
 

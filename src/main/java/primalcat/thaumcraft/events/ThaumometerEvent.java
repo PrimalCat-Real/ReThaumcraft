@@ -1,6 +1,8 @@
 package primalcat.thaumcraft.events;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.ContainerScreen;
@@ -8,6 +10,7 @@ import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
 import net.minecraft.world.inventory.Slot;
@@ -21,12 +24,10 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import primalcat.thaumcraft.Thaumcraft;
-import primalcat.thaumcraft.api.ScanHelper;
+import primalcat.thaumcraft.aspects.ScanHelper;
 import primalcat.thaumcraft.init.ItemInit;
 import primalcat.thaumcraft.utilites.DoScan;
 import primalcat.thaumcraft.utilites.DrawScanProgress;
-
-import java.awt.*;
 
 
 @Mod.EventBusSubscriber(modid = Thaumcraft.MOD_ID, value = Dist.CLIENT)
@@ -47,6 +48,8 @@ public class ThaumometerEvent {
     private static final int INVENTORY_PLAYER_HEIGHT = 70;
 
     private static DrawScanProgress drawScanProgress = new DrawScanProgress();
+
+
     /** Ticking event
      * for do scan **/
     @SubscribeEvent
@@ -59,10 +62,9 @@ public class ThaumometerEvent {
                     scanHelper.doInventoryScan(ticksHovered, player, tempSlot.getItem().getItem().toString());
                     drawScanProgress.setCanDraw(true);
                     ticksHovered++;
-                    System.out.println(ticksHovered);
                     lastScannedSlot = tempSlot;
+
                 } else if (isHoveringPlayer(drawScreenEvent.getScreen(), drawScreenEvent.getMouseX(), drawScreenEvent.getMouseY()) && scanHelper.isCanDoScan()) {
-                    System.out.println(ticksHovered);
                     scanHelper.doInventoryScan(ticksHovered, player, player.getStringUUID());
                     drawScanProgress.setCanDraw(true);
                     ticksHovered++;
@@ -74,14 +76,25 @@ public class ThaumometerEvent {
             }
         }
     }
+
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onInventorySlotInteract(final ScreenEvent.Render.Post event) {
         if(event.getScreen() instanceof InventoryScreen || event.getScreen() instanceof AbstractContainerScreen<?> || event.getScreen() instanceof ContainerScreen || event.getScreen() instanceof CreativeModeInventoryScreen){
             drawScreenEvent = event;
-
+            if((isHoldingThaumometer(Minecraft.getInstance().player) || tempSlot != null) && !scanHelper.isCanDoScan()){
+                System.out.println("is done");
+                int color = 0xFF00FF00;  // ARGB color (green)
+                RenderSystem.setShaderColor((float)((color >> 16) & 0xFF) / 255f, (float)((color >> 8) & 0xFF) / 255f, (float)(color & 0xFF) / 255f, (float)((color >> 24) & 0xFF) / 255f);
+                drawScreenEvent.getPoseStack().pushPose();
+                drawScreenEvent.getPoseStack().last();
+                drawScreenEvent.getPoseStack().translate(0,0,301f);
+                RenderSystem.setShaderTexture(0, new ResourceLocation(Thaumcraft.MOD_ID, "textures/aspects/aer.png"));
+                GuiComponent.blit(drawScreenEvent.getPoseStack(), drawScreenEvent.getMouseX() + 10, drawScreenEvent.getMouseY() - 20, 0, 0, 0, 16, 16, 16, 16);
+                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+                drawScreenEvent.getPoseStack().popPose();
+            }
             if(Minecraft.getInstance().player != null && (isHoldingThaumometer(Minecraft.getInstance().player) || tempSlot != null) && scanHelper.isCanDoScan()){
                 drawScanProgress.renderScanningProgress(drawScreenEvent.getPoseStack(), drawScreenEvent.getMouseX(), drawScreenEvent.getMouseY(), ticksHovered / (float) SCAN_TICK);
-
 //                Minecraft.getInstance().font.drawShadow(drawScreenEvent.getPoseStack(),"test", drawScreenEvent.getMouseX() , drawScreenEvent.getMouseY(), new Color(250,0,0).getRGB());
             }
 
@@ -175,7 +188,7 @@ public class ThaumometerEvent {
 //    @SubscribeEvent
 //    public static void itemToolTip(ItemTooltipEvent event) {
 //        System.out.println("hover item");
-//        System.out.println(counter);
+////        System.out.println(counter);
 //
 //    }
 //

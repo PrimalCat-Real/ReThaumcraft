@@ -1,10 +1,8 @@
-package primalcat.thaumcraft.api;
+package primalcat.thaumcraft.aspects;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import primalcat.thaumcraft.init.AspectInit;
-
-import java.util.LinkedHashMap;
 
 public class Aspect implements IAspect{
     private String name;
@@ -12,6 +10,10 @@ public class Aspect implements IAspect{
     private ResourceLocation aspectImage;
     private int blend;
     private Aspect[] components;
+
+    public void setComponents(Aspect[] components) {
+        this.components = components;
+    }
 
     public String getName() {
         return name;

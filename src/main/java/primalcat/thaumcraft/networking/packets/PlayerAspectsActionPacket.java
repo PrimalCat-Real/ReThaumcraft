@@ -5,9 +5,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
-import primalcat.thaumcraft.Thaumcraft;
-import primalcat.thaumcraft.api.Aspect;
-import primalcat.thaumcraft.api.AspectList;
+import primalcat.thaumcraft.aspects.Aspect;
 import primalcat.thaumcraft.common.capability.aspects.PlayerAspectsProvider;
 import primalcat.thaumcraft.init.AspectInit;
 

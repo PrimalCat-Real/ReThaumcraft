@@ -1,11 +1,6 @@
-package primalcat.thaumcraft.api;
+package primalcat.thaumcraft.aspects;
 
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -14,15 +9,25 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import primalcat.thaumcraft.config.ConfigAspects;
 import primalcat.thaumcraft.init.AspectInit;
 
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class AspectHelper {
 
-    public static AspectList getAspectsFromObject(ItemStack itemStack) {
+    public static AspectList getAspectFromObject(ItemStack object){
+        return getAspectsFromItem(object);
+    }
+    public static AspectList getAspectFromObject(Player object){
+        return getAspectsFromPlayer(object);
+    }
+    public static AspectList getAspectFromObject(BlockState object){
+        return getAspectsFromBlock(object);
+    }
+    public static AspectList getAspectFromObject(LivingEntity object){
+        return getAspectsFromEntity(object);
+    }
+    public static AspectList getAspectsFromItem(ItemStack itemStack) {
 //        itemStack.getTags().toList();
 //        String tagName = "forge:ores/emerald";
 //        TagKey<Item> testTag = ItemTags.create(new ResourceLocation(tagName));
@@ -31,12 +36,10 @@ public class AspectHelper {
         System.out.println(itemsAspects.containsValue(itemStack.getItem().toString()));
 
         if(itemsAspects.get(itemStack.getItem().toString()) != null){
-//            LinkedHashMap<Aspect, Integer> tempAspects = AspectInit.getItemAspects().get(itemStack.toString()).aspects;
             LinkedHashMap<Aspect, Integer> tempAspects = AspectInit.getItemAspects().get(itemStack.getItem().toString()).aspects;
             addAspectsFromTarget(objectAspects, tempAspects);
         }else{
             for (var tag: itemStack.getTags().toList()) {
-//                System.out.println(tag.location().toString().equals("forge:ores/emerald"));
                 if(AspectInit.getItemAspects().containsKey(tag.location().toString())){
                     LinkedHashMap<Aspect, Integer> tempAspects = AspectInit.getItemAspects().get(tag.location().toString()).aspects;
                     addAspectsFromTarget(objectAspects, tempAspects);
@@ -61,7 +64,6 @@ public class AspectHelper {
         localizedName = I18n.get(localizedName); // To remove formatting
         LinkedHashMap<String, AspectList> entityAspects = AspectInit.getEntityAspects();
         if(entityAspects.get(localizedName) != null){
-//            LinkedHashMap<Aspect, Integer> tempAspects = AspectInit.getItemAspects().get(itemStack.toString()).aspects;
             LinkedHashMap<Aspect, Integer> tempAspects = AspectInit.getEntityAspects().get(localizedName).aspects;
             addAspectsFromTarget(objectAspects, tempAspects);
         }
@@ -92,6 +94,15 @@ public class AspectHelper {
 //                objectAspects.add(aspect, amount);
 //            }
             addAspectsFromTarget(objectAspects, tempAspects);
+        }else{
+            for (var tag: blockState.getTags().toList()) {
+                if(AspectInit.getItemAspects().containsKey(tag.location().toString())){
+                    LinkedHashMap<Aspect, Integer> tempAspects = AspectInit.getItemAspects().get(tag.location().toString()).aspects;
+                    addAspectsFromTarget(objectAspects, tempAspects);
+                    System.out.println(AspectInit.getItemAspects().get(tag.location().toString()).aspects);
+                }
+
+            }
         }
         return objectAspects;
     }
