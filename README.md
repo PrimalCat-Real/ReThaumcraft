@@ -24,3 +24,8 @@
 - [ ] fix aabb clip result for thaumometer
 - [ ] fix hud for event messages
 - [ ] fix aspects commands
+
+## Additional features
+- [ ] scan aspects from all items in chest on scan
+- [ ] alloy smelter for brass
+- [ ] ignis crystal and inferno on second tier of heater for smelter
