@@ -242,9 +242,8 @@ public class ScanManager {
      * @param player           The player performing the scan.
      * @param scanTargetName   The name of the scanned target.
      * @param scanTargetAspects The aspects of the scanned target.
-     * @param drawScreenEvent   The render event for the screen.
      */
-    public static void doScan(Player player, String scanTargetName, AspectList scanTargetAspects, ScreenEvent.Render.Post drawScreenEvent){
+    public static void doScan(Player player, String scanTargetName, AspectList scanTargetAspects){
         if(ScanManager.isObjectAspectsKnown(scanTargetAspects) && !ScanManager.isScannedObject(scanTargetName)){
             drawInvScanProgress.setCanDraw(true);
 //            if(drawScreenEvent.getScreen() instanceof InventoryScreen || drawScreenEvent.getScreen() instanceof AbstractContainerScreen<?> || drawScreenEvent.getScreen() instanceof ContainerScreen || drawScreenEvent.getScreen() instanceof CreativeModeInventoryScreen){
@@ -257,6 +256,7 @@ public class ScanManager {
             drawInvScanProgress.setCanDraw(false);
             isScanning = false;
         }
+        // @TODO add message that object can not be scanned
         if(hoverTick == ThaumcraftClientConfig.THAUMOMETER_SCAN_DURATION.get() && ScanManager.isObjectAspectsKnown(scanTargetAspects)){
             player.getLevel().playSound(player,player.getX(), player.getY(), player.getZ(), ModSounds.learn.get(), SoundSource.MASTER, 0.4f,0.45f + player.level.random.nextFloat() * 0.1f);
             hoverTick = 0;
