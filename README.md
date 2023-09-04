@@ -8,7 +8,7 @@
 - I don't have permission, so it just project for me
 
 ## Main Priority
-- [ ] Config System
+- [x] Config System
 - [ ] LoadStone, Jei, Curios, GekoLib dependency 
 - [ ] Items aspects
 - [ ] Entities aspects
