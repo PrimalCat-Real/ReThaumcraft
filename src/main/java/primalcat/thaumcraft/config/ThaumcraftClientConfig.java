@@ -6,18 +6,20 @@ public class ThaumcraftClientConfig {
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
 
-    public static final ForgeConfigSpec.ConfigValue<Integer> CITRINE_ORE_VEINS_PER_CHUNK;
-    public static final ForgeConfigSpec.ConfigValue<Integer> CITRINE_ORE_VEIN_SIZE;
+    public static final ForgeConfigSpec.ConfigValue<Integer> PLAYER_PRIMAL_ASPECTS_COUNT;
+    public static final ForgeConfigSpec.ConfigValue<Integer> THAUMOMETER_SCAN_DURATION;
+
 
     static {
         BUILDER.push("Configs for Tutorial Mod");
 
-        CITRINE_ORE_VEINS_PER_CHUNK = BUILDER.comment("How many Citrine Ore Veins spawn per chunk!")
-                .define("Veins Per Chunk", 7);
-        CITRINE_ORE_VEIN_SIZE = BUILDER.comment("How many Citrine Ore Blocks spawn in one Vein!")
-                .defineInRange("Vein Size", 9, 4, 20);
+        PLAYER_PRIMAL_ASPECTS_COUNT = BUILDER.comment("Default aspects that gives to player on firth join")
+                .defineInRange("Default primal aspects", 6, 0, 1000);
+        THAUMOMETER_SCAN_DURATION = BUILDER.comment("Time needed for Thaumometer scan complete")
+                .defineInRange("Thaumometer scan duration", 35, 5, 1000);
 
         BUILDER.pop();
         SPEC = BUILDER.build();
     }
+
 }

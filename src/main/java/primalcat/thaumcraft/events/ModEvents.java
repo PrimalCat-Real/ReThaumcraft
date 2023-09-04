@@ -63,13 +63,7 @@ public class ModEvents {
         new AspectCommand(event.getDispatcher());
         ConfigCommand.register(event.getDispatcher());
     }
-    @SubscribeEvent
-    public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
-        // Get the player's username
-        String playerName = event.getEntity().getDisplayName().getString();
 
-
-    }
 
 //    private static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(Thaumcraft.MOD_ID, "textures/aspects/aer.png");
 //

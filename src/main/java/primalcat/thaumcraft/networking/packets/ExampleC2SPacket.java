@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraftforge.network.NetworkEvent;
+import primalcat.thaumcraft.init.ItemInit;
 
 import java.util.function.Supplier;
 
@@ -27,6 +28,7 @@ public class ExampleC2SPacket {
         context.enqueueWork(() -> {
             // HERE WE ARE ON THE SERVER!
             ServerPlayer player = context.getSender();
+
             ServerLevel level = player.getLevel();
 //            player.getCapability(PlayerAspectsProvider.PLAYER_ASPECTS).ifPresent(test -> {
 ////                test.addTest(3);

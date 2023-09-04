@@ -2,14 +2,12 @@ package primalcat.thaumcraft.mixins;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -21,94 +19,92 @@ import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import primalcat.thaumcraft.Thaumcraft;
 import primalcat.thaumcraft.aspects.Aspect;
+import primalcat.thaumcraft.client.ScanManager;
 import primalcat.thaumcraft.init.ItemInit;
 import primalcat.thaumcraft.utilites.Variables;
+
+import java.util.Map;
 
 @Mixin(ItemInHandRenderer.class)
 public class ItemInHandRendererMixin {
 
+    private static final float SCALE_FACTOR = 0.005F;
+    private static final float INVERSE_SCALE_FACTOR = 1.0F / 0.00579F;
+    private static final int ASPECT_SIZE = 32;
     private static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(Thaumcraft.MOD_ID, "textures/aspects/aer.png");
 
     @Inject(method = "renderItem", at = @At("HEAD"), cancellable = true)
     private void renderFirstPersonItem(LivingEntity livingEntity, ItemStack itemStack, ItemTransforms.TransformType transformType, boolean leftHanded, PoseStack poseStack, MultiBufferSource buffers, int light, CallbackInfo ci) {
-        if (Minecraft.getInstance().getCameraEntity() instanceof Player) {
-            Player player = (Player)Minecraft.getInstance().getCameraEntity();
-            if (player != null && Minecraft.getInstance().options.getCameraType().isFirstPerson() && player.getMainHandItem().getItem().asItem().equals(ItemInit.THAUMOMETER.get().asItem()) ){
-                Font font = Minecraft.getInstance().font;
-                // Custom font rendering code
-                String textToDisplay = "Hello World!";
-                int textWidth = font.width(textToDisplay);
-                int xOffset = -110 - textWidth / 2; // Set  X offset
-                int yOffset = -138; // Set Y offset
-
-                float f = player.walkDist - player.walkDistO;
-                float f1 = -(player.walkDist + f * Variables.partialTick);
-                float f2 = Mth.lerp(Variables.partialTick, player.oBob, player.bob);
-                poseStack.pushPose();
-
-                // Apply scaling
-                poseStack.scale(0.005F, 0.005F, 0.005F);
-
-                // Calculate the inverse scaling factor
-                float inverseScaleFactor = 1.0F / 0.00579F;
-
-                // Apply inverse transformation for translation
-                poseStack.translate((double)(-Mth.sin(f1 * (float)Math.PI) * f2 * 0.5F * inverseScaleFactor), (double)(Math.abs(Mth.cos(f1 * (float)Math.PI) * f2 * inverseScaleFactor)), 0.0D);
-
-                // Apply inverse rotation for Vector3f.ZP.rotationDegrees
-                poseStack.mulPose(Vector3f.ZP.rotationDegrees(-Mth.sin(f1 * (float)Math.PI) * f2 * 3.0F));
-
-                // Apply inverse rotation for Vector3f.XP.rotationDegrees
-                poseStack.mulPose(Vector3f.XP.rotationDegrees(-Math.abs(Mth.cos(f1 * (float)Math.PI - 0.2F) * f2) * 5.0F));
-
-                // rotate text for firth person view
-                poseStack.mulPose(Vector3f.XN.rotationDegrees(180));
-
-                // Render the text
-                font.drawInBatch(textToDisplay, xOffset,yOffset,0x79ff92,false, poseStack.last().pose(),buffers,false, 0, light);
-
-                RenderType renderType = RenderType.text(TEXTURE_LOCATION);
-
-                VertexConsumer vertexConsumer = buffers.getBuffer(renderType);
-
-                // Push transformations onto the PoseStack if needed
-//                poseStack.pushPose();
-//                // Draw vertices
-//                vertexConsumer.vertex(poseStack.last().pose(), xOffset, yOffset, 0)
-//                        .color(1.0F, 1.0F, 1.0F, 1.0F)
-//                        .uv(0F, 0F)
-//                        .endVertex();
-                int i = 1;
-                if(Variables.tempAspects != null){
-                    for (Aspect aspect: Variables.tempAspects.aspects.keySet()) {
-                        int colorValue = aspect.getColor();  // Color value (decimal)
-                        int alpha = (colorValue >> 24) & 0xFF;
-                        int red = (colorValue >> 16) & 0xFF;
-                        int green = (colorValue >> 8) & 0xFF;
-                        int blue = colorValue & 0xFF;
-                        float normalizedAlpha = (float) alpha / 255f;
-                        float normalizedRed = (float) red / 255f;
-                        float normalizedGreen = (float) green / 255f;
-                        float normalizedBlue = (float) blue / 255f;
-                        RenderSystem.setShaderColor(normalizedRed, normalizedGreen, normalizedBlue, normalizedAlpha);
-                        RenderSystem.setShaderTexture(0, aspect.getAspectImage());
-                        GuiComponent.blit(poseStack, xOffset + i * 20, yOffset, 0, 0, 0, 16, 16, 16, 16);
-                        i +=1;
-                    }
-
-                }
-
-
-
-
-
-                // Pop the original transformations
-                poseStack.popPose();
-            }
-
+        if (!(livingEntity instanceof Player player) || player == null || !player.getMainHandItem().getItem().asItem().equals(ItemInit.THAUMOMETER.get().asItem()) || !Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
+            return;
         }
-//        poseStack.pushPose();
+        Font font = Minecraft.getInstance().font;
+        // Custom font rendering code
+        String textToDisplay = ScanManager.getTargetNameForRender();
+        int textWidth = font.width(textToDisplay);
+        int xOffset = -110 - textWidth / 2; // Set  X offset
+        int yOffset = -138; // Set Y offset
 
+        float f = player.walkDist - player.walkDistO;
+        float f1 = -(player.walkDist + f * Variables.partialTick);
+        float f2 = Mth.lerp(Variables.partialTick, player.oBob, player.bob);
+        poseStack.pushPose();
+
+        // Apply scaling
+        poseStack.scale(SCALE_FACTOR, SCALE_FACTOR, SCALE_FACTOR);
+
+        // Calculate the inverse scaling factor
+        float inverseScaleFactor = 1.0F / 0.00579F;
+
+        // Apply inverse transformation for translation
+        poseStack.translate(-Math.sin(f1 * Math.PI) * f2 * 0.5F * INVERSE_SCALE_FACTOR, Math.abs(Math.cos(f1 * Math.PI) * f2 * INVERSE_SCALE_FACTOR), 0.0D);
+//        poseStack.translate((double)(-Mth.sin(f1 * (float)Math.PI) * f2 * 0.5F * inverseScaleFactor), (double)(Math.abs(Mth.cos(f1 * (float)Math.PI) * f2 * inverseScaleFactor)), 0.0D);
+        // Apply inverse rotation for Vector3f.ZP.rotationDegrees
+        poseStack.mulPose(Vector3f.ZP.rotationDegrees(-Mth.sin(f1 * (float)Math.PI) * f2 * 3.0F));
+
+        // Apply inverse rotation for Vector3f.XP.rotationDegrees
+        poseStack.mulPose(Vector3f.XP.rotationDegrees(-Math.abs(Mth.cos(f1 * (float)Math.PI - 0.2F) * f2) * 5.0F));
+
+        // rotate text for firth person view
+        poseStack.mulPose(Vector3f.XN.rotationDegrees(180));
+
+        // Render the text
+        font.drawInBatch(textToDisplay, xOffset, yOffset, 0xFFFFFF, false, poseStack.last().pose(), buffers, false, 0, light);
+
+
+        poseStack.scale(0.5F, 0.5F, 0.5F);
+        int aspectXOffset = -257 - (ASPECT_SIZE / 2) * ScanManager.getTargetAspectsForRender().aspects.size();
+        int aspectYOffset = -220;
+        int countYOffset = (int) (-220 + 32 - font.lineHeight * 0.7);
+        int aspectIndex = 0;
+        for (Map.Entry<Aspect, Integer> entry : ScanManager.getTargetAspectsForRender().aspects.entrySet()) {
+            Aspect aspect = entry.getKey();
+            Integer aspectCount = entry.getValue();
+
+            int colorValue = aspect.getColor();
+            int alpha = (colorValue >> 24) & 0xFF;
+            int red = (colorValue >> 16) & 0xFF;
+            int green = (colorValue >> 8) & 0xFF;
+            int blue = colorValue & 0xFF;
+
+            float normalizedAlpha = (float) alpha / 255f;
+            float normalizedRed = (float) red / 255f;
+            float normalizedGreen = (float) green / 255f;
+            float normalizedBlue = (float) blue / 255f;
+
+            RenderSystem.setShaderColor(normalizedRed, normalizedGreen, normalizedBlue, normalizedAlpha);
+            RenderSystem.setShaderTexture(0, aspect.getAspectImage());
+
+            int xPosition = aspectXOffset + aspectIndex * ASPECT_SIZE + 32;
+            int countXPosition = xPosition + ASPECT_SIZE - font.width(aspectCount.toString());
+
+            GuiComponent.blit(poseStack, xPosition, aspectYOffset, 0, 0, 0, ASPECT_SIZE, ASPECT_SIZE, ASPECT_SIZE, ASPECT_SIZE);
+            font.drawInBatch(aspectCount.toString(), countXPosition, countYOffset, 0xFCFCFC, false, poseStack.last().pose(), buffers, false, 0, light);
+
+            aspectIndex++;
+        }
+        // Pop the original transformations
+        poseStack.popPose();
     }
 }
 

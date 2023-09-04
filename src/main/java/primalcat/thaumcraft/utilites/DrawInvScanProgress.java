@@ -5,7 +5,7 @@ import net.minecraft.client.Minecraft;
 
 import java.awt.*;
 
-public class DrawScanProgress {
+public class DrawInvScanProgress {
     private boolean canDraw = false;
 
     public boolean isCanDraw() {

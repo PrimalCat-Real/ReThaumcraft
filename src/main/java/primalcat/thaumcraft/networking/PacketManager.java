@@ -7,11 +7,9 @@ import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 import primalcat.thaumcraft.Thaumcraft;
-import primalcat.thaumcraft.networking.packets.ExampleC2SPacket;
-import primalcat.thaumcraft.networking.packets.PlayerAspectsActionPacket;
-import primalcat.thaumcraft.networking.packets.SyncPlayerApsectsCapability;
+import primalcat.thaumcraft.networking.packets.*;
 
-public class ModMessages {
+public class PacketManager {
     private static SimpleChannel INSTANCE;
 
     private static int packetId = 0;
@@ -46,6 +44,18 @@ public class ModMessages {
                 .decoder(PlayerAspectsActionPacket::new)
                 .encoder(PlayerAspectsActionPacket::toBytes)
                 .consumerMainThread(PlayerAspectsActionPacket::handle)
+                .add();
+
+        // S2C
+        net.messageBuilder(PlayerTargetsSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(PlayerTargetsSyncS2CPacket::new)
+                .encoder(PlayerTargetsSyncS2CPacket::toBytes)
+                .consumerMainThread(PlayerTargetsSyncS2CPacket::handle)
+                .add();
+        net.messageBuilder(PlayerAspectsSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(PlayerAspectsSyncS2CPacket::new)
+                .encoder(PlayerAspectsSyncS2CPacket::toBytes)
+                .consumerMainThread(PlayerAspectsSyncS2CPacket::handle)
                 .add();
     }
 

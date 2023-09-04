@@ -1,9 +1,11 @@
 package primalcat.thaumcraft;
 
 import com.mojang.logging.LogUtils;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -16,12 +18,13 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.fml.loading.FileUtils;
 import org.slf4j.Logger;
+import primalcat.thaumcraft.client.ClientSetup;
 import primalcat.thaumcraft.config.ThaumcraftClientConfig;
 import primalcat.thaumcraft.config.ThaumcraftCommonConfig;
 import primalcat.thaumcraft.init.BlockInit;
 import primalcat.thaumcraft.init.ConfigInit;
 import primalcat.thaumcraft.init.ItemInit;
-import primalcat.thaumcraft.networking.ModMessages;
+import primalcat.thaumcraft.networking.PacketManager;
 import primalcat.thaumcraft.sound.ModSounds;
 
 import java.util.stream.Collectors;
@@ -36,6 +39,8 @@ public class Thaumcraft {
     public Thaumcraft() {
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
+        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> ClientSetup::onModConstruction);
 
         // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
@@ -57,7 +62,7 @@ public class Thaumcraft {
         BlockInit.register();
 
         // test packet register
-        ModMessages.register();
+        PacketManager.register();
 
 
     }

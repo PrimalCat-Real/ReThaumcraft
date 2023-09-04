@@ -19,13 +19,11 @@ public class GameRenderMixin {
     private void cancelBobView(PoseStack poseStack, float tick, CallbackInfo ci) {
         // Cancel the original bobView method by not executing its content
         if (Minecraft.getInstance().getCameraEntity() instanceof Player) {
-            // Add your custom code here if needed
             if (Minecraft.getInstance().player.getMainHandItem().getItem().asItem().equals(ItemInit.THAUMOMETER.get().asItem()) ){
                 Variables.partialTick = tick;
 //                ci.cancel();
             }
 
         }
-        // You can add custom code here if needed
     }
 }

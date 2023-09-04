@@ -18,7 +18,6 @@ public class SyncPlayerApsectsCapability {
     public SyncPlayerApsectsCapability(Map<String, Integer> aspectMap, String target) {
         this.aspectMap = aspectMap;
         this.targetName = target;
-
     }
 
 

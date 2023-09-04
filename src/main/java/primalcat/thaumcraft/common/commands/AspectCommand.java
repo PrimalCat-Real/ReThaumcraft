@@ -9,16 +9,18 @@ import com.mojang.brigadier.suggestion.SuggestionProvider;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
-import net.minecraft.network.chat.Component;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import primalcat.thaumcraft.common.capability.aspects.PlayerAspectsProvider;
+import primalcat.thaumcraft.aspects.Aspect;
+import primalcat.thaumcraft.aspects.AspectList;
+import primalcat.thaumcraft.client.ScanManager;
 import primalcat.thaumcraft.init.AspectInit;
-import primalcat.thaumcraft.networking.ModMessages;
+import primalcat.thaumcraft.networking.PacketManager;
 import primalcat.thaumcraft.networking.packets.PlayerAspectsActionPacket;
+import primalcat.thaumcraft.networking.packets.PlayerAspectsSyncS2CPacket;
+import primalcat.thaumcraft.networking.packets.PlayerTargetsSyncS2CPacket;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class AspectCommand {
     public AspectCommand(CommandDispatcher<CommandSourceStack> dispatcher) {
@@ -61,7 +63,7 @@ public class AspectCommand {
         Player player = EntityArgument.getPlayer(context, "player");
         String aspect = StringArgumentType.getString(context, "aspect");
         if((AspectInit.checkAspectExist(aspect) || aspect.equals("all")) && player != null){
-            ModMessages.sendToServer(new PlayerAspectsActionPacket(aspect,  0, player.getUUID(), "info"));
+            PacketManager.sendToServer(new PlayerAspectsActionPacket(aspect,  0, player.getUUID(), "info"));
         }
         // TODO: Implement logic to give Thaumcraft aspect to the player
         // Example: ThaumcraftAspectUtil.giveAspect(player, aspect, amount);
@@ -73,7 +75,9 @@ public class AspectCommand {
         String aspect = StringArgumentType.getString(context, "aspect");
         int amount = IntegerArgumentType.getInteger(context, "amount");
         if((AspectInit.checkAspectExist(aspect) || aspect.equals("all")) && player != null){
-            ModMessages.sendToServer(new PlayerAspectsActionPacket(aspect,  Math.abs(amount), player.getUUID(), "give"));
+//            ScanManager.addPlayerAspects(new AspectList().add(AspectInit.getAspect(aspect), Math.abs(amount)));
+            PacketManager.sendToServer(new PlayerAspectsActionPacket(aspect,  Math.abs(amount), player.getUUID(), "give"));
+
         }
         // TODO: Implement logic to give Thaumcraft aspect to the player
         // Example: ThaumcraftAspectUtil.giveAspect(player, aspect, amount);
@@ -88,7 +92,7 @@ public class AspectCommand {
         if((AspectInit.checkAspectExist(aspect) || aspect.equals("all")) && player != null){
 
             System.out.println(player.getUUID());
-            ModMessages.sendToServer(new PlayerAspectsActionPacket(aspect,  Math.abs(amount), player.getUUID(), "clear"));
+            PacketManager.sendToServer(new PlayerAspectsActionPacket(aspect,  Math.abs(amount), player.getUUID(), "clear"));
         }
         // TODO: Implement logic to clear Thaumcraft aspects from the player
         // Example: ThaumcraftAspectUtil.clearAspects(player);

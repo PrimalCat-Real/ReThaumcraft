@@ -54,6 +54,36 @@ public class AspectList implements JsonSerializer<AspectList>, JsonDeserializer<
         sb.append("]");
         return sb.toString();
     }
+    public AspectList merge(AspectList other) {
+        AspectList mergedList = new AspectList();
+
+        // Copy the aspects from the current list to the merged list
+        for (Map.Entry<Aspect, Integer> entry : this.aspects.entrySet()) {
+            Aspect aspect = entry.getKey();
+            int amount = entry.getValue();
+            mergedList.add(aspect, amount);
+        }
+
+        // Merge the aspects from the other list into the merged list
+        for (Map.Entry<Aspect, Integer> entry : other.aspects.entrySet()) {
+            Aspect aspect = entry.getKey();
+            int amount = entry.getValue();
+
+            // If the aspect already exists in the merged list, add the amounts
+            if (mergedList.aspects.containsKey(aspect)) {
+                int existingAmount = mergedList.aspects.get(aspect);
+                mergedList.aspects.put(aspect, existingAmount + amount);
+            } else {
+                // Otherwise, add the aspect to the merged list
+                mergedList.aspects.put(aspect, amount);
+            }
+        }
+
+        return mergedList;
+    }
+    public void clear() {
+        aspects.clear();
+    }
 
     @Override
     public AspectList deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
