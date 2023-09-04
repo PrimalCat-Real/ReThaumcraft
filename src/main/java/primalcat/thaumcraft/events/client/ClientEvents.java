@@ -122,10 +122,13 @@ public class ClientEvents {
                 int i = 1;
                 int b = 1;
                 for (Aspect aspect: renderAspects.aspects.keySet() ) {
-                    int color = 0xFF00FF00;  // ARGB color (green)
-                    RenderSystem.setShaderColor((float)((color >> 16) & 0xFF) / 255f, (float)((color >> 8) & 0xFF) / 255f, (float)(color & 0xFF) / 255f, (float)((color >> 24) & 0xFF) / 255f);
+
+                    RenderSystem.enableBlend();
+                    RenderSystem.depthMask(false);
+                    RenderSystem.defaultBlendFunc();
                     RenderSystem.setShaderTexture(0, new ResourceLocation(Thaumcraft.MOD_ID, "textures/aspects/back.png"));
-                    GuiComponent.blit(drawScreenEvent.getPoseStack(), drawScreenEvent.getMouseX() + 16 * i, drawScreenEvent.getMouseY() - 20, 0, 0, 0, 16, 16, 16, 16);
+                    RenderSystem.setShaderColor(1,1,1,0.8f);
+                    GuiComponent.blit(drawScreenEvent.getPoseStack(), drawScreenEvent.getMouseX() + 16 * i - 3, drawScreenEvent.getMouseY() - 20 - 3, 0, 0, 0, 22, 22, 22, 22);
                     int colorValue = aspect.getColor();  // Color value (decimal)
                     int alpha = (colorValue >> 24) & 0xFF;
                     int red = (colorValue >> 16) & 0xFF;
@@ -135,14 +138,16 @@ public class ClientEvents {
                     float normalizedRed = (float) red / 255f;
                     float normalizedGreen = (float) green / 255f;
                     float normalizedBlue = (float) blue / 255f;
-                    RenderSystem.setShaderColor(normalizedRed, normalizedGreen, normalizedBlue, normalizedAlpha);
+
+                    RenderSystem.depthMask(true);
+                    RenderSystem.setShaderColor(normalizedRed,normalizedGreen,normalizedBlue,1F);
                     RenderSystem.setShaderTexture(0, aspect.getAspectImage());
                     GuiComponent.blit(drawScreenEvent.getPoseStack(), drawScreenEvent.getMouseX() + 16 * i, drawScreenEvent.getMouseY() - 20, 0, 0, 0, 16, 16, 16, 16);
                     i += 1;
                 }
                 drawScreenEvent.getPoseStack().scale(0.5f,0.5f, 1f);
                 for (Integer aspectCount: renderAspects.aspects.values()) {
-                    GuiComponent.drawCenteredString(drawScreenEvent.getPoseStack(), font, aspectCount.toString(), (drawScreenEvent.getMouseX()) * 2 + (32 * b), (drawScreenEvent.getMouseY() - 20 + 16 - font.lineHeight / 2)*2,0xFFFFFF);
+                    GuiComponent.drawCenteredString(drawScreenEvent.getPoseStack(), font, aspectCount.toString(), (drawScreenEvent.getMouseX()) * 2 + (32 * b) + 32 - font.width(aspectCount.toString()) / 2, (drawScreenEvent.getMouseY() - 20 + 16 - font.lineHeight / 2)*2,0xFFFFFF);
                     b +=1;
                 }
                 drawScreenEvent.getPoseStack().popPose();
