@@ -41,9 +41,9 @@ public class ThaumcraftOverlay implements IGuiOverlay {
 
             // Calculate the X-coordinate for centered text
 //        int x = 0 - textWidth;
-            int x = (width - 3) * 2 - textWidth;
+            int x = ((width - 3) - textWidth / 4) * 2;
 
-            int y = (height - 3) * 2 - font.lineHeight - i * font.lineHeight;
+            int y = ((height - 3) - font.lineHeight - i * font.lineHeight) * 2;
 
 
             // Use GuiComponent.drawCenteredString to draw centered text
