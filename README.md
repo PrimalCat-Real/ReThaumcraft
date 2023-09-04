@@ -23,3 +23,4 @@
 - [ ] aspect texture colors
 - [ ] fix aabb clip result for thaumometer
 - [ ] fix hud for event messages
+- [ ] fix aspects commands
