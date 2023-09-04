@@ -73,14 +73,14 @@ public class ClientEvents {
                 if (tempSlot != null && !tempSlot.getItem().getItem().equals(Items.AIR)) {
                     lastScannedSlot = tempSlot;
 //                    System.out.println(tempSlot.getItem().getItem().toString());
-                    ScanManager.doScan(player,tempSlot.getItem().getItem().toString(), ScanManager.getAspectFromObject(tempSlot), drawScreenEvent);
+                    ScanManager.doScan(player,tempSlot.getItem().getItem().toString(), ScanManager.getAspectFromObject(tempSlot));
 //                    drawScanProgress.setCanDraw(true);
 //                    ticksHovered++;
                     lastScannedSlot = tempSlot;
 
                     //ad eligal check
                 } else if (ScanManager.isHoveringPlayer(drawScreenEvent.getScreen(), drawScreenEvent.getMouseX(), drawScreenEvent.getMouseY())) {
-                    ScanManager.doScan(player,player.getUUID().toString(), ScanManager.getAspectFromObject(player), drawScreenEvent);
+                    ScanManager.doScan(player,player.getUUID().toString(), ScanManager.getAspectFromObject(player));
                     lastScannedSlot = tempSlot;
 //                    scanHelper.doInventoryScan(ticksHovered, player, player.getStringUUID());
 //                    drawScanProgress.setCanDraw(true);
