@@ -1,4 +1,4 @@
-package primalcat.thaumcraft.client;
+package primalcat.thaumcraft.events.client;
 
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;

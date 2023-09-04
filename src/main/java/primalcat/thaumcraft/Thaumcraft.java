@@ -18,7 +18,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.fml.loading.FileUtils;
 import org.slf4j.Logger;
-import primalcat.thaumcraft.client.ClientSetup;
+import primalcat.thaumcraft.events.client.ClientSetup;
 import primalcat.thaumcraft.config.ThaumcraftClientConfig;
 import primalcat.thaumcraft.config.ThaumcraftCommonConfig;
 import primalcat.thaumcraft.init.BlockInit;

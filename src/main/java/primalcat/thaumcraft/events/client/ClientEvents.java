@@ -1,4 +1,4 @@
-package primalcat.thaumcraft.client.events;
+package primalcat.thaumcraft.events.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;

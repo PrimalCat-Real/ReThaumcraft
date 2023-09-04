@@ -34,6 +34,9 @@ public class ScanManager {
 
     public static DrawInvScanProgress drawInvScanProgress = new DrawInvScanProgress();
 
+    // variable that needed for render
+    public static float partialTick;
+
     private static int hoverTick = 0;
     private static String targetNameForRender = "";
 

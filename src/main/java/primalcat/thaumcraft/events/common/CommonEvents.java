@@ -1,4 +1,4 @@
-package primalcat.thaumcraft.common.events;
+package primalcat.thaumcraft.events.common;
 
 
 import net.minecraft.client.Minecraft;

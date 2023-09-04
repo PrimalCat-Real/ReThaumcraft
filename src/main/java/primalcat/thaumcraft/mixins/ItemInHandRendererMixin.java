@@ -21,7 +21,6 @@ import primalcat.thaumcraft.Thaumcraft;
 import primalcat.thaumcraft.aspects.Aspect;
 import primalcat.thaumcraft.client.ScanManager;
 import primalcat.thaumcraft.init.ItemInit;
-import primalcat.thaumcraft.utilites.Variables;
 
 import java.util.Map;
 
@@ -46,8 +45,8 @@ public class ItemInHandRendererMixin {
         int yOffset = -138; // Set Y offset
 
         float f = player.walkDist - player.walkDistO;
-        float f1 = -(player.walkDist + f * Variables.partialTick);
-        float f2 = Mth.lerp(Variables.partialTick, player.oBob, player.bob);
+        float f1 = -(player.walkDist + f * ScanManager.partialTick);
+        float f2 = Mth.lerp(ScanManager.partialTick, player.oBob, player.bob);
         poseStack.pushPose();
 
         // Apply scaling
