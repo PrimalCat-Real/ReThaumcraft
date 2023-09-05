@@ -24,6 +24,7 @@
 - [ ] fix aabb clip result for thaumometer
 - [ ] fix hud for event messages
 - [ ] fix aspects commands
+- [ ] sort aspect before render in thaumometer
 
 ## Additional features
 - [ ] scan aspects from all items in chest on scan
