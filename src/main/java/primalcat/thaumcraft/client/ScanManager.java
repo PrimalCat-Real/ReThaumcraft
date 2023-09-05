@@ -16,6 +16,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import primalcat.thaumcraft.aspects.Aspect;
 import primalcat.thaumcraft.aspects.AspectList;
+import primalcat.thaumcraft.client.render.overlays.ThaumcraftOverlay;
 import primalcat.thaumcraft.config.ThaumcraftClientConfig;
 import primalcat.thaumcraft.init.AspectInit;
 import primalcat.thaumcraft.init.ItemInit;
@@ -229,7 +230,7 @@ public class ScanManager {
             ScanManager.addPlayerAspects(scanTargetAspects);
             ScanManager.addPlayerScannedObjects(scanTargetName);
             PacketManager.sendToServer(new SyncPlayerApsectsCapability(scanTargetAspects.toMap(), scanTargetName));
-
+            ThaumcraftOverlay.setAspectsForRenderAnimation(scanTargetAspects);
         }else if (tick % 5 == 0){
             player.getLevel().playSound(player,player.getX(), player.getY(), player.getZ(), ModSounds.cameraticks.get(), SoundSource.MASTER, 0.2f,0.45f + player.level.random.nextFloat() * 0.1f);
         }
