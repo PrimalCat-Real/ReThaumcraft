@@ -6,8 +6,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
 import primalcat.thaumcraft.aspects.Aspect;
+import primalcat.thaumcraft.client.ScanManager;
 import primalcat.thaumcraft.common.capability.aspects.PlayerAspectsProvider;
 import primalcat.thaumcraft.init.AspectInit;
+import primalcat.thaumcraft.networking.PacketManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -73,7 +75,8 @@ public class PlayerAspectsActionPacket {
                             }else{
                                 aspectsProvider.addAspect(aspectName, aspectCount);
                             }
-                            serverPlayer.sendSystemMessage(Component.literal("Player aspects: "+aspectsProvider.getAspects().toString()));
+                            PacketManager.sendToPlayer(new PlayerAspectsSyncS2CPacket(ScanManager.fromMap(aspectsProvider.getAspects())),serverPlayer);
+                            serverPlayer.sendSystemMessage(Component.literal("Player give: "+aspectName + " in count: " + aspectCount));
                             break;
                         case "clear":
                             if(aspectName.equals("all") && aspectCount == 0){
@@ -88,7 +91,8 @@ public class PlayerAspectsActionPacket {
                             }else{
                                 aspectsProvider.addAspect(aspectName, aspectCount);
                             }
-                            serverPlayer.sendSystemMessage(Component.literal("Player aspects: "+aspectsProvider.getAspects().toString()));
+                            serverPlayer.sendSystemMessage(Component.literal("Player clear: "+aspectName + " in count: " + aspectCount));
+                            PacketManager.sendToPlayer(new PlayerAspectsSyncS2CPacket(ScanManager.fromMap(aspectsProvider.getAspects())),serverPlayer);
                             break;
                         case "info":
                             // code block executed if expression equals value2
@@ -97,7 +101,6 @@ public class PlayerAspectsActionPacket {
                             }else{
                                 serverPlayer.sendSystemMessage(Component.literal("Player aspect" + aspectName + ": "+aspectsProvider.getAspectCount(aspectName).toString()));
                             }
-
                             break;
                         // more cases...
                         default:
