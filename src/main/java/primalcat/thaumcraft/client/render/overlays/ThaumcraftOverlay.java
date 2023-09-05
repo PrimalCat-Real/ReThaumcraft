@@ -7,18 +7,37 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
+import org.lwjgl.opengl.GL11;
 import org.w3c.dom.Text;
+import primalcat.thaumcraft.Thaumcraft;
+import primalcat.thaumcraft.aspects.AspectList;
 import primalcat.thaumcraft.client.ScanManager;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class ThaumcraftOverlay implements IGuiOverlay {
 
+    private static int index = 0;
+
     private static List<TextElement> textForRender = new ArrayList<>();
 
+    private static CustomElement test = new CustomElement();
+
+    private static AspectList aspectsForRender = new AspectList();
+
+    public static AspectList getAspectsForRender() {
+        return aspectsForRender;
+    }
+
+    public static void setAspectsForRenderAnimation(AspectList aspectsForRender) {
+        ThaumcraftOverlay.aspectsForRender = aspectsForRender;
+    }
 
     public static void addTextForRender(String text) {
         textForRender.add(new TextElement(text, 0xFFFFFF));
@@ -29,43 +48,70 @@ public class ThaumcraftOverlay implements IGuiOverlay {
     }
     @Override
     public void render(ForgeGui gui, PoseStack poseStack, float partialTicks, int width, int height) {
-
         MultiBufferSource buffers = Minecraft.getInstance().renderBuffers().bufferSource();
-
-
-//        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F); // Set opacity
         Font font = Minecraft.getInstance().font;
-        // Custom font rendering code with yOffset
         poseStack.pushPose();
-//        System.out.println(partialTicks);
-        poseStack.scale(0.5F, 0.5F, 1.0F);
-        int i = 0;
-        for (TextElement textItem: textForRender) {
-            int textWidth = font.width(textItem.getText());
-            float opacity = textItem.getOpacity();
-//            if (textItem.isFadingIn()) {
-//                opacity = Math.min(opacity + partialTicks / 20.0F, 1.0F);
-//                textItem.setOpacity(opacity);
-//                if (opacity >= 1.0F) {
-//                    textItem.setFadingIn(false);
-//                }
-//            }
-            // Calculate the X-coordinate for centered text
-//        int x = 0 - textWidth;
-            int x = ((width - 3) - textWidth / 4) * 2;
-            int y = ((height - 3) - font.lineHeight - i * font.lineHeight) * 2;
-            // Use GuiComponent.drawCenteredString to draw centered text
-//            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, opacity);
-//
-            RenderSystem.enableBlend();
-            RenderSystem.defaultBlendFunc();
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.setShaderColor(.7f, .7f, .8f, 0.25f);
-            GuiComponent.drawCenteredString(poseStack, font, textItem.getText(), x, y, textItem.getColor());
-            i += 1;
+//        poseStack.scale(0.5F, 0.5F, 1.0F);
+//        if (aspectsForRender.aspects.keySet().size() > index){
+//            RenderSystem.enableBlend();
+//            RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+//            RenderSystem.setShaderTexture(0, aspectsForRender.aspects.keySet());
+//            GuiComponent.blit(poseStack, positionX, positionY, 0, 0, 16, 16, 16, 16);
+//        }
+        // TODO add !
+        if(aspectsForRender != null && aspectsForRender.isEmpty()){
+            RenderSystem.disableBlend();
+            RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+            RenderSystem.setShaderTexture(0, new ResourceLocation(Thaumcraft.MOD_ID, "textures/items/thaumonomicon.png"));
+            GuiComponent.blit(poseStack, width - 16 - 8,  8, 0, 0, 16, 16, 16, 16);
         }
-        poseStack.popPose();
 
+        // Initialize the iterator and current index
+//        Iterator<AspectList> textIterator = aspectsForRender.iterator();
+//        int currentIndex = 0;
+//        double v = (height / 2) / Math.pow(width / 2, 2);
+//        int positionX  = test.positionX + width / 2;
+//        int positionY  = (int) (v *  Math.pow((test.positionX - width / 2), 2));
+//
+//        if(positionX <= width-16) {
+//            test.positionX += 1;
+////        System.out.println(positionX);
+//
+//            RenderSystem.enableBlend();
+//            RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+////        RenderSystem.setShaderColor(0.2f, 0.7f, 0.2f, 0.75f);
+//            RenderSystem.setShaderTexture(0, new ResourceLocation(Thaumcraft.MOD_ID, "textures/items/thaumonomicon.png"));
+//            GuiComponent.blit(poseStack, positionX, positionY, 0, 0, 16, 16, 16, 16);
+//        }
+
+
+//        while (textIterator.hasNext()) {
+//
+//        }
+//
+//        for (TextElement textItem : textForRender) {
+//            float opacity = 0;
+//            if(textItem.isFadingIn()){
+//                // Calculate the opacity based on the time elapsed and partialTicks
+//                opacity += partialTicks; // Adjust the divisor for the desired speed
+//
+//                // Ensure opacity stays within the 0.0 to 1.0 range
+//                opacity = Math.min(opacity, 1.0f);
+//            }
+//            int textWidth = font.width(textItem.getText());
+//            int x = ((width - 3) - textWidth / 4) * 2;
+//            int y = ((height - 3) - font.lineHeight - i * font.lineHeight) * 2;
+//
+//            // Convert opacity from 0.0-1.0 to 0-255
+//            int opacityInt = (int) (opacity * 255);
+//            System.out.println(opacity);
+//            if(opacity == 1){
+//                textItem.setFadingIn(false);
+//            }
+//            GuiComponent.drawCenteredString(poseStack, font, textItem.getText(), x, y, new Color(234, 186, 43, opacityInt).getRGB());
+//            i += 1;
+//        }
+        poseStack.popPose();
     }
 
 }
