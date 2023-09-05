@@ -71,65 +71,74 @@ public class AspectInit {
 
 
     // tier 0
-    public static final Aspect AIR = new Aspect("aer", 16777086, null, 1);
-    public static final Aspect EARTH = new Aspect("terra", 5685248, null, 1);
-    public static final Aspect FIRE = new Aspect("ignis", 16734721, null, 1);
-    public static final Aspect WATER = new Aspect("aqua", 3986684, null, 1);
-    public static final Aspect ORDER = new Aspect("ordo", 14013676, null, 1);
-    public static final Aspect ENTROPY = new Aspect("perditio", 4210752, null, 771);
+    public static final Aspect AIR = new Aspect("aer", 0xFFFF7E, null, 1);
+    public static final Aspect TERRA = new Aspect("terra", 0x56C000, null, 1);
+    public static final Aspect IGNIS = new Aspect("ignis", 0xFF5A01, null, 1);
+    public static final Aspect AQUA = new Aspect("aqua", 0x3CD4FC, null, 1);
+    public static final Aspect ORDER = new Aspect("ordo", 0xD5D4EC, null, 1);
+    public static final Aspect PERDITIO = new Aspect("perditio", 0x404040, null, 771);
 
     // tier 1
-    public static final Aspect VOID = new Aspect("vacuos", 8947848, new Aspect[] { AIR, ENTROPY }, 771);
-    public static final Aspect LIGHT = new Aspect("lux", 16774755, new Aspect[] { AIR, FIRE });
-    public static final Aspect WEATHER = new Aspect("tempestas", 16777215, new Aspect[] { AIR, WATER });
-    public static final Aspect MOTION = new Aspect("motus", 13487348, new Aspect[] { AIR, ORDER });
-    public static final Aspect COLD = new Aspect("gelum", 14811135, new Aspect[] { FIRE, ENTROPY });
-    public static final Aspect CRYSTAL = new Aspect("vitreus", 8454143, new Aspect[] { EARTH, ORDER });
-    public static final Aspect LIFE = new Aspect("victus", 14548997, new Aspect[] { WATER, EARTH });
-    public static final Aspect POISON = new Aspect("venenum", 9039872, new Aspect[] { WATER, ENTROPY });
-    public static final Aspect ENERGY = new Aspect("potentia", 12648447, new Aspect[] { ORDER, FIRE });
-    public static final Aspect EXCHANGE = new Aspect("permutatio", 5735255, new Aspect[] { ENTROPY, ORDER });
+    public static final Aspect VACUOS = new Aspect("vacuos", 0x888888, new Aspect[] { AIR, PERDITIO}, 771);
+    public static final Aspect LUX = new Aspect("lux", 0xFFF663, new Aspect[] { AIR, IGNIS});
+    public static final Aspect TEMPESTAS = new Aspect("tempestas", 0xFFFFFF, new Aspect[] { AIR, AQUA});
+    public static final Aspect MOTUS = new Aspect("motus", 0xCDCCF4, new Aspect[] { AIR, ORDER });
+    public static final Aspect GELUM = new Aspect("gelum", 0xE1FFFF, new Aspect[] {IGNIS, PERDITIO});
+    public static final Aspect VITREUS = new Aspect("vitreus", 0x80FFFF, new Aspect[] {TERRA, ORDER });
+    public static final Aspect LIFE = new Aspect("victus", 14548997, new Aspect[] {AQUA, TERRA});
+    public static final Aspect VENENUM = new Aspect("venenum", 9039872, new Aspect[] {AQUA, PERDITIO});
+    public static final Aspect POTENTIA = new Aspect("potentia", 0xC0FFFF, new Aspect[] { ORDER, IGNIS});
+    public static final Aspect PERMUTATIO = new Aspect("permutatio", 0x578357, new Aspect[] {PERDITIO, ORDER });
 
     // tier 2
-    public static final Aspect METAL = new Aspect("metallum", 11908557, new Aspect[] { EARTH, CRYSTAL });
-    public static final Aspect DEATH = new Aspect("mortuus", 8943496, new Aspect[] { LIFE, ENTROPY });
-    public static final Aspect FLIGHT = new Aspect("volatus", 15198167, new Aspect[] { AIR, MOTION });
-    public static final Aspect DARKNESS = new Aspect("tenebrae", 2236962, new Aspect[] { VOID, LIGHT });
-    public static final Aspect SOUL = new Aspect("spiritus", 15461371, new Aspect[] { LIFE, DEATH });
-    public static final Aspect HEAL = new Aspect("sano", 16723764, new Aspect[] { LIFE, ORDER });
-    public static final Aspect TRAVEL = new Aspect("iter", 14702683, new Aspect[] { MOTION, EARTH });
-    public static final Aspect ELDRITCH = new Aspect("alienis", 8409216, new Aspect[] { VOID, DARKNESS });
-    public static final Aspect MAGIC = new Aspect("praecantatio", 9896128, new Aspect[] { VOID, ENERGY });
-    public static final Aspect AURA = new Aspect("auram", 16761087, new Aspect[] { MAGIC, AIR });
-    public static final Aspect TAINT = new Aspect("vitium", 8388736, new Aspect[] { MAGIC, ENTROPY });
-    public static final Aspect SLIME = new Aspect("limus", 129024, new Aspect[] { LIFE, WATER });
-    public static final Aspect PLANT = new Aspect("herba", 109568, new Aspect[] { LIFE, EARTH });
-    public static final Aspect TREE = new Aspect("arbor", 8873265, new Aspect[] { AIR, PLANT });
-    public static final Aspect BEAST = new Aspect("bestia", 10445833, new Aspect[] { MOTION, LIFE });
-    public static final Aspect FLESH = new Aspect("corpus", 15615885, new Aspect[] { DEATH, BEAST });
-    public static final Aspect UNDEAD = new Aspect("exanimis", 3817472, new Aspect[] { MOTION, DEATH });
-    public static final Aspect MIND = new Aspect("cognitio", 16761523, new Aspect[] { FIRE, SOUL });
-    public static final Aspect SENSES = new Aspect("sensus", 1038847, new Aspect[] { AIR, SOUL });
-    public static final Aspect MAN = new Aspect("humanus", 16766912, new Aspect[] { BEAST, MIND });
-    public static final Aspect CROP = new Aspect("messis", 14791537, new Aspect[] { PLANT, MAN });
-    public static final Aspect MINE = new Aspect("perfodio", 14471896, new Aspect[] { MAN, EARTH });
-    public static final Aspect TOOL = new Aspect("instrumentum", 4210926, new Aspect[] { MAN, ORDER });
-    public static final Aspect HARVEST = new Aspect("meto", 15641986, new Aspect[] { CROP, TOOL });
-    public static final Aspect WEAPON = new Aspect("telum", 12603472, new Aspect[] { TOOL, FIRE });
-    public static final Aspect ARMOR = new Aspect("tutamen", 49344, new Aspect[] { TOOL, EARTH });
-    public static final Aspect HUNGER = new Aspect("fames", 10093317, new Aspect[] { LIFE, VOID });
-    public static final Aspect GREED = new Aspect("lucrum", 15121988, new Aspect[] { MAN, HUNGER });
-    public static final Aspect CRAFT = new Aspect("fabrico", 8428928, new Aspect[] { MAN, TOOL });
-    public static final Aspect CLOTH = new Aspect("pannus", 15395522, new Aspect[] { TOOL, BEAST });
-    public static final Aspect MECHANISM = new Aspect("machina", 8421536, new Aspect[] { MOTION, TOOL });
-    public static final Aspect TRAP = new Aspect("vinculum", 10125440, new Aspect[] { MOTION, ENTROPY });
+    public static final Aspect METAL = new Aspect("metallum", 0xB5B5CD, new Aspect[] {TERRA, VITREUS});
+    public static final Aspect MORTUUS = new Aspect("mortuus", 0x887788, new Aspect[] { LIFE, PERDITIO});
+    public static final Aspect VOLATUS = new Aspect("volatus", 0xE7E7D7, new Aspect[] { AIR, MOTUS});
+    public static final Aspect TENEBRAE = new Aspect("tenebrae", 0x222222, new Aspect[] {VACUOS, LUX});
+    public static final Aspect SOUL = new Aspect("spiritus", 0xEBEBFB, new Aspect[] { LIFE, MORTUUS});
+    public static final Aspect SANO = new Aspect("sano", 0xFF2F34, new Aspect[] { LIFE, ORDER });
+    public static final Aspect ITER = new Aspect("iter", 0xE0585B, new Aspect[] {MOTUS, TERRA});
+    public static final Aspect ALIENIS = new Aspect("alienis", 0x805080, new Aspect[] {VACUOS, TENEBRAE});
+    public static final Aspect PRAECANTATIO = new Aspect("praecantatio", 0x9700C0, new Aspect[] {VACUOS, POTENTIA});
+    public static final Aspect AURA = new Aspect("auram", 0xFFC0FF, new Aspect[] {PRAECANTATIO, AIR });
+    public static final Aspect TAINT = new Aspect("vitium", 0x800080, new Aspect[] {PRAECANTATIO, PERDITIO});
+    public static final Aspect LIMUS = new Aspect("limus", 0x1F800, new Aspect[] { LIFE, AQUA});
+    public static final Aspect HERBA = new Aspect("herba", 0x1AC00, new Aspect[] { LIFE, TERRA});
+    public static final Aspect ARBOR = new Aspect("arbor", 0x876531, new Aspect[] { AIR, HERBA});
+    public static final Aspect BEAST = new Aspect("bestia", 0x9F6409, new Aspect[] {MOTUS, LIFE });
+    public static final Aspect FLESH = new Aspect("corpus", 0xEE478D, new Aspect[] {MORTUUS, BEAST });
+    public static final Aspect EXANIMIS = new Aspect("exanimis", 0x2a2e02, new Aspect[] {MOTUS, MORTUUS});
+    public static final Aspect COGNITIO = new Aspect("cognitio", 0xFFC2B3, new Aspect[] {IGNIS, SOUL });
+    public static final Aspect SENSUS = new Aspect("sensus", 0xFD9FF, new Aspect[] { AIR, SOUL });
+    public static final Aspect HUMANUS = new Aspect("humanus", 0xFFD7C0, new Aspect[] { BEAST, COGNITIO});
+    public static final Aspect MESSIS = new Aspect("messis", 0xE1B371, new Aspect[] {HERBA, HUMANUS});
+    public static final Aspect PERFODIO = new Aspect("perfodio", 0xDCD2D8, new Aspect[] {HUMANUS, TERRA});
+    public static final Aspect INSTRUMENTUM = new Aspect("instrumentum", 0x4040EE, new Aspect[] {HUMANUS, ORDER });
+    public static final Aspect METO = new Aspect("meto", 0xEEAD82, new Aspect[] {MESSIS, INSTRUMENTUM});
+    public static final Aspect TELUM = new Aspect("telum", 0xC05050, new Aspect[] {INSTRUMENTUM, IGNIS});
+    public static final Aspect FAMES = new Aspect("fames", 0x9A0305, new Aspect[] { LIFE, VACUOS});
+    public static final Aspect GREED = new Aspect("lucrum", 0xE6BE44, new Aspect[] {HUMANUS, FAMES});
+    public static final Aspect FABRICO = new Aspect("fabrico", 0x809D80, new Aspect[] {HUMANUS, INSTRUMENTUM});
+    public static final Aspect PANNUS = new Aspect("pannus", 0xEAEAC2, new Aspect[] {INSTRUMENTUM, BEAST });
+    public static final Aspect MECHANISM = new Aspect("machina", 0x8080A0, new Aspect[] {MOTUS, INSTRUMENTUM});
+    public static final Aspect TRAP = new Aspect("vinculum", 0x9A8080, new Aspect[] {MOTUS, PERDITIO});
 
-    public static final Aspect AVERSION = new Aspect("aversio",12603472, new Aspect[] {SOUL, ENTROPY});
+    public static final Aspect AVERSION = new Aspect("aversio",0xC05050, new Aspect[] {SOUL, PERDITIO});
 
-    public static final Aspect DESIRE = new Aspect("desiderium",15121988, new Aspect[] {SOUL, VOID});
+    public static final Aspect DESIRE = new Aspect("desiderium",0xE6BE44, new Aspect[] {SOUL, VACUOS});
 
-    public static final Aspect ALCHEMY = new Aspect("alkimia",2337949, new Aspect[] {MAGIC, WATER});
+    public static final Aspect ALCHEMY = new Aspect("alkimia",0x23AC9D, new Aspect[] {PRAECANTATIO, AQUA});
 
-    public static final Aspect PROTECT = new Aspect("praemunio",49344, new Aspect[] {SOUL, EARTH});
+    public static final Aspect TUTAMEN = new Aspect("tutamen",0x00C0C0, new Aspect[] {INSTRUMENTUM, TERRA});
+
+    public static final Aspect INFERNUS = new Aspect("infernus", 0xdb0715, new Aspect[] {IGNIS, PRAECANTATIO});
+    public static final Aspect IRA = new Aspect("ira", 0xed3254, new Aspect[] {TELUM, IGNIS});
+
+    public static final Aspect GULA = new Aspect("gula", 0xa6833d, new Aspect[] {FAMES, VACUOS});
+
+    public static final Aspect SUPERBIA = new Aspect("superbia",0x73298a, new Aspect[] {VOLATUS, VACUOS});
+
+    public static final Aspect INVIDIA = new Aspect("invidia", 0x14e085, new Aspect[] {SENSUS, FAMES});
+    public static final Aspect TEMPUS = new Aspect("tempus", 0x14e085, new Aspect[] {VACUOS, ORDER});
 
 }
