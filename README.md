@@ -8,7 +8,7 @@
 - I don't have permission, so it just project for me
 
 ## Main Priority
-- [ ] Config System
+- [x] Config System
 - [ ] LoadStone, Jei, Curios, GekoLib dependency 
 - [ ] Items aspects
 - [ ] Entities aspects
@@ -24,3 +24,9 @@
 - [ ] fix aabb clip result for thaumometer
 - [ ] fix hud for event messages
 - [ ] fix aspects commands
+- [ ] sort aspect before render in thaumometer
+
+## Additional features
+- [ ] scan aspects from all items in chest on scan
+- [ ] alloy smelter for brass
+- [ ] ignis crystal and inferno on second tier of heater for smelter
