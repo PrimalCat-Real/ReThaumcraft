@@ -14,7 +14,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.client.event.ScreenEvent;
 import primalcat.thaumcraft.aspects.Aspect;
 import primalcat.thaumcraft.aspects.AspectList;
 import primalcat.thaumcraft.config.ThaumcraftClientConfig;
@@ -340,7 +339,7 @@ public class ScanManager {
     public static AspectList getAspectFromPlayer(Player player){
         AspectList objectAspects = new AspectList();
         LinkedHashMap<String, AspectList> entityAspects = AspectInit.getEntityAspects();
-        objectAspects.add(AspectInit.MAN, 4);
+        objectAspects.add(AspectInit.HUMANUS, 4);
         return objectAspects;
     }
     public static AspectList getAspectFromObject(BlockState object){
