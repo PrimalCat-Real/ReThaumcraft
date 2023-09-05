@@ -61,8 +61,8 @@ public class SyncPlayerApsectsCapability {
                 }
 
 //                aspectsProvider.addAspect(AspectInit.FIRE.getName(), 5);
-                player.sendSystemMessage(Component.literal("Received aspect data from client "+aspectsProvider.getAspects().toString()));
-                player.sendSystemMessage(Component.literal("Received target data from client "+aspectsProvider.getTargetsList()));
+//                player.sendSystemMessage(Component.literal("Received aspect data from client "+aspectsProvider.getAspects().toString()));
+//                player.sendSystemMessage(Component.literal("Received target data from client "+aspectsProvider.getTargetsList()));
 
             });
         });
