@@ -9,7 +9,7 @@
 
 ## Main Priority
 - [x] Config System
-- [ ] LoadStone, Jei, Curios, GekoLib dependency 
+- [ ] Lodestar, Jei, Curios, GekoLib dependency 
 - [ ] Items aspects
 - [ ] Entities aspects
 - [ ] Fluids aspects
@@ -23,7 +23,7 @@
 - [x] aspect texture colors
 - [ ] fix aabb clip result for thaumometer
 - [ ] fix hud for event messages
-- [ ] fix aspects commands
+- [x] fix aspects commands
 - [ ] sort aspect before render in thaumometer
 
 ## Additional features
