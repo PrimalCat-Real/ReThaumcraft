@@ -1,0 +1,26 @@
+{
+  "item.thaumometer.name": "Thaumometer",
+
+  "itemGroup.thaumcraft_tab":"Thaumcraft",
+
+
+  "actionText.subtitle.aspects_not_valid0": "§5§oTo understand this you need study something else.",
+  "actionText.subtitle.aspects_not_valid1":"§5§oYour efforts are commendable, but the aspects remain elusive.",
+  "actionText.subtitle.aspects_not_valid2":"§5§oThe mystical aspects remain hidden from your senses.",
+  "actionText.subtitle.unknown_object": "§5§oNothing new can be learned from this",
+  "actionText.subtitle.inv_too_large": "§5§oInventory too large. Only scanning first 100 items.",
+  "actionText.subtitle.research_missing": "§5§oMissing, required research",
+  "actionText.subtitle.scan_completed0": "§5§oYou have learned something new",
+  "actionText.subtitle.scan_completed1":"§5§oYou have discovered (%s)",
+  "actionText.subtitle.scan_completed2":"§5§oA new discovery has been made",
+  "actionText.subtitle.clue_research_successful": "§5§oa clue to new research!",
+  "actionText.subtitle.clue_research_fail": "§5§oYou discovered a clue, but it is lost since you can't record it!",
+  "actionText.subtitle.add_warp": "§5§oYou have gained permanent Warp!§0",
+  "actionText.subtitle.add_warp_temp": "§5§oYou have gained temporary Warp!§0",
+  "actionText.subtitle.add_warp_sticky": "§5§oYou have gained Warp!§0",
+  "actionText.subtitle.remove_warp": "§5§oYou have lost permanent Warp!§0",
+  "actionText.subtitle.remove_warp_sticky": "§5§oYou have lost Warp!§0",
+  "actionText.subtitle.remove_warp_temp": "§5§oYou have lost temporary Warp!§0",
+  "actionText.subtitle.forbidden":"§l§5Forbidden knowledge (%n)§0",
+  "actionText.subtitle.forbidden.level.0":"§5Mostly Harmless"
+}

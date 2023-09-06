@@ -1,8 +1,15 @@
 package primalcat.thaumcraft.client;
 
+import net.minecraft.client.gui.components.SubtitleOverlay;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentUtils;
+import net.minecraft.network.protocol.game.ClientboundSetSubtitleTextPacket;
+import net.minecraft.server.commands.TitleCommand;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,9 +21,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import primalcat.thaumcraft.Thaumcraft;
 import primalcat.thaumcraft.aspects.Aspect;
 import primalcat.thaumcraft.aspects.AspectList;
 import primalcat.thaumcraft.client.render.overlays.ThaumcraftOverlay;
+import primalcat.thaumcraft.common.capability.aspects.PlayerAspectsProvider;
 import primalcat.thaumcraft.config.ThaumcraftClientConfig;
 import primalcat.thaumcraft.init.AspectInit;
 import primalcat.thaumcraft.init.ItemInit;
@@ -230,6 +239,7 @@ public class ScanManager {
             ScanManager.addPlayerAspects(scanTargetAspects);
             ScanManager.addPlayerScannedObjects(scanTargetName);
             PacketManager.sendToServer(new SyncPlayerApsectsCapability(scanTargetAspects.toMap(), scanTargetName));
+            player.displayClientMessage(Component.translatable(("actionText.subtitle.scan_completed" + new Random().nextInt(3))),true);
             ThaumcraftOverlay.setAspectsForRenderAnimation(scanTargetAspects);
         }else if (tick % 5 == 0){
             player.getLevel().playSound(player,player.getX(), player.getY(), player.getZ(), ModSounds.cameraticks.get(), SoundSource.MASTER, 0.2f,0.45f + player.level.random.nextFloat() * 0.1f);
