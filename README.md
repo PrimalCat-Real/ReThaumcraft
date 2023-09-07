@@ -22,9 +22,11 @@
 ## TODO Fixes
 - [x] aspect texture colors
 - [ ] fix aabb clip result for thaumometer
-- [ ] fix hud for event messages
+- [x] fix hud for event messages
 - [x] fix aspects commands
 - [ ] sort aspect before render in thaumometer
+- [ ] fix null error in overlay aspect get animation
+- [ ] optimize thaumometer related render code
 
 ## Additional features
 - [ ] scan aspects from all items in chest on scan
