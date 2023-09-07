@@ -73,7 +73,7 @@ public class CustomElement {
         RenderSystem.setShaderColor(red, green, blue, opacity);
         RenderSystem.setShaderTexture(0,texture);
         GuiComponent.blit(poseStack, currentX, currentY, 0, 0, scale, scale, scale, scale);
-        if(currentX > width - 16 - 8 || currentY > 8){
+        if(currentX > width - 16 - 8 || currentY < 8){
             ThaumcraftOverlay.removeActiveRenderAspect(this);
         }
         index +=1;
