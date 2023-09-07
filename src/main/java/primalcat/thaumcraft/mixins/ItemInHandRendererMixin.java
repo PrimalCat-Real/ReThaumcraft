@@ -73,11 +73,12 @@ public class ItemInHandRendererMixin {
 
 
         poseStack.scale(0.5F, 0.5F, 0.5F);
-        int aspectXOffset = -257 - (ASPECT_SIZE / 2) * ScanManager.getTargetAspectsForRender().aspects.size();
-        int aspectYOffset = -220;
-        int countYOffset = (int) (-220 + 32 - font.lineHeight * 0.7);
-        int aspectIndex = 0;
+
         if(ScanManager.getTargetAspectsForRender() != null){
+            int aspectXOffset = -257 - (ASPECT_SIZE / 2) * ScanManager.getTargetAspectsForRender().aspects.size();
+            int aspectYOffset = -220;
+            int countYOffset = (int) (-220 + 32 - font.lineHeight * 0.7);
+            int aspectIndex = 0;
             for (Map.Entry<Aspect, Integer> entry : ScanManager.getTargetAspectsForRender().aspects.entrySet()) {
                 Aspect aspect = entry.getKey();
                 Integer aspectCount = entry.getValue();
