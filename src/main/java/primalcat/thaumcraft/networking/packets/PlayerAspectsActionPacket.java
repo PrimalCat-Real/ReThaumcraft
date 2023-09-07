@@ -10,6 +10,7 @@ import primalcat.thaumcraft.client.ScanManager;
 import primalcat.thaumcraft.common.capability.aspects.PlayerAspectsProvider;
 import primalcat.thaumcraft.init.AspectInit;
 import primalcat.thaumcraft.networking.PacketManager;
+import primalcat.thaumcraft.utilites.DataManipulation;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -81,7 +82,7 @@ public class PlayerAspectsActionPacket {
                         case "clear":
                             if(aspectName.equals("all") && aspectCount == 0){
                                 HashMap<String, Integer> all = new HashMap<>();
-                                aspectsProvider.setAspects(all);
+                                aspectsProvider.clearAspects();
                             } else if (aspectName.equals("all")) {
                                 Map<String, Integer> allAspects = new HashMap<>();
                                 for (Aspect aspect : AspectInit.getAspectsStringsNames()) {
@@ -89,9 +90,11 @@ public class PlayerAspectsActionPacket {
                                 }
                                 aspectsProvider.subtractMaps(allAspects);
                             }else{
-                                aspectsProvider.addAspect(aspectName, aspectCount);
+                                HashMap<String, Integer> temp = new HashMap<>();
+                                temp.put(aspectName,aspectCount);
+                                aspectsProvider.subtractMaps(temp);
                             }
-                            serverPlayer.sendSystemMessage(Component.literal("Player clear: "+aspectName + " in count: " + aspectCount));
+                            serverPlayer.sendSystemMessage(Component.literal("Test: "+aspectsProvider.getAspectCount(aspectName).toString()));
                             PacketManager.sendToPlayer(new PlayerAspectsSyncS2CPacket(ScanManager.fromMap(aspectsProvider.getAspects())),serverPlayer);
                             break;
                         case "info":
@@ -99,7 +102,7 @@ public class PlayerAspectsActionPacket {
                             if(aspectName.equals("all")){
                                 serverPlayer.sendSystemMessage(Component.literal("Player aspects" + aspectName + ": "+aspectsProvider.getAspects().toString()));
                             }else{
-                                serverPlayer.sendSystemMessage(Component.literal("Player aspect" + aspectName + ": "+aspectsProvider.getAspectCount(aspectName).toString()));
+                                serverPlayer.sendSystemMessage(Component.literal("Player aspect " + aspectName + ": "+aspectsProvider.getAspectCount(aspectName).toString()));
                             }
                             break;
                         // more cases...
@@ -107,7 +110,7 @@ public class PlayerAspectsActionPacket {
                             // code block executed if none of the cases match
                     }
                 }
-//                aspectsProvider.setAspects(all);
+//                aspectsProvider.clearAspects(all);
 //
 //                serverPlayer.sendSystemMessage(Component.literal("Received target data from client "+aspectsProvider.getAspects().toString()));
             });
