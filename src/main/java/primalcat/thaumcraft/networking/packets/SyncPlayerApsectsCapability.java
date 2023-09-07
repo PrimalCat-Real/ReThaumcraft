@@ -53,7 +53,7 @@ public class SyncPlayerApsectsCapability {
             ServerPlayer player = context.getSender();
             player.getCapability(PlayerAspectsProvider.PLAYER_ASPECTS).ifPresent(aspectsProvider -> {
                 // Handle the received data, for example:
-//                aspectsProvider.setAspects(new ArrayList<>(aspectMap.keySet()), aspectMap);
+//                aspectsProvider.clearAspects(new ArrayList<>(aspectMap.keySet()), aspectMap);
 //                System.out.println(aspectsProvider.getTargetsList().contains(targetName) + " " + targetName + " " + aspectsProvider.getTargetsList().toString());
                 if (!aspectsProvider.getTargetsList().contains(targetName)){
                     aspectsProvider.mergeMaps(aspectMap);
