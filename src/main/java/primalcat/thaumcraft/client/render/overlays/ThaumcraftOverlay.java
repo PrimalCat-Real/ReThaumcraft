@@ -64,7 +64,7 @@ public class ThaumcraftOverlay implements IGuiOverlay {
             GuiComponent.blit(poseStack, width - 16 - 8,  8, 0, 0, 16, 16, 16, 16);
             if(fixTick > 10){
                 fixTick = 0;
-                System.out.println("Tick clear");
+                // @TODO need fix Error rendering overlay 'thaumcraft:thaumcraftoverlay' java.util.ConcurrentModificationException: null
                 for (Aspect renderAspect: aspectsForRender.aspects.keySet()) {
                     if( aspectsForRender.aspects.get(renderAspect) != null && aspectsForRender.aspects.get(renderAspect) == 0){
                         aspectsForRender.aspects.remove(renderAspect);
