@@ -37,6 +37,7 @@ public class ItemInHandRendererMixin {
         if (!(livingEntity instanceof Player player) || player == null || !player.getMainHandItem().getItem().asItem().equals(ItemInit.THAUMOMETER.get().asItem()) || !Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
             return;
         }
+
         Font font = Minecraft.getInstance().font;
         // Custom font rendering code
         String textToDisplay = ScanManager.getTargetNameForRender();
@@ -76,59 +77,62 @@ public class ItemInHandRendererMixin {
         int aspectYOffset = -220;
         int countYOffset = (int) (-220 + 32 - font.lineHeight * 0.7);
         int aspectIndex = 0;
-        for (Map.Entry<Aspect, Integer> entry : ScanManager.getTargetAspectsForRender().aspects.entrySet()) {
-            Aspect aspect = entry.getKey();
-            Integer aspectCount = entry.getValue();
+        if(ScanManager.getTargetAspectsForRender() != null){
+            for (Map.Entry<Aspect, Integer> entry : ScanManager.getTargetAspectsForRender().aspects.entrySet()) {
+                Aspect aspect = entry.getKey();
+                Integer aspectCount = entry.getValue();
 
-            int colorValue = aspect.getColor();
-            int alpha = (colorValue >> 24) & 0xFF;
-            int red = (colorValue >> 16) & 0xFF;
-            int green = (colorValue >> 8) & 0xFF;
-            int blue = colorValue & 0xFF;
+                int colorValue = aspect.getColor();
+                int alpha = (colorValue >> 24) & 0xFF;
+                int red = (colorValue >> 16) & 0xFF;
+                int green = (colorValue >> 8) & 0xFF;
+                int blue = colorValue & 0xFF;
 
-            float normalizedAlpha = 1F;
-            float normalizedRed = (float) red / 255f;
-            float normalizedGreen = (float) green / 255f;
-            float normalizedBlue = (float) blue / 255f;
+                float normalizedAlpha = 1F;
+                float normalizedRed = (float) red / 255f;
+                float normalizedGreen = (float) green / 255f;
+                float normalizedBlue = (float) blue / 255f;
 
 //            RenderSystem.setShaderColor(normalizedRed, normalizedGreen, normalizedBlue, normalizedAlpha);
-            RenderSystem.setShaderTexture(0, aspect.getAspectImage());
+                RenderSystem.setShaderTexture(0, aspect.getAspectImage());
 
-            int xPosition = aspectXOffset + aspectIndex * ASPECT_SIZE + 32;
-            int countXPosition = xPosition + ASPECT_SIZE - font.width(aspectCount.toString());
+                int xPosition = aspectXOffset + aspectIndex * ASPECT_SIZE + 32;
+                int countXPosition = xPosition + ASPECT_SIZE - font.width(aspectCount.toString());
 
-            /**
-             * Enabling blending allows you to combine the colors of the rendered object with the colors already
-             * in the frame buffer (the current image on the screen).
-             * This is commonly used for rendering transparent or semi-transparent objects.
-             * When blending is enabled, you can control how the colors are combined using the next method.
-             */
-            RenderSystem.enableBlend();
+                /**
+                 * Enabling blending allows you to combine the colors of the rendered object with the colors already
+                 * in the frame buffer (the current image on the screen).
+                 * This is commonly used for rendering transparent or semi-transparent objects.
+                 * When blending is enabled, you can control how the colors are combined using the next method.
+                 */
+                RenderSystem.enableBlend();
 
-            /**
-             * This method controls whether writes to the depth buffer are enabled or disabled.
-             * When depthMask is set to false, it means that the depth buffer won't be updated with new depth values.
-             * This can be useful when rendering objects that shouldn't affect the depth buffer,
-             * like transparent objects or certain UI elements.
-             */
-            RenderSystem.depthMask(false);
+                /**
+                 * This method controls whether writes to the depth buffer are enabled or disabled.
+                 * When depthMask is set to false, it means that the depth buffer won't be updated with new depth values.
+                 * This can be useful when rendering objects that shouldn't affect the depth buffer,
+                 * like transparent objects or certain UI elements.
+                 */
+                RenderSystem.depthMask(false);
 
-            /**
-             * Этот метод устанавливает функцию смешивания по умолчанию.
-             * Функции наложения определяют, как комбинируются цвета из рендеримого объекта и кадрового буфера.
-             * Функция смешивания "по умолчанию" обычно означает использование наиболее распространенного режима смешивания,
-             * которым часто является альфа-смешивание (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA).
-             * В этом режиме цвета комбинируются на основе значений альфа (прозрачности) пикселей.
-             */
-            RenderSystem.defaultBlendFunc();
+                /**
+                 * Этот метод устанавливает функцию смешивания по умолчанию.
+                 * Функции наложения определяют, как комбинируются цвета из рендеримого объекта и кадрового буфера.
+                 * Функция смешивания "по умолчанию" обычно означает использование наиболее распространенного режима смешивания,
+                 * которым часто является альфа-смешивание (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA).
+                 * В этом режиме цвета комбинируются на основе значений альфа (прозрачности) пикселей.
+                 */
+                RenderSystem.defaultBlendFunc();
 
-            RenderSystem.setShaderColor(normalizedRed, normalizedGreen, normalizedBlue, normalizedAlpha);
-            GuiComponent.blit(poseStack, xPosition, aspectYOffset, 0, 0, 0, ASPECT_SIZE, ASPECT_SIZE, ASPECT_SIZE, ASPECT_SIZE);
-            font.drawInBatch(aspectCount.toString(), countXPosition, countYOffset, 0xFCFCFC, false, poseStack.last().pose(), buffers, false, 0, light);
-            RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-            RenderSystem.disableBlend();
-            RenderSystem.depthMask(true);
-            aspectIndex++;
+                RenderSystem.setShaderColor(normalizedRed, normalizedGreen, normalizedBlue, normalizedAlpha);
+                GuiComponent.blit(poseStack, xPosition, aspectYOffset, 0, 0, 0, ASPECT_SIZE, ASPECT_SIZE, ASPECT_SIZE, ASPECT_SIZE);
+                font.drawInBatch(aspectCount.toString(), countXPosition, countYOffset, 0xFCFCFC, false, poseStack.last().pose(), buffers, false, 0, light);
+                RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+                RenderSystem.disableBlend();
+                RenderSystem.depthMask(true);
+                aspectIndex++;
+        }
+
         }
         // Pop the original transformations
         poseStack.popPose();
