@@ -4,6 +4,7 @@ import net.minecraft.nbt.Tag;
 import primalcat.thaumcraft.aspects.Aspect;
 import primalcat.thaumcraft.aspects.AspectList;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class AspectInit {
@@ -64,6 +65,14 @@ public class AspectInit {
 
     public static Aspect getAspect(String aspectName){
         return  aspectsHolder.get(aspectName);
+    }
+
+    public static Aspect getAspect(Integer index){
+        Set<String> aspectSet = aspectsHolder.keySet();
+        List<String> aspectList = new ArrayList<>(aspectSet);
+        int wrappedIndex = (index % aspectList.size() + aspectList.size()) % aspectList.size();
+//        System.out.println(wrappedIndex + " length " + aspectsArray.length);
+        return getAspect(aspectList.get(wrappedIndex));
     }
     public static void putAspect(String aspectName, Aspect aspect){
         aspectsHolder.put(aspectName, aspect);
