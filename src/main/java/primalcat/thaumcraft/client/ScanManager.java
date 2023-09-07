@@ -384,6 +384,13 @@ public class ScanManager {
         AspectList objectAspects = new AspectList();
         LinkedHashMap<String, AspectList> entityAspects = AspectInit.getEntityAspects();
         objectAspects.add(AspectInit.HUMANUS, 4);
+        String[] parts = player.getUUID().toString().split("-");
+        String secondPart = parts[1];
+        String thirdPart = parts[2];
+        String fourthPart = parts[3];
+        objectAspects.add(AspectInit.getAspect((int) secondPart.charAt(0)), 4);
+        objectAspects.add(AspectInit.getAspect((int) thirdPart.charAt(0)), 4);
+        objectAspects.add(AspectInit.getAspect((int) fourthPart.charAt(0)), 4);
         return objectAspects;
     }
     public static AspectList getAspectFromObject(BlockState object){
