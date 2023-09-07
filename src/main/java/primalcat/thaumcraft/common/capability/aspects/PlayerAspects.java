@@ -1,6 +1,8 @@
 package primalcat.thaumcraft.common.capability.aspects;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import primalcat.thaumcraft.aspects.Aspect;
 import primalcat.thaumcraft.init.AspectInit;
 
@@ -17,6 +19,9 @@ public class PlayerAspects {
         return stringList;
     }
 
+//    public void setTargetsList(List<String> list){
+//        this.stringList = list;
+//    }
     public Map<String, Integer> getAspects() {
         return aspectMap;
     }
@@ -92,6 +97,7 @@ public class PlayerAspects {
             }
         }
     }
+
     public void subtractMaps(Map<String, Integer> targetMap) {
         for (Map.Entry<String, Integer> entry : targetMap.entrySet()) {
             String key = entry.getKey();
@@ -100,7 +106,6 @@ public class PlayerAspects {
             if (aspectMap.containsKey(key)) {
                 int currentValue = aspectMap.get(key);
                 int newValue = currentValue - value;
-
                 // Make sure the new value is not negative
                 if (newValue >= 0) {
                     aspectMap.put(key, newValue);
@@ -118,9 +123,19 @@ public class PlayerAspects {
         }
     }
 
-    public void setAspects(Map<String, Integer> aspectMap) {
+    public void mergeTargets(List<String> valueList){
+        for (String value : valueList) {
+            if (!stringList.contains(value)) {
+                stringList.add(value);
+            }
+        }
+    }
+
+    public void clearTargets() {
+        this.stringList.clear();
+    }
+    public void clearAspects() {
         this.aspectMap.clear();
-//        this.aspectMap.putAll(aspectMap);
     }
 
     public void copyFrom(PlayerAspects source) {
