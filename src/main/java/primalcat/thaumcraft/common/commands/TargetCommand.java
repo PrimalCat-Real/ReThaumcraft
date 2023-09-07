@@ -9,6 +9,7 @@ import com.mojang.brigadier.suggestion.SuggestionProvider;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import primalcat.thaumcraft.aspects.Aspect;
 import primalcat.thaumcraft.client.ScanManager;
@@ -34,25 +35,55 @@ public class TargetCommand {
                                                 )
                                         )
                                 )
+                                .then(Commands.literal("remove")
+                                        .then(Commands.argument("player", EntityArgument.player())
+                                                .then(Commands.argument("target", StringArgumentType.string())
+                                                        .suggests(suggestTargets())
+                                                        .executes(this::removeTarget)
+                                                )
+                                        )
+                                )
                         )
         );
     }
 
-    private int addTarget(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+
+    private int removeTarget(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         Player player = EntityArgument.getPlayer(context, "player");
         String target = StringArgumentType.getString(context, "target");
-        if((!ScanManager.isScannedObject(target) || target.equals("all")) && player != null){
+        if((AspectInit.getItemsAspectsHolderName().contains(target) || target.equals("all")) && player != null){
 //            ScanManager.addPlayerAspects(new AspectList().add(AspectInit.getAspect(aspect), Math.abs(amount)));
-//            List<String> targetList = new ArrayList<>();
+
+            List<String> targetList = new ArrayList<>();
             if(target.equals("all")){
-                PacketManager.sendToServer(new PlayerTargetsSyncC2SPacket(AspectInit.getItemsAspectsHolderName(), player.getUUID()));
-                System.out.println(AspectInit.getItemsAspectsHolderName());
+
+                PacketManager.sendToServer(new PlayerTargetsSyncC2SPacket(targetList, player.getUUID()));
             }
+            player.sendSystemMessage(Component.literal(target + " target cleared"));
+            // @TODO remove for specific target
 //            PacketManager.sendToServer(new PlayerTargetsSyncC2SPacket());
 
         }
-        // TODO: Implement logic to give Thaumcraft aspect to the player
-        // Example: ThaumcraftAspectUtil.giveAspect(player, aspect, amount);
+
+        return 1; // Return 1 to indicate success
+    }
+
+    @SuppressWarnings("Don't work correctly")
+    private int addTarget(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        Player player = EntityArgument.getPlayer(context, "player");
+        String target = StringArgumentType.getString(context, "target");
+        if((AspectInit.getItemsAspectsHolderName().contains(target) || target.equals("all")) && player != null){
+//            ScanManager.addPlayerAspects(new AspectList().add(AspectInit.getAspect(aspect), Math.abs(amount)));
+//            List<String> targetList = new ArrayList<>();
+            // @TODO fix add target
+//            if(target.equals("all")){
+//                PacketManager.sendToServer(new PlayerTargetsSyncC2SPacket(AspectInit.getItemsAspectsHolderName(), player.getUUID()));
+//
+//            }
+            // @TODO add for specific target
+//            PacketManager.sendToServer(new PlayerTargetsSyncC2SPacket());
+
+        }
 
         return 1; // Return 1 to indicate success
     }
