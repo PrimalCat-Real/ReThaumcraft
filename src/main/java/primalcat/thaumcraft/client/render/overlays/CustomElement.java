@@ -16,8 +16,8 @@ public class CustomElement {
     private int width;
     private int height;
 
-    private int spreadX = (int) (Math.random() * 100);
-    private int spreadY = (int) (Math.random() * 100 - 100);
+    private int spreadX = (int) (Math.random() * 50);
+    private int spreadY = (int) (Math.random() * 50 - 50);
 
     public int index = 0;
     public boolean isRender = true;
@@ -34,9 +34,6 @@ public class CustomElement {
     }
 
     public void render(){
-
-//        while (isRender){
-
         int startPointX = width / 2 - 8  - spreadX;
         int startPointY = height / 2 - 8 - spreadY;
 
@@ -76,13 +73,9 @@ public class CustomElement {
         RenderSystem.setShaderColor(red, green, blue, opacity);
         RenderSystem.setShaderTexture(0,texture);
         GuiComponent.blit(poseStack, currentX, currentY, 0, 0, scale, scale, scale, scale);
+        if(currentX > width - 16 - 8 || currentY > 8){
+            ThaumcraftOverlay.removeActiveRenderAspect(this);
+        }
         index +=1;
-//            if (opacity == 0){
-//                this.isRender = false;
-//            }
-//        }
-
-
-
     }
 }

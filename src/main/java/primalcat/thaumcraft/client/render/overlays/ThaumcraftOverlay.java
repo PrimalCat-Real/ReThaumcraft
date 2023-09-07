@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
+import org.lwjgl.openal.SOFTDeferredUpdates;
 import org.lwjgl.opengl.GL11;
 import org.w3c.dom.Text;
 import primalcat.thaumcraft.Thaumcraft;
@@ -36,9 +37,15 @@ public class ThaumcraftOverlay implements IGuiOverlay {
 
     private static float fixTick = 0;
 
+    private static int maxAnimation = 0;
+
     private static AspectList aspectsForRender = new AspectList();
 
     private static List<CustomElement> activeRenderAspects = new ArrayList<>();
+
+    public static void removeActiveRenderAspect(CustomElement element){
+        activeRenderAspects.remove(element);
+    }
 
     public static AspectList getAspectsForRender() {
         return aspectsForRender;
@@ -58,31 +65,44 @@ public class ThaumcraftOverlay implements IGuiOverlay {
     @Override
     public void render(ForgeGui gui, PoseStack poseStack, float partialTicks, int width, int height) {
         poseStack.pushPose();
+        RenderSystem.disableBlend();
+        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+        if(activeRenderAspects != null && !activeRenderAspects.isEmpty()){
+            RenderSystem.setShaderTexture(0, new ResourceLocation(Thaumcraft.MOD_ID, "textures/items/thaumonomicon.png"));
+            gui.blit(poseStack, width - 16 - 8,  8, 0, 0, 16, 16, 16, 16);
+        }
+
         if (aspectsForRender != null && !aspectsForRender.isEmpty()) {
-            RenderSystem.disableBlend();
-            RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-            GuiComponent.blit(poseStack, width - 16 - 8,  8, 0, 0, 16, 16, 16, 16);
-            if(fixTick > 10){
+            if(fixTick > 7){
                 fixTick = 0;
                 // @TODO need fix Error rendering overlay 'thaumcraft:thaumcraftoverlay' java.util.ConcurrentModificationException: null
-                for (Aspect renderAspect: aspectsForRender.aspects.keySet()) {
-                    if( aspectsForRender.aspects.get(renderAspect) != null && aspectsForRender.aspects.get(renderAspect) == 0){
-                        aspectsForRender.aspects.remove(renderAspect);
-                    }
-                    if(aspectsForRender.aspects.get(renderAspect) != null){
-                        aspectsForRender.aspects.put(renderAspect, aspectsForRender.aspects.get(renderAspect) - 1);
-                        activeRenderAspects.add(new CustomElement(renderAspect.getColor(),poseStack, width, height, renderAspect.getAspectImage()));
+                if(maxAnimation <= 20){
+                    for (Aspect renderAspect: aspectsForRender.aspects.keySet()) {
+                        maxAnimation += 1;
+                        if( aspectsForRender.aspects.get(renderAspect) != null && aspectsForRender.aspects.get(renderAspect) == 0){
+                            aspectsForRender.aspects.remove(renderAspect);
+                        }
+                        if(aspectsForRender.aspects.get(renderAspect) != null){
+                            aspectsForRender.aspects.put(renderAspect, aspectsForRender.aspects.get(renderAspect) - 1);
+                            activeRenderAspects.add(new CustomElement(renderAspect.getColor(),poseStack, width, height, renderAspect.getAspectImage()));
+                        }
                     }
                 }
+
+
             }else {
                 fixTick += partialTicks;
             }
         }
         if(activeRenderAspects != null && !activeRenderAspects.isEmpty()){
-            RenderSystem.setShaderTexture(0, new ResourceLocation(Thaumcraft.MOD_ID, "textures/items/thaumonomicon.png"));
             for (CustomElement renderElement: activeRenderAspects) {
                 renderElement.render();
+
             }
+        }
+
+        if(activeRenderAspects.isEmpty()){
+            maxAnimation = 0;
         }
 
         poseStack.popPose();
@@ -90,49 +110,3 @@ public class ThaumcraftOverlay implements IGuiOverlay {
 
 }
 
-
-// Initialize the iterator and current index
-//        Iterator<AspectList> textIterator = aspectsForRender.iterator();
-//        int currentIndex = 0;
-//        double v = (height / 2) / Math.pow(width / 2, 2);
-//        int positionX  = test.positionX + width / 2;
-//        int positionY  = (int) (v *  Math.pow((test.positionX - width / 2), 2));
-//
-//        if(positionX <= width-16) {
-//            test.positionX += 1;
-////        System.out.println(positionX);
-//
-//            RenderSystem.enableBlend();
-//            RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-////        RenderSystem.setShaderColor(0.2f, 0.7f, 0.2f, 0.75f);
-//            RenderSystem.setShaderTexture(0, new ResourceLocation(Thaumcraft.MOD_ID, "textures/items/thaumonomicon.png"));
-//            GuiComponent.blit(poseStack, positionX, positionY, 0, 0, 16, 16, 16, 16);
-//        }
-
-
-//        while (textIterator.hasNext()) {
-//
-//        }
-//
-//        for (TextElement textItem : textForRender) {
-//            float opacity = 0;
-//            if(textItem.isFadingIn()){
-//                // Calculate the opacity based on the time elapsed and partialTicks
-//                opacity += partialTicks; // Adjust the divisor for the desired speed
-//
-//                // Ensure opacity stays within the 0.0 to 1.0 range
-//                opacity = Math.min(opacity, 1.0f);
-//            }
-//            int textWidth = font.width(textItem.getText());
-//            int x = ((width - 3) - textWidth / 4) * 2;
-//            int y = ((height - 3) - font.lineHeight - i * font.lineHeight) * 2;
-//
-//            // Convert opacity from 0.0-1.0 to 0-255
-//            int opacityInt = (int) (opacity * 255);
-//            System.out.println(opacity);
-//            if(opacity == 1){
-//                textItem.setFadingIn(false);
-//            }
-//            GuiComponent.drawCenteredString(poseStack, font, textItem.getText(), x, y, new Color(234, 186, 43, opacityInt).getRGB());
-//            i += 1;
-//        }
