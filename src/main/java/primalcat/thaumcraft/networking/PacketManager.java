@@ -27,6 +27,13 @@ public class PacketManager {
 
         INSTANCE = net;
 
+
+        net.messageBuilder(PlayerTargetsSyncC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(PlayerTargetsSyncC2SPacket::new)
+                .encoder(PlayerTargetsSyncC2SPacket::toBytes)
+                .consumerMainThread(PlayerTargetsSyncC2SPacket::handle)
+                .add();
+
         net.messageBuilder(ExampleC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(ExampleC2SPacket::new)
                 .encoder(ExampleC2SPacket::toBytes)
