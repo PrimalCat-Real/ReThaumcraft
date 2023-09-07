@@ -145,7 +145,7 @@ public class ClientEvents {
                 }
                 drawScreenEvent.getPoseStack().scale(0.5f,0.5f, 1f);
                 for (Integer aspectCount: renderAspects.aspects.values()) {
-                    GuiComponent.drawCenteredString(drawScreenEvent.getPoseStack(), font, aspectCount.toString(), (drawScreenEvent.getMouseX()) * 2 + (34 * b) + 32 - font.width(aspectCount.toString()) / 2, (drawScreenEvent.getMouseY() - 20 + 16 - font.lineHeight / 2)*2,0xFFFFFF);
+                    GuiComponent.drawCenteredString(drawScreenEvent.getPoseStack(), font, aspectCount.toString(), (drawScreenEvent.getMouseX()) * 2 + (36 * b) + 32 - font.width(aspectCount.toString()) / 2, (drawScreenEvent.getMouseY() - 20 + 16 - font.lineHeight / 2)*2,0xFFFFFF);
                     b +=1;
                 }
                 drawScreenEvent.getPoseStack().popPose();
