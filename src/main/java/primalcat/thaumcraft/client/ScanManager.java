@@ -18,6 +18,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
@@ -42,6 +43,16 @@ public class ScanManager {
 //    public static final int SCAN_SOUND_TICKS = 5;
 
     public static DrawInvScanProgress drawInvScanProgress = new DrawInvScanProgress();
+
+    private static boolean isScanDone = false;
+
+    public static boolean isScanDone() {
+        return isScanDone;
+    }
+
+    public static void setScanDone(boolean isScanDone) {
+        ScanManager.isScanDone = isScanDone;
+    }
 
     // variable that needed for render
     public static float partialTick;
@@ -234,6 +245,12 @@ public class ScanManager {
      * @param scanTargetAspects The aspects of the scanned target.
      */
     public static void doScan(Player player, int tick, String scanTargetName, AspectList scanTargetAspects){
+        if(tick == 1 && scanTargetAspects != null && !scanTargetAspects.isEmpty() && !ScanManager.isObjectAspectsKnown(scanTargetAspects)){
+            player.displayClientMessage(Component.translatable(("actionText.subtitle.aspects_not_valid" + new Random().nextInt(3))),true);
+        }
+        if(tick == 1 && scanTargetAspects != null && scanTargetAspects.isEmpty()){
+            player.displayClientMessage(Component.translatable(("actionText.subtitle.unknown_object")),true);
+        }
         if(tick == 1 && scanTargetAspects != null && ScanManager.isObjectAspectsKnown(scanTargetAspects)){
             player.getLevel().playSound(player,player.getX(), player.getY(), player.getZ(), ModSounds.learn.get(), SoundSource.MASTER, 0.4f,0.45f + player.level.random.nextFloat() * 0.1f);
             ScanManager.addPlayerAspects(scanTargetAspects);
@@ -254,7 +271,15 @@ public class ScanManager {
      * @param scanTargetAspects The aspects of the scanned target.
      */
     public static void doScan(Player player, String scanTargetName, AspectList scanTargetAspects){
-        if(ScanManager.isObjectAspectsKnown(scanTargetAspects) && !ScanManager.isScannedObject(scanTargetName)){
+        if(hoverTick == ThaumcraftClientConfig.THAUMOMETER_SCAN_DURATION.get() && scanTargetAspects != null && !scanTargetAspects.isEmpty() && !ScanManager.isObjectAspectsKnown(scanTargetAspects)){
+            player.displayClientMessage(Component.translatable(("actionText.subtitle.aspects_not_valid" + new Random().nextInt(3))),true);
+            isScanDone = true;
+        }
+        if(hoverTick == ThaumcraftClientConfig.THAUMOMETER_SCAN_DURATION.get() && scanTargetAspects != null && scanTargetAspects.isEmpty()){
+            player.displayClientMessage(Component.translatable(("actionText.subtitle.unknown_object")),true);
+            isScanDone = true;
+        }
+        if(!ScanManager.isScannedObject(scanTargetName) && !isScanDone && ScanManager.isMouseHoldingThaumometer(player)){
             drawInvScanProgress.setCanDraw(true);
 //            if(drawScreenEvent.getScreen() instanceof InventoryScreen || drawScreenEvent.getScreen() instanceof AbstractContainerScreen<?> || drawScreenEvent.getScreen() instanceof ContainerScreen || drawScreenEvent.getScreen() instanceof CreativeModeInventoryScreen){
 //                drawInvScanProgress.renderScanningProgress(drawScreenEvent.getPoseStack(), drawScreenEvent.getMouseX(), drawScreenEvent.getMouseY(), hoverTick);
@@ -272,9 +297,12 @@ public class ScanManager {
             hoverTick = 0;
             drawInvScanProgress.setCanDraw(false);
             isScanning = false;
+            isScanDone = true;
             ScanManager.addPlayerAspects(scanTargetAspects);
             ScanManager.addPlayerScannedObjects(scanTargetName);
             PacketManager.sendToServer(new SyncPlayerApsectsCapability(scanTargetAspects.toMap(), scanTargetName));
+            player.displayClientMessage(Component.translatable(("actionText.subtitle.scan_completed" + new Random().nextInt(3))),true);
+            ThaumcraftOverlay.setAspectsForRenderAnimation(scanTargetAspects);
         }else if (hoverTick % 5 == 1){
             player.getLevel().playSound(player,player.getX(), player.getY(), player.getZ(), ModSounds.cameraticks.get(), SoundSource.MASTER, 0.2f,0.45f + player.level.random.nextFloat() * 0.1f);
         }
@@ -328,6 +356,11 @@ public class ScanManager {
 
         return objectAspects;
     }
+
+//    public static boolean checkForSpecialItems(String name){
+//        playerScannedObjects.contains(name);
+//        return false;
+//    }
     public static AspectList getAspectsFromEntity(LivingEntity entity) {
         if(entity instanceof Player player){
             return getAspectFromPlayer(player);

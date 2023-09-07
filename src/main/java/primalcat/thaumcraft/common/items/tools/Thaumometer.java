@@ -1,6 +1,7 @@
 package primalcat.thaumcraft.common.items.tools;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -131,7 +132,11 @@ public class Thaumometer extends ItemBase {
 
         if (entity instanceof Player player) {
             if (!level.isClientSide()) {
-                System.out.println("Item finished using: " + stack.getItem());
+//                if(ScanManager.isObjectAspectsKnown(this.scanTargetAspects)){
+//                    player.displayClientMessage(Component.translatable(("actionText.subtitle.aspects_not_valid" + new Random().nextInt(3))),true);
+//                }
+//                System.out.println("Item finished using: " + stack.getItem());
+
             }
         }
         return stack;

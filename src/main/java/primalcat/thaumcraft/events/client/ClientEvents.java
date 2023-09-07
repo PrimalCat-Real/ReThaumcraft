@@ -70,28 +70,37 @@ public class ClientEvents {
             Player player = Minecraft.getInstance().player;
             if (player != null && ScanManager.isMouseHoldingThaumometer(player) && drawScreenEvent != null) {
                 tempSlot = ((AbstractContainerScreen<?>) drawScreenEvent.getScreen()).getSlotUnderMouse();
-                if (tempSlot != null && !tempSlot.getItem().getItem().equals(Items.AIR)) {
+                if (lastScannedSlot != tempSlot) {
+//                    scanHelper.setCanDoScan(true);
+//                    ticksHovered = 0;
                     lastScannedSlot = tempSlot;
+                    ScanManager.drawInvScanProgress.setCanDraw(false);
+                    ScanManager.setIsScanning(false);
+                    ScanManager.setScanDone(false);
+                    ScanManager.setHoverTick(0);
+//                    drawScanProgress.setCanDraw(false);
+                }
+                if (tempSlot != null && !tempSlot.getItem().getItem().equals(Items.AIR)) {
 //                    System.out.println(tempSlot.getItem().getItem().toString());
+                    lastScannedSlot = tempSlot;
                     ScanManager.doScan(player,tempSlot.getItem().getItem().toString(), ScanManager.getAspectFromObject(tempSlot));
 //                    drawScanProgress.setCanDraw(true);
 //                    ticksHovered++;
-                    lastScannedSlot = tempSlot;
+
 
                     //ad eligal check
                 } else if (ScanManager.isHoveringPlayer(drawScreenEvent.getScreen(), drawScreenEvent.getMouseX(), drawScreenEvent.getMouseY())) {
-                    ScanManager.doScan(player,player.getUUID().toString(), ScanManager.getAspectFromObject(player));
                     lastScannedSlot = tempSlot;
+                    ScanManager.doScan(player,player.getUUID().toString(), ScanManager.getAspectFromObject(player));
+
+
 //                    scanHelper.doInventoryScan(ticksHovered, player, player.getStringUUID());
 //                    drawScanProgress.setCanDraw(true);
 //                    ticksHovered++;
-                } else if (lastScannedSlot != tempSlot) {
-//                    scanHelper.setCanDoScan(true);
-//                    ticksHovered = 0;
-                    ScanManager.setIsScanning(false);
+                } else{
                     ScanManager.setHoverTick(0);
+                    ScanManager.setIsScanning(false);
                     ScanManager.drawInvScanProgress.setCanDraw(false);
-//                    drawScanProgress.setCanDraw(false);
                 }
             }
         }
@@ -128,7 +137,7 @@ public class ClientEvents {
                     RenderSystem.defaultBlendFunc();
                     RenderSystem.setShaderTexture(0, new ResourceLocation(Thaumcraft.MOD_ID, "textures/aspects/back.png"));
                     RenderSystem.setShaderColor(1,1,1,0.8f);
-                    GuiComponent.blit(drawScreenEvent.getPoseStack(), drawScreenEvent.getMouseX() + 16 * i - 3, drawScreenEvent.getMouseY() - 20 - 3, 0, 0, 0, 22, 22, 22, 22);
+                    GuiComponent.blit(drawScreenEvent.getPoseStack(), drawScreenEvent.getMouseX() + 18 * i - 2, drawScreenEvent.getMouseY() - 20 - 2, 0, 0, 0, 20, 20, 20, 20);
                     int colorValue = aspect.getColor();  // Color value (decimal)
                     int alpha = (colorValue >> 24) & 0xFF;
                     int red = (colorValue >> 16) & 0xFF;
@@ -142,12 +151,12 @@ public class ClientEvents {
                     RenderSystem.depthMask(true);
                     RenderSystem.setShaderColor(normalizedRed,normalizedGreen,normalizedBlue,1F);
                     RenderSystem.setShaderTexture(0, aspect.getAspectImage());
-                    GuiComponent.blit(drawScreenEvent.getPoseStack(), drawScreenEvent.getMouseX() + 16 * i, drawScreenEvent.getMouseY() - 20, 0, 0, 0, 16, 16, 16, 16);
+                    GuiComponent.blit(drawScreenEvent.getPoseStack(), drawScreenEvent.getMouseX() + 18 * i, drawScreenEvent.getMouseY() - 20, 0, 0, 0, 16, 16, 16, 16);
                     i += 1;
                 }
                 drawScreenEvent.getPoseStack().scale(0.5f,0.5f, 1f);
                 for (Integer aspectCount: renderAspects.aspects.values()) {
-                    GuiComponent.drawCenteredString(drawScreenEvent.getPoseStack(), font, aspectCount.toString(), (drawScreenEvent.getMouseX()) * 2 + (32 * b) + 32 - font.width(aspectCount.toString()) / 2, (drawScreenEvent.getMouseY() - 20 + 16 - font.lineHeight / 2)*2,0xFFFFFF);
+                    GuiComponent.drawCenteredString(drawScreenEvent.getPoseStack(), font, aspectCount.toString(), (drawScreenEvent.getMouseX()) * 2 + (34 * b) + 32 - font.width(aspectCount.toString()) / 2, (drawScreenEvent.getMouseY() - 20 + 16 - font.lineHeight / 2)*2,0xFFFFFF);
                     b +=1;
                 }
                 drawScreenEvent.getPoseStack().popPose();
