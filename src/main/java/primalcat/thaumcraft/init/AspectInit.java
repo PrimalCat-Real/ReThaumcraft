@@ -3,12 +3,20 @@ package primalcat.thaumcraft.init;
 import net.minecraft.nbt.Tag;
 import primalcat.thaumcraft.aspects.Aspect;
 import primalcat.thaumcraft.aspects.AspectList;
+import primalcat.thaumcraft.utilites.DataManipulation;
 
 import java.lang.reflect.Array;
 import java.util.*;
 
 public class AspectInit {
     private static LinkedHashMap<String, Aspect> aspectsHolder = new LinkedHashMap<>();
+
+    public static List<String> getItemsAspectsHolderName() {
+        List<String> fullAspectsHolderNames = new ArrayList<>();
+        DataManipulation.mergeLists(fullAspectsHolderNames, new ArrayList<>(itemAspects.keySet()));
+        DataManipulation.mergeLists(fullAspectsHolderNames, new ArrayList<>(entityAspects.keySet()));
+        return fullAspectsHolderNames;
+    }
 
     private static LinkedHashMap<String, AspectList> itemAspects = new LinkedHashMap<>();
     private static LinkedHashMap<String, AspectList> entityAspects = new LinkedHashMap<>();
