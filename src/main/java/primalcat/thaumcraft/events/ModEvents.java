@@ -28,6 +28,7 @@ import net.minecraftforge.server.command.ConfigCommand;
 import primalcat.thaumcraft.Thaumcraft;
 import primalcat.thaumcraft.common.capability.aspects.PlayerAspectsProvider;
 import primalcat.thaumcraft.common.commands.AspectCommand;
+import primalcat.thaumcraft.common.commands.TargetCommand;
 
 @Mod.EventBusSubscriber(modid = Thaumcraft.MOD_ID)
 public class ModEvents {
@@ -61,6 +62,7 @@ public class ModEvents {
     @SubscribeEvent
     public static void onCommandRegister(RegisterCommandsEvent event){
         new AspectCommand(event.getDispatcher());
+        new TargetCommand(event.getDispatcher());
         ConfigCommand.register(event.getDispatcher());
     }
 
