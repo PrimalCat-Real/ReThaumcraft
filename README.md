@@ -20,6 +20,7 @@
 - [ ] Researches
 
 ## TODO Fixes
+- [ ] test rewrite aspec system using nbt
 - [x] aspect texture colors
 - [ ] fix aabb clip result for thaumometer
 - [x] fix hud for event messages
