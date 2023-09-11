@@ -1,8 +1,8 @@
-package primalcat.thaumcraft.config;
+package primalcat.thaumcraft.core.config;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 
-public class ThaumcraftClientConfig {
+public class ClientConfig {
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
 

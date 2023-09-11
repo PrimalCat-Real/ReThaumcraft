@@ -1,11 +1,11 @@
-package primalcat.thaumcraft.config;
+package primalcat.thaumcraft.core.config;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class ThaumcraftCommonConfig {
+public class CommonConfig {
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
 
