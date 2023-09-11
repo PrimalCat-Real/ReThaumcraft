@@ -1,4 +1,4 @@
-package primalcat.thaumcraft.mixins;
+package primalcat.thaumcraft.mixin;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
@@ -11,9 +11,9 @@ import java.io.IOException;
 
 
 @Mixin(ItemStack.class)
-public class MixinItemStack {
+public class ItemStackMixin {
 
-    public MixinItemStack(){
+    public ItemStackMixin(){
     }
 
     @Inject(method = "<init>(Lnet/minecraft/world/level/ItemLike;)V", at = @At("RETURN"))

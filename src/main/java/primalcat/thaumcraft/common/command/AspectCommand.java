@@ -1,4 +1,4 @@
-package primalcat.thaumcraft.common.commands;
+package primalcat.thaumcraft.common.command;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -10,17 +10,9 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.world.entity.player.Player;
-import primalcat.thaumcraft.aspects.Aspect;
-import primalcat.thaumcraft.aspects.AspectList;
-import primalcat.thaumcraft.client.ScanManager;
-import primalcat.thaumcraft.init.AspectInit;
-import primalcat.thaumcraft.networking.PacketManager;
-import primalcat.thaumcraft.networking.packets.PlayerAspectsActionPacket;
-import primalcat.thaumcraft.networking.packets.PlayerAspectsSyncS2CPacket;
-import primalcat.thaumcraft.networking.packets.PlayerTargetsSyncS2CPacket;
-
-import java.util.HashMap;
-import java.util.Map;
+import primalcat.thaumcraft.core.registry.AspectRegistry;
+import primalcat.thaumcraft.common.networking.PacketManager;
+import primalcat.thaumcraft.common.networking.packets.PlayerAspectsActionPacket;
 
 public class AspectCommand {
     public AspectCommand(CommandDispatcher<CommandSourceStack> dispatcher) {
@@ -62,7 +54,7 @@ public class AspectCommand {
     private int infoAspect(CommandContext<CommandSourceStack> context) throws CommandSyntaxException{
         Player player = EntityArgument.getPlayer(context, "player");
         String aspect = StringArgumentType.getString(context, "aspect");
-        if((AspectInit.checkAspectExist(aspect) || aspect.equals("all")) && player != null){
+        if((AspectRegistry.checkAspectExist(aspect) || aspect.equals("all")) && player != null){
             PacketManager.sendToServer(new PlayerAspectsActionPacket(aspect,  0, player.getUUID(), "info"));
         }
         // TODO: Implement logic to give Thaumcraft aspect to the player
@@ -74,7 +66,7 @@ public class AspectCommand {
         Player player = EntityArgument.getPlayer(context, "player");
         String aspect = StringArgumentType.getString(context, "aspect");
         int amount = IntegerArgumentType.getInteger(context, "amount");
-        if((AspectInit.checkAspectExist(aspect) || aspect.equals("all")) && player != null){
+        if((AspectRegistry.checkAspectExist(aspect) || aspect.equals("all")) && player != null){
 //            ScanManager.addPlayerAspects(new AspectList().add(AspectInit.getAspect(aspect), Math.abs(amount)));
             PacketManager.sendToServer(new PlayerAspectsActionPacket(aspect,  Math.abs(amount), player.getUUID(), "give"));
 
@@ -89,7 +81,7 @@ public class AspectCommand {
         Player player = EntityArgument.getPlayer(context, "player");
         String aspect = StringArgumentType.getString(context, "aspect");
         int amount = IntegerArgumentType.getInteger(context, "amount");
-        if((AspectInit.checkAspectExist(aspect) || aspect.equals("all")) && player != null){
+        if((AspectRegistry.checkAspectExist(aspect) || aspect.equals("all")) && player != null){
 
             System.out.println(player.getUUID());
             PacketManager.sendToServer(new PlayerAspectsActionPacket(aspect,  Math.abs(amount), player.getUUID(), "clear"));
@@ -103,7 +95,7 @@ public class AspectCommand {
     private static SuggestionProvider<CommandSourceStack> suggestAspects() {
         return (context, builder) -> {
             String remaining = builder.getRemaining().toLowerCase();
-            for (String aspect : AspectInit.getAspectsInitStringsNames()) {
+            for (String aspect : AspectRegistry.getAspectsInitStringsNames()) {
                 if (aspect.toLowerCase().startsWith(remaining)) {
                     builder.suggest(aspect);
                 }

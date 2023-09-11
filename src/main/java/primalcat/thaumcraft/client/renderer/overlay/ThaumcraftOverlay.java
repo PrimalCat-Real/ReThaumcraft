@@ -1,25 +1,14 @@
-package primalcat.thaumcraft.client.render.overlays;
+package primalcat.thaumcraft.client.renderer.overlay;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiComponent;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
-import org.lwjgl.openal.SOFTDeferredUpdates;
-import org.lwjgl.opengl.GL11;
-import org.w3c.dom.Text;
 import primalcat.thaumcraft.Thaumcraft;
-import primalcat.thaumcraft.aspects.Aspect;
-import primalcat.thaumcraft.aspects.AspectList;
-import primalcat.thaumcraft.aspects.AspectListIterator;
-import primalcat.thaumcraft.client.ScanManager;
+import primalcat.thaumcraft.core.aspects.Aspect;
+import primalcat.thaumcraft.core.aspects.AspectList;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 
@@ -68,7 +57,7 @@ public class ThaumcraftOverlay implements IGuiOverlay {
         RenderSystem.disableBlend();
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
         if(activeRenderAspects != null && !activeRenderAspects.isEmpty()){
-            RenderSystem.setShaderTexture(0, new ResourceLocation(Thaumcraft.MOD_ID, "textures/items/thaumonomicon.png"));
+            RenderSystem.setShaderTexture(0, new ResourceLocation(Thaumcraft.MODID, "textures/items/thaumonomicon.png"));
             gui.blit(poseStack, width - 16 - 8,  8, 0, 0, 16, 16, 16, 16);
         }
 

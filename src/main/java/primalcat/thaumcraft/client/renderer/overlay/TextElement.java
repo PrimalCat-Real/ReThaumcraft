@@ -1,4 +1,4 @@
-package primalcat.thaumcraft.client.render.overlays;
+package primalcat.thaumcraft.client.renderer.overlay;
 
 public class TextElement {
     private final String text;

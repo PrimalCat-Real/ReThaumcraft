@@ -1,9 +1,7 @@
-package primalcat.thaumcraft.common.items;
+package primalcat.thaumcraft.common.item;
 
 
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.context.UseOnContext;
 
 public abstract class ItemBase extends Item {
     public ItemBase(Properties props) {

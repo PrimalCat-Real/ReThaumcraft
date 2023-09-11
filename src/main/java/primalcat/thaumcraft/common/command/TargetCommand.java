@@ -1,7 +1,6 @@
-package primalcat.thaumcraft.common.commands;
+package primalcat.thaumcraft.common.command;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -11,13 +10,9 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
-import primalcat.thaumcraft.aspects.Aspect;
-import primalcat.thaumcraft.client.ScanManager;
-import primalcat.thaumcraft.config.ConfigAspects;
-import primalcat.thaumcraft.init.AspectInit;
-import primalcat.thaumcraft.networking.PacketManager;
-import primalcat.thaumcraft.networking.packets.PlayerAspectsActionPacket;
-import primalcat.thaumcraft.networking.packets.PlayerTargetsSyncC2SPacket;
+import primalcat.thaumcraft.core.registry.AspectRegistry;
+import primalcat.thaumcraft.common.networking.PacketManager;
+import primalcat.thaumcraft.common.networking.packets.PlayerTargetsSyncC2SPacket;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +46,7 @@ public class TargetCommand {
     private int removeTarget(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         Player player = EntityArgument.getPlayer(context, "player");
         String target = StringArgumentType.getString(context, "target");
-        if((AspectInit.getItemsAspectsHolderName().contains(target) || target.equals("all")) && player != null){
+        if((AspectRegistry.getItemsAspectsHolderName().contains(target) || target.equals("all")) && player != null){
 //            ScanManager.addPlayerAspects(new AspectList().add(AspectInit.getAspect(aspect), Math.abs(amount)));
 
             List<String> targetList = new ArrayList<>();
@@ -72,7 +67,7 @@ public class TargetCommand {
     private int addTarget(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         Player player = EntityArgument.getPlayer(context, "player");
         String target = StringArgumentType.getString(context, "target");
-        if((AspectInit.getItemsAspectsHolderName().contains(target) || target.equals("all")) && player != null){
+        if((AspectRegistry.getItemsAspectsHolderName().contains(target) || target.equals("all")) && player != null){
 //            ScanManager.addPlayerAspects(new AspectList().add(AspectInit.getAspect(aspect), Math.abs(amount)));
 //            List<String> targetList = new ArrayList<>();
             // @TODO fix add target
@@ -95,7 +90,7 @@ public class TargetCommand {
     private static SuggestionProvider<CommandSourceStack> suggestTargets() {
         return (context, builder) -> {
             String remaining = builder.getRemaining().toLowerCase();
-            for (String target : AspectInit.getItemsAspectsHolderName()) {
+            for (String target : AspectRegistry.getItemsAspectsHolderName()) {
                 if (target.toLowerCase().startsWith(remaining)) {
                     builder.suggest(target);
                 }

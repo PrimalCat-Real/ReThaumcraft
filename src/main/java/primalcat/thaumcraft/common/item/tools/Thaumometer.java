@@ -1,7 +1,8 @@
-package primalcat.thaumcraft.common.items.tools;
+package primalcat.thaumcraft.common.item.tools;
 
+import com.mojang.math.Vector3f;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -17,13 +18,12 @@ import net.minecraft.world.level.block.AirBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 import net.minecraftforge.common.ForgeMod;
-import primalcat.thaumcraft.aspects.AspectList;
+import primalcat.thaumcraft.core.aspects.AspectList;
 import primalcat.thaumcraft.client.ScanManager;
-import primalcat.thaumcraft.client.render.overlays.ThaumcraftOverlay;
-import primalcat.thaumcraft.common.items.ItemBase;
-import primalcat.thaumcraft.config.ThaumcraftClientConfig;
-import primalcat.thaumcraft.networking.PacketManager;
-import primalcat.thaumcraft.networking.packets.SyncPlayerApsectsCapability;
+import primalcat.thaumcraft.client.particle.BlockRuneData;
+import primalcat.thaumcraft.client.renderer.overlay.ThaumcraftOverlay;
+import primalcat.thaumcraft.common.item.ItemBase;
+import primalcat.thaumcraft.core.config.ClientConfig;
 
 import java.util.*;
 
@@ -121,9 +121,48 @@ public class Thaumometer extends ItemBase {
             }
 
             if(this.scanTargetName != null && this.scanTargetAspects != null && tempTarget.equals(this.scanTargetName)){
+                BlockPos position = new BlockPos(0, -58, 0);
                 ScanManager.doScan(player, tick, this.scanTargetName, this.scanTargetAspects);
+                spawnRunesParticles(level,position);
 //                System.out.println(tick + " " + this.scanTargetName);
             }
+        }
+    }
+
+    private void spawnRunesParticles(Level world, BlockPos positionClicked) {
+        if (!world.isClientSide) {
+            return;  // Early exit if we are not on the client side
+        }
+
+        double y = positionClicked.getY() + 1.0F;
+
+        // Define particle speed
+        double xSpeed = 0;
+        double ySpeed = 0;
+        double zSpeed = 0;
+
+        // Define positions and directions for each particle
+        double[][] positions = {
+                {positionClicked.getX() + 0.5d + Math.random() * 0.8 - 0.3, positionClicked.getZ() + 0.99f}, // North
+                {positionClicked.getX() + 0.5d + Math.random() * 0.8 - 0.3, positionClicked.getZ() + 0.01f}, // South
+                {positionClicked.getX() - 1.01f, positionClicked.getZ() + 0.5d + Math.random() * 0.8 - 0.3}, // East
+                {positionClicked.getX() + 2.01f, positionClicked.getZ() + 0.5d + Math.random() * 0.8 - 0.3}  // West
+        };
+
+        Vector3f[] directions = {
+                new Vector3f(0f, 0f, -1.0f), // North
+                new Vector3f(0f, 0f, 1.0f),  // South
+                new Vector3f(1.0f, 0f, 0f),  // East
+                new Vector3f(-1.0f, 0f, 0f)  // West
+        };
+
+        // Spawn particles
+        for (int i = 0; i < positions.length; i++) {
+            double x = positions[i][0];
+            double z = positions[i][1];
+            Vector3f direction = directions[i];
+            ParticleOptions particleData = BlockRuneData.createData(direction.x(), direction.y(), direction.z());
+            world.addParticle(particleData, x, y, z, xSpeed, ySpeed, zSpeed);
         }
     }
 
@@ -144,7 +183,7 @@ public class Thaumometer extends ItemBase {
 
     @Override
     public int getUseDuration(ItemStack itemStack) {
-        return ThaumcraftClientConfig.THAUMOMETER_SCAN_DURATION.get();
+        return ClientConfig.THAUMOMETER_SCAN_DURATION.get();
     }
     @Override
     public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int duration) {

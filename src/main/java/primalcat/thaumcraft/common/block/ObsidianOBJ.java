@@ -1,11 +1,8 @@
-package primalcat.thaumcraft.common.blocks;
+package primalcat.thaumcraft.common.block;
 
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
-import net.minecraftforge.common.property.Properties;
 
 public class ObsidianOBJ extends Block {
     public ObsidianOBJ() {

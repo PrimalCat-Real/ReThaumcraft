@@ -1,28 +1,20 @@
-package primalcat.thaumcraft.common.items.test;
+package primalcat.thaumcraft.common.item.test;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiComponent;
-import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.state.BlockState;
 import primalcat.thaumcraft.Thaumcraft;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.util.Color;
 import software.bernie.geckolib3.geo.render.built.GeoModel;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.renderers.geo.GeoItemRenderer;
 import software.bernie.geckolib3.util.EModelRenderCycle;
 
@@ -55,11 +47,11 @@ public class AnimatedItemRenderer extends GeoItemRenderer<AnimatedItem> {
         Font font = Minecraft.getInstance().font;
 
 
-        RenderSystem.setShaderTexture(0, new ResourceLocation(Thaumcraft.MOD_ID, "geo/animated_item.geo.json"));
-        bufferSource.getBuffer(RenderType.entityTranslucent(new ResourceLocation(Thaumcraft.MOD_ID, "geo/animated_item.geo.json"))); // Set the buffer source for the custom texture
+        RenderSystem.setShaderTexture(0, new ResourceLocation(Thaumcraft.MODID, "geo/animated_item.geo.json"));
+        bufferSource.getBuffer(RenderType.entityTranslucent(new ResourceLocation(Thaumcraft.MODID, "geo/animated_item.geo.json"))); // Set the buffer source for the custom texture
 
         // Load the PNG texture using the TextureAtlasSprite class
-        ResourceLocation textureLocation = new ResourceLocation(Thaumcraft.MOD_ID, "textures/items/amber.png");
+        ResourceLocation textureLocation = new ResourceLocation(Thaumcraft.MODID, "textures/items/amber.png");
 
         // Save the current matrix and scale for smaller text
         int yOffset = -20;

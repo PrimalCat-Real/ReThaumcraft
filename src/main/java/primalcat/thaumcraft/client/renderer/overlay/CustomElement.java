@@ -1,11 +1,9 @@
-package primalcat.thaumcraft.client.render.overlays;
+package primalcat.thaumcraft.client.renderer.overlay;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
-import primalcat.thaumcraft.Thaumcraft;
 
 public class CustomElement {
 

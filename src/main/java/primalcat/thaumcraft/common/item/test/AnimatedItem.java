@@ -1,9 +1,8 @@
-package primalcat.thaumcraft.common.items.test;
+package primalcat.thaumcraft.common.item.test;
 
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import primalcat.thaumcraft.common.items.ItemBase;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -12,7 +11,6 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.core.manager.InstancedAnimationFactory;
-import software.bernie.geckolib3.renderers.geo.GeoItemRenderer;
 
 import java.util.function.Consumer;
 
