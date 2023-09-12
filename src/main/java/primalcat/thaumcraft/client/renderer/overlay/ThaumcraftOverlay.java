@@ -17,9 +17,6 @@ public class ThaumcraftOverlay implements IGuiOverlay {
 
     private static int MAX_ASPECT_ANIMATION_COUNT = 20;
 
-    private static List<TextElement> textForRender = new ArrayList<>();
-
-
     private static Iterator<Map.Entry<Aspect, Integer>> iterator;
 
     private static float fixTick = 0;
@@ -37,10 +34,6 @@ public class ThaumcraftOverlay implements IGuiOverlay {
     public static void setAspectsForRenderAnimation(AspectList aspectsForRender) {
         ThaumcraftOverlay.aspectsForRender = aspectsForRender;
         iterator = aspectsForRender.aspects.entrySet().iterator();
-    }
-
-    public static void addTextForRender(String text) {
-        textForRender.add(new TextElement(text, 0xFFFFFF));
     }
 
     @Override

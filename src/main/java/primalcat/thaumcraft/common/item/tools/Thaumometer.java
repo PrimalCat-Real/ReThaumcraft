@@ -34,8 +34,6 @@ public class Thaumometer extends ItemBase {
 
     private AspectList scanTargetAspects;
 
-
-
     private UseOnContext tempContext;
     private double reachDistance;
 
@@ -59,14 +57,12 @@ public class Thaumometer extends ItemBase {
             }
 
             if (!ScanManager.isScannedObject(this.scanTargetName)) {
-                ThaumcraftOverlay.addTextForRender(this.scanTargetName);
                 player.startUsingItem(hand);
             }
         }
 
         return InteractionResultHolder.pass(player.getItemInHand(hand));
     }
-
 
 
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int tick, boolean p_41408_) {

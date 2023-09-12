@@ -21,7 +21,6 @@ public class AspectAnimationItem {
     private int spreadY = (int) (Math.random() * 50 - 50);
 
     public int index = 0;
-    public boolean isRender = true;
     public ResourceLocation texture;
 
 //    public ResourceLocation texture = new ResourceLocation(Thaumcraft.MOD_ID, "textures/items/thaumonomicon.png");
@@ -49,8 +48,8 @@ public class AspectAnimationItem {
 // Calculate the position along the quadratic Bézier curve
         float t = (float) index / maxIndex;
         float u = 1 - t;
-        int currentX = (int) (u * u * startPointX + 2 * u * t * controlPointX + t * t * endPointX);
-        int currentY = (int) (u * u * startPointY + 2 * u * t * controlPointY + t * t * endPointY);
+        currentX = (int) (u * u * startPointX + 2 * u * t * controlPointX + t * t * endPointX);
+        currentY = (int) (u * u * startPointY + 2 * u * t * controlPointY + t * t * endPointY);
 
 // Clamp currentX and currentY to stay within bounds
         currentX = Math.max(0, Math.min(currentX, 1920));
@@ -60,10 +59,10 @@ public class AspectAnimationItem {
         int scale;
         float opacity;
         if (index < 50) {
-            opacity = 0.5f + ((float) index / 50.0f) * 0.5f; // Change opacity from 0.5 to 1
+            opacity = 0.2f + ((float) index / 50.0f) * 0.6f; // Change opacity from 0.2 to 0.8
             scale = (int) (16 + (float) index * 0.16f);
         } else {
-            opacity = 1.0f - ((float) (index - 50) / 50.0f) * 0.5f; // Change opacity from 1 to 0
+            opacity = 0.8f - ((float) (index - 50) / 50.0f) * 0.8f; // Change opacity from 0.8 to 0
             scale = (int) (20 - (float) (index - 50) * 0.32f); // Change scale from 20 to 8
         }
         RenderSystem.enableBlend();
