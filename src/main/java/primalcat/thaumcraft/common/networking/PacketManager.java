@@ -8,6 +8,7 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 import primalcat.thaumcraft.Thaumcraft;
 import primalcat.thaumcraft.common.networking.packets.*;
+import primalcat.thaumcraft.common.networking.packets.scan.*;
 
 public class PacketManager {
     private static SimpleChannel INSTANCE;
@@ -28,10 +29,10 @@ public class PacketManager {
         INSTANCE = net;
 
 
-        net.messageBuilder(PlayerTargetsSyncC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(PlayerTargetsSyncC2SPacket::new)
-                .encoder(PlayerTargetsSyncC2SPacket::toBytes)
-                .consumerMainThread(PlayerTargetsSyncC2SPacket::handle)
+        net.messageBuilder(PlayerTargetSyncC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(PlayerTargetSyncC2SPacket::new)
+                .encoder(PlayerTargetSyncC2SPacket::toBytes)
+                .consumerMainThread(PlayerTargetSyncC2SPacket::handle)
                 .add();
 
         net.messageBuilder(ExampleC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
@@ -41,10 +42,10 @@ public class PacketManager {
                 .add();
 
 
-        net.messageBuilder(SyncPlayerApsectsCapability.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(SyncPlayerApsectsCapability::new)
-                .encoder(SyncPlayerApsectsCapability::toBytes)
-                .consumerMainThread(SyncPlayerApsectsCapability::handle)
+        net.messageBuilder(PlayerAspectSyncC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(PlayerAspectSyncC2SPacket::new)
+                .encoder(PlayerAspectSyncC2SPacket::toBytes)
+                .consumerMainThread(PlayerAspectSyncC2SPacket::handle)
                 .add();
 
         net.messageBuilder(PlayerAspectsActionPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
