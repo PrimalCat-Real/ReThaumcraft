@@ -1,8 +1,8 @@
-package primalcat.thaumcraft.common.networking.packets;
+package primalcat.thaumcraft.common.networking.packets.scan;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
-import primalcat.thaumcraft.client.ScanManager;
+import primalcat.thaumcraft.core.scan.ScanManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +11,11 @@ import java.util.function.Supplier;
 public class PlayerTargetsSyncS2CPacket {
     private List<String> targets = new ArrayList<>();
 
+    public PlayerTargetsSyncS2CPacket(String target) {
+        List<String> targets = new ArrayList<>();
+        targets.add(target);
+        this.targets = targets;
+    }
     public PlayerTargetsSyncS2CPacket(List<String> targets) {
         this.targets = targets;
     }

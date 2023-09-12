@@ -12,7 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import primalcat.thaumcraft.core.registry.AspectRegistry;
 import primalcat.thaumcraft.common.networking.PacketManager;
-import primalcat.thaumcraft.common.networking.packets.PlayerTargetsSyncC2SPacket;
+import primalcat.thaumcraft.common.networking.packets.scan.PlayerTargetSyncC2SPacket;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +52,7 @@ public class TargetCommand {
             List<String> targetList = new ArrayList<>();
             if(target.equals("all")){
 
-                PacketManager.sendToServer(new PlayerTargetsSyncC2SPacket(targetList, player.getUUID()));
+                PacketManager.sendToServer(new PlayerTargetSyncC2SPacket(targetList, player.getUUID()));
             }
             player.sendSystemMessage(Component.literal(target + " target cleared"));
             // @TODO remove for specific target

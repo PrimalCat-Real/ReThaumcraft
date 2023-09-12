@@ -1,4 +1,4 @@
-package primalcat.thaumcraft.common.networking.packets;
+package primalcat.thaumcraft.common.networking.packets.scan;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.MinecraftServer;
@@ -12,16 +12,23 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-public class PlayerTargetsSyncC2SPacket {
+public class PlayerTargetSyncC2SPacket {
 
     private List<String> targets = new ArrayList<>();
     private UUID playerUUID;
-    public PlayerTargetsSyncC2SPacket(List<String> targets,  UUID playerUUID) {
+
+    public PlayerTargetSyncC2SPacket(String target, UUID playerUUID) {
+        List<String> targets = new ArrayList<>();
+        targets.add(target);
+        this.targets = targets;
+        this.playerUUID = playerUUID;
+    }
+    public PlayerTargetSyncC2SPacket(List<String> targets, UUID playerUUID) {
         this.targets = targets;
         this.playerUUID = playerUUID;
     }
 
-    public PlayerTargetsSyncC2SPacket(FriendlyByteBuf buf) {
+    public PlayerTargetSyncC2SPacket(FriendlyByteBuf buf) {
         int targetCount = buf.readInt();
         for (int i = 0; i < targetCount; i++) {
             targets.add(buf.readUtf());

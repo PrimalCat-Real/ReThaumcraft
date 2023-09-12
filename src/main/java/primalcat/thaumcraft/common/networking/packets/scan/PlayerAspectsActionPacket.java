@@ -1,4 +1,4 @@
-package primalcat.thaumcraft.common.networking.packets;
+package primalcat.thaumcraft.common.networking.packets.scan;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -7,7 +7,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
 import primalcat.thaumcraft.common.networking.PacketManager;
 import primalcat.thaumcraft.core.aspects.Aspect;
-import primalcat.thaumcraft.client.ScanManager;
+import primalcat.thaumcraft.core.scan.ScanManager;
 import primalcat.thaumcraft.common.capability.aspects.PlayerAspectsProvider;
 import primalcat.thaumcraft.core.registry.AspectRegistry;
 

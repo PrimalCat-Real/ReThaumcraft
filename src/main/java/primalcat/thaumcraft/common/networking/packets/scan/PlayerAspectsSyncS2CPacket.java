@@ -1,9 +1,9 @@
-package primalcat.thaumcraft.common.networking.packets;
+package primalcat.thaumcraft.common.networking.packets.scan;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 import primalcat.thaumcraft.core.aspects.AspectList;
-import primalcat.thaumcraft.client.ScanManager;
+import primalcat.thaumcraft.core.scan.ScanManager;
 
 import java.util.HashMap;
 import java.util.Map;
