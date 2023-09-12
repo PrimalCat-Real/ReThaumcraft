@@ -1,7 +1,6 @@
 package primalcat.thaumcraft.common.item.tools;
 
 import com.mojang.math.Vector3f;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.InteractionHand;
@@ -20,7 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 import net.minecraftforge.common.ForgeMod;
 import primalcat.thaumcraft.core.aspects.AspectList;
-import primalcat.thaumcraft.client.ScanManager;
+import primalcat.thaumcraft.core.scan.ScanManager;
 import primalcat.thaumcraft.client.particle.BlockRuneData;
 import primalcat.thaumcraft.common.item.ItemBase;
 import primalcat.thaumcraft.core.config.ClientConfig;
@@ -35,7 +34,6 @@ public class Thaumometer extends ItemBase {
     private AspectList scanTargetAspects;
 
     private UseOnContext tempContext;
-    private static double reachDistance = Minecraft.getInstance().player.getAttribute(ForgeMod.REACH_DISTANCE.get()).getValue();
 
     public Thaumometer() {
         super(new Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
@@ -193,6 +191,7 @@ public class Thaumometer extends ItemBase {
     public static BlockState getTargetBlock(Player player, Level level){
         if(player != null){
             Vec3 position = player.getEyePosition(1.0F);
+            double reachDistance = player.getAttribute(ForgeMod.REACH_DISTANCE.get()).getValue();
             Vec3 look = player.getViewVector(1.0F).scale(reachDistance).add(position);
 
             ClipContext clipContext = new ClipContext(position, look, ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY, player);
@@ -211,6 +210,8 @@ public class Thaumometer extends ItemBase {
     public static ItemEntity getTargetEntityItem(Player player) {
         // Get the player's eye position and reach distance
         Vec3 position = player.getEyePosition(1.0F);
+        double reachDistance = player.getAttribute(ForgeMod.REACH_DISTANCE.get()).getValue();
+
         // Calculate the look direction
         Vec3 look = player.getViewVector(1.0F).scale(reachDistance).add(position);
 
@@ -243,6 +244,7 @@ public class Thaumometer extends ItemBase {
     }
     public static LivingEntity getTargetEntity(Player player) {
         Vec3 position = player.getEyePosition(1.0F);
+        double reachDistance = player.getAttribute(ForgeMod.REACH_DISTANCE.get()).getValue();
 
         Vec3 look = player.getViewVector(1.0F).scale(reachDistance).add(position);
         AABB bb2 = new AABB(position, look).inflate(0.1F);;

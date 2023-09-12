@@ -11,8 +11,8 @@ import primalcat.thaumcraft.common.capability.aspects.PlayerAspectsProvider;
 import primalcat.thaumcraft.core.config.ClientConfig;
 import primalcat.thaumcraft.core.registry.AspectRegistry;
 import primalcat.thaumcraft.common.networking.PacketManager;
-import primalcat.thaumcraft.common.networking.packets.PlayerAspectsSyncS2CPacket;
-import primalcat.thaumcraft.common.networking.packets.PlayerTargetsSyncS2CPacket;
+import primalcat.thaumcraft.common.networking.packets.scan.PlayerAspectsSyncS2CPacket;
+import primalcat.thaumcraft.common.networking.packets.scan.PlayerTargetsSyncS2CPacket;
 
 @Mod.EventBusSubscriber(modid = Thaumcraft.MODID)
 public class CommonEvents {

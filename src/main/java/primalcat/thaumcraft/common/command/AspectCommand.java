@@ -12,7 +12,7 @@ import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.world.entity.player.Player;
 import primalcat.thaumcraft.core.registry.AspectRegistry;
 import primalcat.thaumcraft.common.networking.PacketManager;
-import primalcat.thaumcraft.common.networking.packets.PlayerAspectsActionPacket;
+import primalcat.thaumcraft.common.networking.packets.scan.PlayerAspectsActionPacket;
 
 public class AspectCommand {
     public AspectCommand(CommandDispatcher<CommandSourceStack> dispatcher) {

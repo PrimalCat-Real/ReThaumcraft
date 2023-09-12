@@ -26,7 +26,7 @@ import net.minecraftforge.fml.common.Mod;
 import primalcat.thaumcraft.Thaumcraft;
 import primalcat.thaumcraft.core.aspects.Aspect;
 import primalcat.thaumcraft.core.aspects.AspectList;
-import primalcat.thaumcraft.client.ScanManager;
+import primalcat.thaumcraft.core.scan.ScanManager;
 import primalcat.thaumcraft.core.config.ClientConfig;
 import primalcat.thaumcraft.core.registry.ItemRegistry;
 

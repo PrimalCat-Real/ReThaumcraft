@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import primalcat.thaumcraft.Thaumcraft;
 import primalcat.thaumcraft.core.aspects.Aspect;
-import primalcat.thaumcraft.client.ScanManager;
+import primalcat.thaumcraft.core.scan.ScanManager;
 import primalcat.thaumcraft.core.registry.ItemRegistry;
 
 import java.util.Map;

@@ -1,4 +1,4 @@
-package primalcat.thaumcraft.client;
+package primalcat.thaumcraft.core.scan;
 
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
@@ -15,6 +15,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import primalcat.thaumcraft.common.networking.packets.scan.PlayerAspectSyncC2SPacket;
+import primalcat.thaumcraft.common.networking.packets.scan.PlayerTargetSyncC2SPacket;
 import primalcat.thaumcraft.core.aspects.Aspect;
 import primalcat.thaumcraft.core.aspects.AspectList;
 import primalcat.thaumcraft.client.renderer.overlay.ThaumcraftOverlay;
@@ -22,7 +24,6 @@ import primalcat.thaumcraft.core.config.ClientConfig;
 import primalcat.thaumcraft.core.registry.AspectRegistry;
 import primalcat.thaumcraft.core.registry.ItemRegistry;
 import primalcat.thaumcraft.common.networking.PacketManager;
-import primalcat.thaumcraft.common.networking.packets.SyncPlayerApsectsCapability;
 import primalcat.thaumcraft.core.registry.SoundRegistry;
 import primalcat.thaumcraft.client.renderer.overlay.DrawInvScanProgress;
 
@@ -246,7 +247,8 @@ public class ScanManager {
             player.getLevel().playSound(player,player.getX(), player.getY(), player.getZ(), SoundRegistry.learn.get(), SoundSource.MASTER, 0.4f,0.45f + player.level.random.nextFloat() * 0.1f);
             ScanManager.addPlayerAspects(scanTargetAspects);
             ScanManager.addPlayerScannedObjects(scanTargetName);
-            PacketManager.sendToServer(new SyncPlayerApsectsCapability(scanTargetAspects.toMap(), scanTargetName));
+            PacketManager.sendToServer(new PlayerAspectSyncC2SPacket(scanTargetAspects.toMap(), player.getUUID()));
+            PacketManager.sendToServer(new PlayerTargetSyncC2SPacket(scanTargetName, player.getUUID()));
             player.displayClientMessage(Component.translatable(("actionText.subtitle.scan_completed" + new Random().nextInt(3))),true);
             ThaumcraftOverlay.setAspectsForRenderAnimation(scanTargetAspects);
         }else if (tick % 5 == 0){
@@ -291,7 +293,8 @@ public class ScanManager {
             isScanDone = true;
             ScanManager.addPlayerAspects(scanTargetAspects);
             ScanManager.addPlayerScannedObjects(scanTargetName);
-            PacketManager.sendToServer(new SyncPlayerApsectsCapability(scanTargetAspects.toMap(), scanTargetName));
+            PacketManager.sendToServer(new PlayerAspectSyncC2SPacket(scanTargetAspects.toMap(), player.getUUID()));
+            PacketManager.sendToServer(new PlayerTargetSyncC2SPacket(scanTargetName, player.getUUID()));
             player.displayClientMessage(Component.translatable(("actionText.subtitle.scan_completed" + new Random().nextInt(3))),true);
             ThaumcraftOverlay.setAspectsForRenderAnimation(scanTargetAspects);
         }else if (hoverTick % 5 == 1){

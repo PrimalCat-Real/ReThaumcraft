@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import primalcat.thaumcraft.client.ScanManager;
+import primalcat.thaumcraft.core.scan.ScanManager;
 import primalcat.thaumcraft.core.registry.ItemRegistry;
 
 @Mixin(GameRenderer.class)
