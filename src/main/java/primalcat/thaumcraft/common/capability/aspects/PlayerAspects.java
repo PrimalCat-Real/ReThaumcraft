@@ -1,10 +1,8 @@
 package primalcat.thaumcraft.common.capability.aspects;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import primalcat.thaumcraft.aspects.Aspect;
-import primalcat.thaumcraft.init.AspectInit;
+import primalcat.thaumcraft.core.aspects.Aspect;
+import primalcat.thaumcraft.core.registry.AspectRegistry;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,7 +56,7 @@ public class PlayerAspects {
             CompoundTag aspectData = aspectsTag.getCompound(aspectName);
 
             String aspectNameString = aspectData.getString("AspectName"); // Retrieve Aspect name as String
-            Aspect aspect = AspectInit.getAspect(aspectNameString); // Get Aspect using the name
+            Aspect aspect = AspectRegistry.getAspect(aspectNameString); // Get Aspect using the name
             if (aspect != null) {
                 int value = aspectData.getInt("Value");
                 aspectMap.put(aspect.getName(), value);

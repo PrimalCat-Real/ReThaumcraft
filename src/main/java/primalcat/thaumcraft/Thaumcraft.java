@@ -18,21 +18,20 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.fml.loading.FileUtils;
 import org.slf4j.Logger;
-import primalcat.thaumcraft.events.client.ClientSetup;
-import primalcat.thaumcraft.config.ThaumcraftClientConfig;
-import primalcat.thaumcraft.config.ThaumcraftCommonConfig;
-import primalcat.thaumcraft.init.BlockInit;
-import primalcat.thaumcraft.init.ConfigInit;
-import primalcat.thaumcraft.init.ItemInit;
-import primalcat.thaumcraft.networking.PacketManager;
-import primalcat.thaumcraft.sound.ModSounds;
+import primalcat.thaumcraft.core.config.ConfigAspects;
+import primalcat.thaumcraft.core.event.client.ClientSetup;
+import primalcat.thaumcraft.core.config.ClientConfig;
+import primalcat.thaumcraft.core.config.CommonConfig;
+import primalcat.thaumcraft.core.registry.*;
+import primalcat.thaumcraft.common.networking.PacketManager;
+
 
 import java.util.stream.Collectors;
 
 // The value here should match an entry in the META-INF/mods.toml file
-@Mod(Thaumcraft.MOD_ID)
+@Mod(Thaumcraft.MODID)
 public class Thaumcraft {
-    public static final String MOD_ID = "thaumcraft";
+    public static final String MODID = "thaumcraft";
     // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
 
@@ -49,17 +48,19 @@ public class Thaumcraft {
         // Register the processIMC method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
 
-        FileUtils.getOrCreateDirectory(FMLPaths.CONFIGDIR.get().resolve(Thaumcraft.MOD_ID), Thaumcraft.MOD_ID);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ThaumcraftClientConfig.SPEC, Thaumcraft.MOD_ID + "/thaumcraft-client.toml");
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ThaumcraftCommonConfig.SPEC, Thaumcraft.MOD_ID + "/thaumcraft-common.toml");
+        FileUtils.getOrCreateDirectory(FMLPaths.CONFIGDIR.get().resolve(Thaumcraft.MODID), Thaumcraft.MODID);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ClientConfig.SPEC, Thaumcraft.MODID + "/thaumcraft-client.toml");
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC, Thaumcraft.MODID + "/thaumcraft-common.toml");
         LOGGER.info("common and client config");
 //        modEventBus.addListener(this::commonSetup);
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
 
-        ModSounds.register();
-        ItemInit.register();
-        BlockInit.register();
+        SoundRegistry.register(modEventBus);
+        ItemRegistry.register();
+        BlockRegistry.register();
+        BlockEntityRegistry.register();
+        ParticlesRegistry.register(modEventBus);
 
         // test packet register
         PacketManager.register();
@@ -70,7 +71,12 @@ public class Thaumcraft {
 
     private void setup(final FMLCommonSetupEvent event) {
         // Some preinit code
-        ConfigInit.setup();
+        try{
+            ConfigAspects.initAspectsConfig();
+            LOGGER.info("Setup thaumcraft config");
+        }catch (Exception e){
+            LOGGER.error("Error setup config " + e.getMessage());
+        }
         LOGGER.info("HELLO FROM PREINIT");
 //        LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
     }

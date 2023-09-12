@@ -1,15 +1,9 @@
 package primalcat.thaumcraft.client;
 
-import net.minecraft.client.gui.components.SubtitleOverlay;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.ComponentUtils;
-import net.minecraft.network.protocol.game.ClientboundSetSubtitleTextPacket;
-import net.minecraft.server.commands.TitleCommand;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,22 +12,19 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import primalcat.thaumcraft.Thaumcraft;
-import primalcat.thaumcraft.aspects.Aspect;
-import primalcat.thaumcraft.aspects.AspectList;
-import primalcat.thaumcraft.client.render.overlays.ThaumcraftOverlay;
-import primalcat.thaumcraft.common.capability.aspects.PlayerAspectsProvider;
-import primalcat.thaumcraft.config.ThaumcraftClientConfig;
-import primalcat.thaumcraft.init.AspectInit;
-import primalcat.thaumcraft.init.ItemInit;
-import primalcat.thaumcraft.networking.PacketManager;
-import primalcat.thaumcraft.networking.packets.SyncPlayerApsectsCapability;
-import primalcat.thaumcraft.sound.ModSounds;
-import primalcat.thaumcraft.utilites.DrawInvScanProgress;
+import primalcat.thaumcraft.core.aspects.Aspect;
+import primalcat.thaumcraft.core.aspects.AspectList;
+import primalcat.thaumcraft.client.renderer.overlay.ThaumcraftOverlay;
+import primalcat.thaumcraft.core.config.ClientConfig;
+import primalcat.thaumcraft.core.registry.AspectRegistry;
+import primalcat.thaumcraft.core.registry.ItemRegistry;
+import primalcat.thaumcraft.common.networking.PacketManager;
+import primalcat.thaumcraft.common.networking.packets.SyncPlayerApsectsCapability;
+import primalcat.thaumcraft.core.registry.SoundRegistry;
+import primalcat.thaumcraft.client.renderer.overlay.DrawInvScanProgress;
 
 import java.util.*;
 
@@ -252,14 +243,14 @@ public class ScanManager {
             player.displayClientMessage(Component.translatable(("actionText.subtitle.unknown_object")),true);
         }
         if(tick == 1 && scanTargetAspects != null && ScanManager.isObjectAspectsKnown(scanTargetAspects)){
-            player.getLevel().playSound(player,player.getX(), player.getY(), player.getZ(), ModSounds.learn.get(), SoundSource.MASTER, 0.4f,0.45f + player.level.random.nextFloat() * 0.1f);
+            player.getLevel().playSound(player,player.getX(), player.getY(), player.getZ(), SoundRegistry.learn.get(), SoundSource.MASTER, 0.4f,0.45f + player.level.random.nextFloat() * 0.1f);
             ScanManager.addPlayerAspects(scanTargetAspects);
             ScanManager.addPlayerScannedObjects(scanTargetName);
             PacketManager.sendToServer(new SyncPlayerApsectsCapability(scanTargetAspects.toMap(), scanTargetName));
             player.displayClientMessage(Component.translatable(("actionText.subtitle.scan_completed" + new Random().nextInt(3))),true);
             ThaumcraftOverlay.setAspectsForRenderAnimation(scanTargetAspects);
         }else if (tick % 5 == 0){
-            player.getLevel().playSound(player,player.getX(), player.getY(), player.getZ(), ModSounds.cameraticks.get(), SoundSource.MASTER, 0.2f,0.45f + player.level.random.nextFloat() * 0.1f);
+            player.getLevel().playSound(player,player.getX(), player.getY(), player.getZ(), SoundRegistry.cameraticks.get(), SoundSource.MASTER, 0.2f,0.45f + player.level.random.nextFloat() * 0.1f);
         }
     }
 
@@ -271,11 +262,11 @@ public class ScanManager {
      * @param scanTargetAspects The aspects of the scanned target.
      */
     public static void doScan(Player player, String scanTargetName, AspectList scanTargetAspects){
-        if(hoverTick == ThaumcraftClientConfig.THAUMOMETER_SCAN_DURATION.get() && scanTargetAspects != null && !scanTargetAspects.isEmpty() && !ScanManager.isObjectAspectsKnown(scanTargetAspects)){
+        if(hoverTick == ClientConfig.THAUMOMETER_SCAN_DURATION.get() && scanTargetAspects != null && !scanTargetAspects.isEmpty() && !ScanManager.isObjectAspectsKnown(scanTargetAspects)){
             player.displayClientMessage(Component.translatable(("actionText.subtitle.aspects_not_valid" + new Random().nextInt(3))),true);
             isScanDone = true;
         }
-        if(hoverTick == ThaumcraftClientConfig.THAUMOMETER_SCAN_DURATION.get() && scanTargetAspects != null && scanTargetAspects.isEmpty()){
+        if(hoverTick == ClientConfig.THAUMOMETER_SCAN_DURATION.get() && scanTargetAspects != null && scanTargetAspects.isEmpty()){
             player.displayClientMessage(Component.translatable(("actionText.subtitle.unknown_object")),true);
             isScanDone = true;
         }
@@ -292,8 +283,8 @@ public class ScanManager {
             isScanning = false;
         }
         // @TODO add message that object can not be scanned
-        if(hoverTick == ThaumcraftClientConfig.THAUMOMETER_SCAN_DURATION.get() && ScanManager.isObjectAspectsKnown(scanTargetAspects)){
-            player.getLevel().playSound(player,player.getX(), player.getY(), player.getZ(), ModSounds.learn.get(), SoundSource.MASTER, 0.4f,0.45f + player.level.random.nextFloat() * 0.1f);
+        if(hoverTick == ClientConfig.THAUMOMETER_SCAN_DURATION.get() && ScanManager.isObjectAspectsKnown(scanTargetAspects)){
+            player.getLevel().playSound(player,player.getX(), player.getY(), player.getZ(), SoundRegistry.learn.get(), SoundSource.MASTER, 0.4f,0.45f + player.level.random.nextFloat() * 0.1f);
             hoverTick = 0;
             drawInvScanProgress.setCanDraw(false);
             isScanning = false;
@@ -304,7 +295,7 @@ public class ScanManager {
             player.displayClientMessage(Component.translatable(("actionText.subtitle.scan_completed" + new Random().nextInt(3))),true);
             ThaumcraftOverlay.setAspectsForRenderAnimation(scanTargetAspects);
         }else if (hoverTick % 5 == 1){
-            player.getLevel().playSound(player,player.getX(), player.getY(), player.getZ(), ModSounds.cameraticks.get(), SoundSource.MASTER, 0.2f,0.45f + player.level.random.nextFloat() * 0.1f);
+            player.getLevel().playSound(player,player.getX(), player.getY(), player.getZ(), SoundRegistry.cameraticks.get(), SoundSource.MASTER, 0.2f,0.45f + player.level.random.nextFloat() * 0.1f);
         }
 
     }
@@ -320,7 +311,7 @@ public class ScanManager {
         for (Map.Entry<String, Integer> entry : map.entrySet()) {
             String aspectName = entry.getKey();
             int amount = entry.getValue();
-            Aspect aspect = AspectInit.getAspect(aspectName);
+            Aspect aspect = AspectRegistry.getAspect(aspectName);
             if (aspect != null) {
                 aspectList.add(aspect, amount);
             }
@@ -339,15 +330,15 @@ public class ScanManager {
     }
     public static AspectList getAspectFromObject(ItemStack object){
         AspectList objectAspects = new AspectList();
-        LinkedHashMap<String, AspectList> itemsAspects = AspectInit.getItemAspects();
+        LinkedHashMap<String, AspectList> itemsAspects = AspectRegistry.getItemAspects();
 
         if(itemsAspects.get(object.getItem().toString()) != null){
-            LinkedHashMap<Aspect, Integer> tempAspects = AspectInit.getItemAspects().get(object.getItem().toString()).aspects;
+            LinkedHashMap<Aspect, Integer> tempAspects = AspectRegistry.getItemAspects().get(object.getItem().toString()).aspects;
             addAspectsFromTarget(objectAspects, tempAspects);
         }else{
             for (var tag: object.getTags().toList()) {
-                if(AspectInit.getItemAspects().containsKey(tag.location().toString())){
-                    LinkedHashMap<Aspect, Integer> tempAspects = AspectInit.getItemAspects().get(tag.location().toString()).aspects;
+                if(AspectRegistry.getItemAspects().containsKey(tag.location().toString())){
+                    LinkedHashMap<Aspect, Integer> tempAspects = AspectRegistry.getItemAspects().get(tag.location().toString()).aspects;
                     addAspectsFromTarget(objectAspects, tempAspects);
 //                    System.out.println(AspectInit.getItemAspects().get(tag.location().toString()).aspects);
                 }
@@ -369,9 +360,9 @@ public class ScanManager {
 
         String localizedName = entity.getDisplayName().getString();
         localizedName = I18n.get(localizedName); // To remove formatting
-        LinkedHashMap<String, AspectList> entityAspects = AspectInit.getEntityAspects();
+        LinkedHashMap<String, AspectList> entityAspects = AspectRegistry.getEntityAspects();
         if(entityAspects.get(localizedName) != null){
-            LinkedHashMap<Aspect, Integer> tempAspects = AspectInit.getEntityAspects().get(localizedName).aspects;
+            LinkedHashMap<Aspect, Integer> tempAspects = AspectRegistry.getEntityAspects().get(localizedName).aspects;
             addAspectsFromTarget(objectAspects, tempAspects);
         }
 //        System.out.println(localizedName);
@@ -382,15 +373,15 @@ public class ScanManager {
     }
     public static AspectList getAspectFromPlayer(Player player){
         AspectList objectAspects = new AspectList();
-        LinkedHashMap<String, AspectList> entityAspects = AspectInit.getEntityAspects();
-        objectAspects.add(AspectInit.HUMANUS, 4);
+        LinkedHashMap<String, AspectList> entityAspects = AspectRegistry.getEntityAspects();
+        objectAspects.add(AspectRegistry.HUMANUS, 4);
         String[] parts = player.getUUID().toString().split("-");
         String secondPart = parts[1];
         String thirdPart = parts[2];
         String fourthPart = parts[3];
-        objectAspects.add(AspectInit.getAspect((int) secondPart.charAt(0)), 4);
-        objectAspects.add(AspectInit.getAspect((int) thirdPart.charAt(0)), 4);
-        objectAspects.add(AspectInit.getAspect((int) fourthPart.charAt(0)), 4);
+        objectAspects.add(AspectRegistry.getAspect((int) secondPart.charAt(0)), 4);
+        objectAspects.add(AspectRegistry.getAspect((int) thirdPart.charAt(0)), 4);
+        objectAspects.add(AspectRegistry.getAspect((int) fourthPart.charAt(0)), 4);
         return objectAspects;
     }
     public static AspectList getAspectFromObject(BlockState object){
@@ -405,10 +396,10 @@ public class ScanManager {
         }
 
 //        System.out.println(blockState.getBlock());
-        LinkedHashMap<String, AspectList> itemsAspects = AspectInit.getItemAspects();
+        LinkedHashMap<String, AspectList> itemsAspects = AspectRegistry.getItemAspects();
         if(itemsAspects.get(localizedName) != null){
 //            LinkedHashMap<Aspect, Integer> tempAspects = AspectInit.getItemAspects().get(itemStack.toString()).aspects;
-            LinkedHashMap<Aspect, Integer> tempAspects = AspectInit.getItemAspects().get(localizedName).aspects;
+            LinkedHashMap<Aspect, Integer> tempAspects = AspectRegistry.getItemAspects().get(localizedName).aspects;
 //            for (Aspect aspect : tempAspects.keySet()) {
 //                int amount = tempAspects.get(aspect);
 //                objectAspects.add(aspect, amount);
@@ -416,8 +407,8 @@ public class ScanManager {
             addAspectsFromTarget(objectAspects, tempAspects);
         }else{
             for (var tag: object.getTags().toList()) {
-                if(AspectInit.getItemAspects().containsKey(tag.location().toString())){
-                    LinkedHashMap<Aspect, Integer> tempAspects = AspectInit.getItemAspects().get(tag.location().toString()).aspects;
+                if(AspectRegistry.getItemAspects().containsKey(tag.location().toString())){
+                    LinkedHashMap<Aspect, Integer> tempAspects = AspectRegistry.getItemAspects().get(tag.location().toString()).aspects;
                     addAspectsFromTarget(objectAspects, tempAspects);
                 }
 
@@ -463,7 +454,7 @@ public class ScanManager {
 
         ItemStack mouseItem = player.getMainHandItem();
 
-        return !mouseItem.isEmpty() && mouseItem.getItem() == ItemInit.THAUMOMETER.get();
+        return !mouseItem.isEmpty() && mouseItem.getItem() == ItemRegistry.THAUMOMETER.get();
 
     }
 
@@ -481,6 +472,6 @@ public class ScanManager {
         }
         // get player item in mouse
         ItemStack mouseItem = player.containerMenu.getCarried();
-        return !mouseItem.isEmpty() && mouseItem.getItem().equals(ItemInit.THAUMOMETER.get());
+        return !mouseItem.isEmpty() && mouseItem.getItem().equals(ItemRegistry.THAUMOMETER.get());
     }
 }
