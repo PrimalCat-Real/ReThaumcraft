@@ -5,10 +5,13 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.resources.ResourceLocation;
 
-public class CustomElement {
+public class AspectAnimationItem {
 
     private int currentX = 0;
     private int currentY = 0;
+
+    public boolean shouldRemove = false;
+
     private int color;
     private PoseStack poseStack;
     private int width;
@@ -23,7 +26,7 @@ public class CustomElement {
 
 //    public ResourceLocation texture = new ResourceLocation(Thaumcraft.MOD_ID, "textures/items/thaumonomicon.png");
 
-    public CustomElement(int color, PoseStack poseStack, int width, int height, ResourceLocation texture) {
+    public AspectAnimationItem(int color, PoseStack poseStack, int width, int height, ResourceLocation texture) {
         this.color = color;
         this.poseStack = poseStack;
         this.width = width;
@@ -61,7 +64,7 @@ public class CustomElement {
             scale = (int) (16 + (float) index * 0.16f);
         } else {
             opacity = 1.0f - ((float) (index - 50) / 50.0f) * 0.5f; // Change opacity from 1 to 0
-            scale = (int) (24 - (float) (index - 50) * 0.32f); // Change scale from 24 to 8
+            scale = (int) (20 - (float) (index - 50) * 0.32f); // Change scale from 20 to 8
         }
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
@@ -72,7 +75,8 @@ public class CustomElement {
         RenderSystem.setShaderTexture(0,texture);
         GuiComponent.blit(poseStack, currentX, currentY, 0, 0, scale, scale, scale, scale);
         if(currentX > width - 16 - 8 || currentY < 8){
-            ThaumcraftOverlay.removeActiveRenderAspect(this);
+//            ThaumcraftOverlay.removeActiveRenderAspect(this);
+            this.shouldRemove = true;
         }
         index +=1;
     }
