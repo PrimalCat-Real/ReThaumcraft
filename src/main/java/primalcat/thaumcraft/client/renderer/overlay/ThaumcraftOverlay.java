@@ -7,6 +7,7 @@ import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import primalcat.thaumcraft.Thaumcraft;
 import primalcat.thaumcraft.core.aspects.Aspect;
+import primalcat.thaumcraft.core.aspects.AspectIterator;
 import primalcat.thaumcraft.core.aspects.AspectList;
 
 import java.util.*;
@@ -14,15 +15,12 @@ import java.util.List;
 
 public class ThaumcraftOverlay implements IGuiOverlay {
 
-    private static int index = 0;
+    private static int MAX_ASPECT_ANIMATION_COUNT = 20;
 
     private static List<TextElement> textForRender = new ArrayList<>();
 
 
     private static Iterator<Map.Entry<Aspect, Integer>> iterator;
-
-    private static Aspect currentAspect = null;
-    private static int animationIndex = 0;
 
     private static float fixTick = 0;
 
@@ -30,11 +28,7 @@ public class ThaumcraftOverlay implements IGuiOverlay {
 
     private static AspectList aspectsForRender = new AspectList();
 
-    private static List<CustomElement> activeRenderAspects = new ArrayList<>();
-
-    public static void removeActiveRenderAspect(CustomElement element){
-        activeRenderAspects.remove(element);
-    }
+    private static List<AspectAnimationItem> activeRenderAspects = new ArrayList<>();
 
     public static AspectList getAspectsForRender() {
         return aspectsForRender;
@@ -42,55 +36,62 @@ public class ThaumcraftOverlay implements IGuiOverlay {
 
     public static void setAspectsForRenderAnimation(AspectList aspectsForRender) {
         ThaumcraftOverlay.aspectsForRender = aspectsForRender;
+        iterator = aspectsForRender.aspects.entrySet().iterator();
     }
 
     public static void addTextForRender(String text) {
         textForRender.add(new TextElement(text, 0xFFFFFF));
     }
 
-    public static void addTextForRender(String text, int color) {
-        textForRender.add(new TextElement(text, color));
-    }
     @Override
     public void render(ForgeGui gui, PoseStack poseStack, float partialTicks, int width, int height) {
         poseStack.pushPose();
         RenderSystem.disableBlend();
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-        if(activeRenderAspects != null && !activeRenderAspects.isEmpty()){
+
+        if (!activeRenderAspects.isEmpty()) {
             RenderSystem.setShaderTexture(0, new ResourceLocation(Thaumcraft.MODID, "textures/items/thaumonomicon.png"));
-            gui.blit(poseStack, width - 16 - 8,  8, 0, 0, 16, 16, 16, 16);
+            gui.blit(poseStack, width - 16 - 8, 8, 0, 0, 16, 16, 16, 16);
         }
 
-        if (aspectsForRender != null && !aspectsForRender.isEmpty()) {
-            if(fixTick > 7){
-                fixTick = 0;
-                // @TODO need fix Error rendering overlay 'thaumcraft:thaumcraftoverlay' java.util.ConcurrentModificationException: null
-                if(maxAnimation <= 20){
-                    for (Aspect renderAspect: aspectsForRender.aspects.keySet()) {
-                        maxAnimation += 1;
-                        if( aspectsForRender.aspects.get(renderAspect) != null && aspectsForRender.aspects.get(renderAspect) == 0){
-                            aspectsForRender.aspects.remove(renderAspect);
-                        }
-                        if(aspectsForRender.aspects.get(renderAspect) != null){
-                            aspectsForRender.aspects.put(renderAspect, aspectsForRender.aspects.get(renderAspect) - 1);
-                            activeRenderAspects.add(new CustomElement(renderAspect.getColor(),poseStack, width, height, renderAspect.getAspectImage()));
-                        }
-                    }
+
+        /**
+         * Add aspect for activeAspectRender
+         */
+        if (!aspectsForRender.isEmpty() && fixTick > 7) {
+            fixTick = 0;
+            for (Aspect renderAspect : aspectsForRender.aspects.keySet()) {
+
+                Integer aspectCount = aspectsForRender.aspects.get(renderAspect);
+                if(maxAnimation > MAX_ASPECT_ANIMATION_COUNT){
+                    aspectsForRender.clear();
+                    break;
                 }
-
-
-            }else {
-                fixTick += partialTicks;
+                if (aspectCount != null && aspectCount != 0 && maxAnimation <= MAX_ASPECT_ANIMATION_COUNT) {
+                    aspectsForRender.aspects.put(renderAspect, aspectCount - 1);
+                    activeRenderAspects.add(new AspectAnimationItem(renderAspect.getColor(), poseStack, width, height, renderAspect.getAspectImage()));
+                    maxAnimation += 1;
+                }
             }
+        } else {
+            fixTick += partialTicks;
         }
+
         if(activeRenderAspects != null && !activeRenderAspects.isEmpty()){
-            for (CustomElement renderElement: activeRenderAspects) {
+            List<AspectAnimationItem> aspectAnimationItemsForRemove = new ArrayList<>();
+            for (AspectAnimationItem renderElement: activeRenderAspects) {
                 renderElement.render();
-
+                if(renderElement.shouldRemove){
+                    aspectAnimationItemsForRemove.add(renderElement);
+                }
+            }
+            for (AspectAnimationItem elementForRemove: aspectAnimationItemsForRemove) {
+                activeRenderAspects.remove(elementForRemove);
             }
         }
 
-        if(activeRenderAspects.isEmpty()){
+
+        if (activeRenderAspects.isEmpty()) {
             maxAnimation = 0;
         }
 
