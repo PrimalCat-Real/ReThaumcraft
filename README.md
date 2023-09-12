@@ -4,7 +4,7 @@
 - There will be mechanics of 2 different thaumcrafts
   - Thaumcraft 4
   - Thaumcraft 6
-- I can also take mechanics from addons
+- I also can take mechanics from addons
 - I don't have permission, so it just project for me
 
 ## Main Priority
@@ -20,6 +20,7 @@
 - [ ] Researches
 
 ## TODO Fixes
+- [ ] test rewrite aspec system using nbt
 - [x] aspect texture colors
 - [ ] fix aabb clip result for thaumometer
 - [x] fix hud for event messages
