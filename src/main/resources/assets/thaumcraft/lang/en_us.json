@@ -1,7 +1,7 @@
 {
   "item.thaumometer.name": "Thaumometer",
 
-  "itemGroup.thaumcraft_tab":"Thaumcraft",
+  "itemGroup.thaumcraft": "Thaumcraft",
 
 
   "actionText.subtitle.aspects_not_valid0": "§5§oTo understand this you need study something else.",

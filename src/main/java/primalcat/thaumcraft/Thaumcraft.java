@@ -1,6 +1,9 @@
 package primalcat.thaumcraft;
 
 import com.mojang.logging.LogUtils;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -17,6 +20,7 @@ import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.fml.loading.FileUtils;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import primalcat.thaumcraft.core.config.ConfigAspects;
 import primalcat.thaumcraft.core.event.client.ClientSetup;
@@ -68,6 +72,12 @@ public class Thaumcraft {
 
     }
 
+    public static CreativeModeTab THAUMCRAFT_TAB = new CreativeModeTab(MODID) {
+        @Override
+        public @NotNull ItemStack makeIcon() {
+            return Items.ACACIA_WOOD.asItem().getDefaultInstance();
+        }
+    };
 
     private void setup(final FMLCommonSetupEvent event) {
         // Some preinit code
