@@ -62,8 +62,8 @@ public class Thaumcraft {
 
         SoundRegistry.register(modEventBus);
         ItemRegistry.register();
-        BlockRegistry.register();
-        BlockEntityRegistry.register();
+        BlockRegistry.register(modEventBus);
+        BlockEntityRegistry.register(modEventBus);
         ParticlesRegistry.register(modEventBus);
 
         // test packet register

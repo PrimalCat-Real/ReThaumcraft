@@ -7,8 +7,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
-
-import java.awt.font.FontRenderContext;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.Function;
@@ -18,6 +16,7 @@ public class NotoSansFontRenderer extends Font implements ResourceManagerReloadL
 
     public NotoSansFontRenderer(Function<ResourceLocation, FontSet> p_243253_, boolean p_243245_) {
         super(p_243253_, p_243245_);
+
     }
 
     @Override

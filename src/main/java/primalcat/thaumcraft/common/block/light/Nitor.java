@@ -22,10 +22,10 @@ public class Nitor <T extends NitorEntity>  extends WaterLoggedEntityBlock<T> {
 
     public static VoxelShape makeShape(){
         VoxelShape shape = Shapes.empty();
-        shape = Shapes.join(shape, Shapes.box(0.21875, 0.03125, 0.21875, 0.78125, 0.78125, 0.78125), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.28125, 0.84375, 0.28125, 0.71875, 0.96875, 0.71875), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.34375, 0.78125, 0.34375, 0.65625, 0.84375, 0.65625), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.34375, -0.03125, 0.34375, 0.65625, 0.03125, 0.65625), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.34375 - 0.1, 0.03125 + 0.1, 0.34375 - 0.1, 0.65625 + 0.1, 0.65625, 0.65625 + 0.1), BooleanOp.OR);
+//        shape = Shapes.join(shape, Shapes.box(0.28125, 0.84375, 0.28125, 0.71875, 0.96875, 0.71875), BooleanOp.OR);
+//        shape = Shapes.join(shape, Shapes.box(0.34375, 0.78125, 0.34375, 0.65625, 0.84375, 0.65625), BooleanOp.OR);
+//        shape = Shapes.join(shape, Shapes.box(0.34375, -0.03125, 0.34375, 0.65625, 0.03125, 0.65625), BooleanOp.OR);
 
         return shape;
     }
