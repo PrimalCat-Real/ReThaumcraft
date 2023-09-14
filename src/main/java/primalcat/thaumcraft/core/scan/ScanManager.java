@@ -426,29 +426,7 @@ public class ScanManager {
             objectAspects.add(aspect, amount);
         }
     }
-    public static String getTargetStringName(Entity entity){
-        String localizedName = entity.getDisplayName().getString();
-        localizedName = I18n.get(localizedName); // To remove formatting
-        return localizedName;
-    }
 
-    public static String getTargetStringName(ItemEntity itemEntity){
-        return itemEntity.getItem().getItem().toString();
-    }
-    public static String getTargetStringName(ItemStack itemStack){
-        return itemStack.getItem().toString();
-    }
-    public static String getTargetStringName(BlockState blockState){
-        FluidState fluidState = blockState.getFluidState();
-        String localizedName;
-        if (fluidState.getType() != Fluids.EMPTY) {
-            localizedName =  fluidState.getFluidType().toString();
-        }else{
-            Item item = Item.byBlock(blockState.getBlock());
-            localizedName = item.toString();
-        }
-        return localizedName;
-    }
 
     public static boolean isHoldingThaumometer(Player player) {
         if (player == null) {
