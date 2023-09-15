@@ -122,6 +122,7 @@ public class Thaumometer extends ItemBase {
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int tick, boolean p_41408_) {
         if (level != null && entity instanceof Player player && level.isClientSide() && ScanManager.isHoldingThaumometer(player)) {
 
+//            System.out.println(ScanManager.getPlayerScannedObjects());
             ScanHitResult scanHitEntityResult = getTargetEntity(player, level);
             ScanHitResult scanHitBlockResult = getTargetBlock(player, level);
             ScanHitResult scanHitItemResult = getTargetEntityItem(player, level);

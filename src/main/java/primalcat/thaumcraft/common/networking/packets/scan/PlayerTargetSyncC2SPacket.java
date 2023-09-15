@@ -55,10 +55,11 @@ public class PlayerTargetSyncC2SPacket {
             ServerPlayer serverPlayer = minecraftServer.getPlayerList().getPlayer(playerUUID);
             if(serverPlayer != null){
                 serverPlayer.getCapability(PlayerAspectsProvider.PLAYER_ASPECTS).ifPresent(aspectsProvider -> {
-                    aspectsProvider.clearTargets();
+//                    aspectsProvider.clearTargets();
                     aspectsProvider.mergeTargets(targets);
+                    PacketManager.sendToPlayer(new PlayerTargetSyncS2CPacket(aspectsProvider.getTargetsList()), serverPlayer);
                 });
-                PacketManager.sendToPlayer(new PlayerTargetSyncS2CPacket(targets), serverPlayer);
+
             }
 
 
