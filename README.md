@@ -7,7 +7,7 @@
 - I also can take mechanics from addons
 - I don't have permission, so it just project for me
 ## Showcase
-[![Thaumometer](https://static.wikia.nocookie.net/thaumcraft-4/images/f/f2/Thaumometer-1-.png/revision/latest/scale-to-width-down/222?cb=20140129171023)](https://www.youtube.com/watch?v=6C4maPwGPx4)
+[Thaumometer test version](https://www.youtube.com/watch?v=6C4maPwGPx4)
 ## Main Priority
 - [x] Config System
 - [ ] Lodestar, Jei, Curios, GekoLib dependency 
