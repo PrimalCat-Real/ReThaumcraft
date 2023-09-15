@@ -58,7 +58,7 @@ public class ScanHitResult {
     private Player player;
     private Level level;
 
-    private String targetName;
+    private String targetName = "";
 
     public String getTargetName() {
         return targetName;

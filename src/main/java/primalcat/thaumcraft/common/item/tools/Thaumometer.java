@@ -57,13 +57,13 @@ public class Thaumometer extends ItemBase {
             ScanHitResult scanHitBlockResult = getTargetBlock(player, level);
             ScanHitResult scanHitItemResult = getTargetEntityItem(player, level);
 
-            // add check if entity not behind
-            if(scanHitEntityResult != null){
-                this.scanHitResult = scanHitEntityResult;
-            }
             if(scanHitBlockResult != null){
                 this.scanHitResult = scanHitBlockResult;
             }
+            if(scanHitEntityResult != null){
+                this.scanHitResult = scanHitEntityResult;
+            }
+
             if(scanHitItemResult != null){
                 this.scanHitResult = scanHitItemResult;
             }
@@ -71,6 +71,8 @@ public class Thaumometer extends ItemBase {
                 this.scanTargetName = scanHitResult.getTargetName();
                 player.startUsingItem(hand);
             }
+            this.scanTargetName = "";
+
 
 
 //            if(scanHitEntityResult != null){
@@ -124,13 +126,15 @@ public class Thaumometer extends ItemBase {
             ScanHitResult scanHitBlockResult = getTargetBlock(player, level);
             ScanHitResult scanHitItemResult = getTargetEntityItem(player, level);
 
-            // add check if entity not behind
-            if(scanHitEntityResult != null){
-                this.scanHitResult = scanHitEntityResult;
-            }
+            this.scanTargetName = "";
+            this.scanHitResult = null;
             if(scanHitBlockResult != null){
                 this.scanHitResult = scanHitBlockResult;
             }
+            if(scanHitEntityResult != null){
+                this.scanHitResult = scanHitEntityResult;
+            }
+
             if(scanHitItemResult != null){
                 this.scanHitResult = scanHitItemResult;
             }
@@ -138,15 +142,18 @@ public class Thaumometer extends ItemBase {
                 this.scanTargetName = scanHitResult.getTargetName();
                 ScanManager.setTargetNameForRender(scanHitResult.getTargetName());
             }
-            if (scanHitResult != null && ScanManager.isScannedObject(scanHitResult.getTargetName())) {
+
+//            scanHitResult = getTargetEntityItem(player, level);
+            // @TODO add localized name for display
+            if(scanHitResult != null && scanHitResult.getTargetName() != null){
+                ScanManager.setTargetNameForRender(scanHitResult.getTargetName());
+            }else{
+                ScanManager.setTargetNameForRender(this.scanTargetName);
+            }
+            if (scanHitResult != null && scanHitResult.getTargetName() != null && ScanManager.isScannedObject(scanHitResult.getTargetName())) {
                 ScanManager.setTargetAspectsForRender(scanHitResult.getTargetAspects());
             }else{
                 ScanManager.setTargetAspectsForRender(new AspectList());
-            }
-//            scanHitResult = getTargetEntityItem(player, level);
-            // @TODO add localized name for display
-            if(scanHitResult != null){
-                ScanManager.setTargetNameForRender(scanHitResult.getTargetName());
             }
 
 //            System.out.println(scanHitResult.getTargetBlockOutline());
@@ -188,11 +195,12 @@ public class Thaumometer extends ItemBase {
             ScanHitResult scanHitItemResult = getTargetEntityItem(player, level);
 
             // add check if entity not behind
-            if(scanHitEntityResult != null){
-                this.scanHitResult = scanHitEntityResult;
-            }
+
             if(scanHitBlockResult != null){
                 this.scanHitResult = scanHitBlockResult;
+            }
+            if(scanHitEntityResult != null){
+                this.scanHitResult = scanHitEntityResult;
             }
             if(scanHitItemResult != null){
                 this.scanHitResult = scanHitItemResult;
@@ -360,6 +368,12 @@ public class Thaumometer extends ItemBase {
         // Get all entities within the reach AABB
         List<Entity> entitiesInReach = player.level.getEntities(player, reachAABB);
 
+        BlockHitResult rayTraceResult = level.clip(new ClipContext(position, look, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player));
+        double blockDistance = 0;
+        if (rayTraceResult!= null){
+            blockDistance = player.distanceToSqr(rayTraceResult.getBlockPos().getX(), rayTraceResult.getBlockPos().getY(),rayTraceResult.getBlockPos().getZ());
+        }
+
         // Iterate through the entities to find the targeted ItemEntity
         for (Entity entity : entitiesInReach) {
             if (entity instanceof ItemEntity) {
@@ -367,13 +381,15 @@ public class Thaumometer extends ItemBase {
 
                 // Check if the player's view is intersecting with the item's bounding box
                 AABB itemBB = itemEntity.getBoundingBox();
-
+                if(player.distanceToSqr(entity) > blockDistance){
+                    return  null;
+                }
                 if (itemBB.contains(position)) {
                     return new ScanHitResult(player, level, itemEntity); // Player's view intersects with the item's bounding box
                 }
 
                 // Check if the line of sight intersects with the item's bounding box
-                Optional<Vec3> hitVec = itemBB.inflate(0.33f).clip(position, look);
+                Optional<Vec3> hitVec = itemBB.inflate(0.3f).clip(position.add(0,0.3,0), look);
                 if (hitVec.isPresent()) {
                     return new ScanHitResult(player, level, itemEntity); // Line of sight intersects with the item's bounding box
                 }
@@ -386,20 +402,25 @@ public class Thaumometer extends ItemBase {
         double reachDistance = player.getAttribute(ForgeMod.REACH_DISTANCE.get()).getValue();
 
         Vec3 look = player.getViewVector(1.0F).scale(reachDistance).add(position);
-        AABB bb2 = new AABB(position, look).inflate(0.1F);
+        AABB bb2 = new AABB(position, look);
 //
 //        System.out.println(world.getEntities(player, bb, e -> e.canBeCollidedWith() && e != player));
-        Level world = player.getLevel();
 
-        for (Entity entity : world.getEntities(player, bb2)) {
+        BlockHitResult rayTraceResult = level.clip(new ClipContext(position, look, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player));
+        double blockDistance = 0;
+        if (rayTraceResult!= null){
+            blockDistance = player.distanceToSqr(rayTraceResult.getBlockPos().getX(), rayTraceResult.getBlockPos().getY(),rayTraceResult.getBlockPos().getZ());
+        }
+        for (Entity entity : level.getEntities(player, bb2)) {
             if(entity instanceof ItemEntity){
                 return null;
             } else if (entity instanceof Player playerLookedAt) {
                 return new ScanHitResult(player, level, playerLookedAt) ;
             }
-            return new ScanHitResult(player, level, (LivingEntity)entity);
+            if(player.distanceToSqr(entity) < blockDistance){
+                return new ScanHitResult(player, level, (LivingEntity)entity);
+            }
         }
-
         return null;
     }
     // Helper method to check if an entity is behind a block
