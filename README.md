@@ -22,11 +22,11 @@
 ## TODO Fixes
 - [ ] test rewrite aspec system using nbt
 - [x] aspect texture colors
-- [ ] fix aabb clip result for thaumometer
+- [x] fix aabb clip result for thaumometer
 - [x] fix hud for event messages
 - [x] fix aspects commands
 - [ ] sort aspect before render in thaumometer
-- [ ] fix null error in overlay aspect get animation
+- [x] fix null error in overlay aspect get animation
 - [ ] optimize thaumometer related render code
 
 ## Additional features
