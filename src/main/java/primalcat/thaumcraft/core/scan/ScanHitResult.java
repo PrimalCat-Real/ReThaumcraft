@@ -2,6 +2,9 @@ package primalcat.thaumcraft.core.scan;
 
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
+import net.minecraft.locale.Language;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -28,6 +31,7 @@ import java.util.ArrayList;
 public class ScanHitResult {
 
     private ArrayList<Vec3> targetBlockOutline;
+    private MutableComponent localizedComponent;
 
     public ArrayList<Vec3> getTargetBlockOutline() {
         return targetBlockOutline;
@@ -59,6 +63,7 @@ public class ScanHitResult {
     private Level level;
 
     private String targetName = "";
+
 
     public String getTargetName() {
         return targetName;
@@ -119,6 +124,7 @@ public class ScanHitResult {
             this.targetAspects = ScanManager.getAspectFromObject(targetBlock);
             this.targetName = getTargetStringName(targetBlock);
         }
+//        System.out.println(Component.translatable("pruce_planks.name"));
     }
     public Vec3[] claclTopPlanePoints(AABB boundingBox) {
         // Calculate the four points of the top plane of the bounding box

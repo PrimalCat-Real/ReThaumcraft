@@ -208,7 +208,7 @@ public class Thaumometer extends ItemBase {
 //            System.out.println(tempTargetName.equals(this.scanHitResult.getTargetName()));
             if(this.scanHitResult.getTargetName() != null && this.scanHitResult.getTargetAspects() != null && scanTargetName.equals(this.scanHitResult.getTargetName())){
 //                BlockPos position = new BlockPos(0, -58, 0);
-                System.out.println(getTargetBlock(player, level).getTargetBlockOutline().get(0));
+//                System.out.println(getTargetBlock(player, level).getTargetBlockOutline().get(0));
                 ScanManager.doScan(player, tick, this.scanHitResult.getTargetName(), this.scanHitResult.getTargetAspects());
 //                spawnRunesParticles(level,position);
 //                System.out.println(tick + " " + this.scanTargetName);

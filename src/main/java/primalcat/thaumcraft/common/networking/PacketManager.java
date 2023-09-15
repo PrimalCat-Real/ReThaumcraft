@@ -55,10 +55,10 @@ public class PacketManager {
                 .add();
 
         // S2C
-        net.messageBuilder(PlayerTargetsSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(PlayerTargetsSyncS2CPacket::new)
-                .encoder(PlayerTargetsSyncS2CPacket::toBytes)
-                .consumerMainThread(PlayerTargetsSyncS2CPacket::handle)
+        net.messageBuilder(PlayerTargetSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(PlayerTargetSyncS2CPacket::new)
+                .encoder(PlayerTargetSyncS2CPacket::toBytes)
+                .consumerMainThread(PlayerTargetSyncS2CPacket::handle)
                 .add();
         net.messageBuilder(PlayerAspectsSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
                 .decoder(PlayerAspectsSyncS2CPacket::new)

@@ -12,7 +12,7 @@ import primalcat.thaumcraft.core.config.ClientConfig;
 import primalcat.thaumcraft.core.registry.AspectRegistry;
 import primalcat.thaumcraft.common.networking.PacketManager;
 import primalcat.thaumcraft.common.networking.packets.scan.PlayerAspectsSyncS2CPacket;
-import primalcat.thaumcraft.common.networking.packets.scan.PlayerTargetsSyncS2CPacket;
+import primalcat.thaumcraft.common.networking.packets.scan.PlayerTargetSyncS2CPacket;
 
 @Mod.EventBusSubscriber(modid = Thaumcraft.MODID)
 public class CommonEvents {
@@ -33,7 +33,7 @@ public class CommonEvents {
                         playerAspectsData.addAspect(AspectRegistry.ORDER.getName(), ClientConfig.PLAYER_PRIMAL_ASPECTS_COUNT.get());
                         playerAspectsData.addAspect(AspectRegistry.PERDITIO.getName(), ClientConfig.PLAYER_PRIMAL_ASPECTS_COUNT.get());
                     }
-                    PacketManager.sendToPlayer(new PlayerTargetsSyncS2CPacket(playerAspectsData.getTargetsList()), player);
+                    PacketManager.sendToPlayer(new PlayerTargetSyncS2CPacket(playerAspectsData.getTargetsList()), player);
                     PacketManager.sendToPlayer(new PlayerAspectsSyncS2CPacket(playerAspectsData.getAspects()), player);
 
                 }

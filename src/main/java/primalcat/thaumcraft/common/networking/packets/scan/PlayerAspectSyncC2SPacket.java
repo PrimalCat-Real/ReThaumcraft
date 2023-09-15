@@ -56,8 +56,9 @@ public class PlayerAspectSyncC2SPacket {
             if(serverPlayer != null){
                 serverPlayer.getCapability(PlayerAspectsProvider.PLAYER_ASPECTS).ifPresent(aspectsProvider -> {
                     aspectsProvider.mergeMaps(aspectMap);
+                    PacketManager.sendToPlayer(new PlayerAspectsSyncS2CPacket(aspectsProvider.getAspects()), serverPlayer);
                 });
-                PacketManager.sendToPlayer(new PlayerAspectsSyncS2CPacket(aspectMap), serverPlayer);
+
             }
         });
         return true;

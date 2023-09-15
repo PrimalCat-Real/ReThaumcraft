@@ -58,7 +58,7 @@ public class PlayerTargetSyncC2SPacket {
                     aspectsProvider.clearTargets();
                     aspectsProvider.mergeTargets(targets);
                 });
-                PacketManager.sendToPlayer(new PlayerTargetsSyncS2CPacket(targets), serverPlayer);
+                PacketManager.sendToPlayer(new PlayerTargetSyncS2CPacket(targets), serverPlayer);
             }
 
 

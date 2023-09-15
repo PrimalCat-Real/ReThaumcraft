@@ -21,6 +21,7 @@ import primalcat.thaumcraft.core.aspects.Aspect;
 import primalcat.thaumcraft.core.aspects.AspectList;
 import primalcat.thaumcraft.client.renderer.overlay.ThaumcraftOverlay;
 import primalcat.thaumcraft.core.config.ClientConfig;
+import primalcat.thaumcraft.core.helper.DataManipulation;
 import primalcat.thaumcraft.core.registry.AspectRegistry;
 import primalcat.thaumcraft.core.registry.ItemRegistry;
 import primalcat.thaumcraft.common.networking.PacketManager;
@@ -210,6 +211,8 @@ public class ScanManager {
             return false;
         }
         for (Aspect aspect: aspects.aspects.keySet()) {
+//            System.out.println(ScanManager.playerAspects.aspects.get(aspect) + " " + aspect.getName());
+//            System.out.println(ScanManager.getPlayerAspects());
             if(!aspect.isPrimal() && ScanManager.playerAspects.aspects.get(aspect) == null){
 //                ThaumcraftOverlay.addTextForRender("You don't have aspects for this block");
                 return false;
@@ -238,6 +241,7 @@ public class ScanManager {
      */
     public static void doScan(Player player, int tick, String scanTargetName, AspectList scanTargetAspects){
         if(tick == 1 && scanTargetAspects != null && !scanTargetAspects.isEmpty() && !ScanManager.isObjectAspectsKnown(scanTargetAspects)){
+            System.out.println(scanTargetAspects.isEmpty());
             player.displayClientMessage(Component.translatable(("actionText.subtitle.aspects_not_valid" + new Random().nextInt(3))),true);
         }
         if(tick == 1 && scanTargetAspects != null && scanTargetAspects.isEmpty()){
