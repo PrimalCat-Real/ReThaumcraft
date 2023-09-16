@@ -20,6 +20,7 @@ import net.minecraft.world.phys.*;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraftforge.common.ForgeMod;
 import primalcat.thaumcraft.client.particle.ParticleEffects;
+import primalcat.thaumcraft.core.aspects.Aspect;
 import primalcat.thaumcraft.core.aspects.AspectList;
 import primalcat.thaumcraft.core.scan.ScanHitResult;
 import primalcat.thaumcraft.core.scan.ScanManager;
@@ -152,7 +153,26 @@ public class Thaumometer extends ItemBase {
                 ScanManager.setTargetNameForRender(this.scanTargetName);
             }
             if (scanHitResult != null && scanHitResult.getTargetName() != null && ScanManager.isScannedObject(scanHitResult.getTargetName())) {
-                ScanManager.setTargetAspectsForRender(scanHitResult.getTargetAspects());
+                AspectList aspects = scanHitResult.getTargetAspects();
+
+                // Convert the AspectList to a List<Aspect>
+//                List<Aspect> aspectList = new ArrayList<>(aspects.aspects.keySet());
+//
+//                // Sort the aspectList by name
+//                Collections.sort(aspectList, new Comparator<Aspect>() {
+//                    @Override
+//                    public int compare(Aspect aspect1, Aspect aspect2) {
+//                        // Compare the names of the aspects in alphabetical order
+//                        return aspect1.getName().compareTo(aspect2.getName());
+//                    }
+//                });
+//
+//                // Create a new AspectList with the sorted aspects
+//                AspectList sortedAspects = new AspectList();
+//                for (Aspect aspect : aspectList) {
+//                    sortedAspects.add(aspect, aspects.aspects.get(aspect));
+//                }
+                ScanManager.setTargetAspectsForRender(aspects.sortByName());
             }else{
                 ScanManager.setTargetAspectsForRender(new AspectList());
             }

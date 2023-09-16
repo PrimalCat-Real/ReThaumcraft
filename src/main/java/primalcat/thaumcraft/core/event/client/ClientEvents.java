@@ -30,6 +30,7 @@ import primalcat.thaumcraft.core.scan.ScanManager;
 import primalcat.thaumcraft.core.config.ClientConfig;
 import primalcat.thaumcraft.core.registry.ItemRegistry;
 
+
 @Mod.EventBusSubscriber(modid = Thaumcraft.MODID, value = Dist.CLIENT)
 public class ClientEvents {
     private static Slot tempSlot = null;
@@ -99,7 +100,7 @@ public class ClientEvents {
         int i = 1;
         int aspectIndex = 1;
         Font font = Minecraft.getInstance().font;
-
+        renderAspects.sortByName();
         for (Aspect aspect : renderAspects.aspects.keySet()) {
             // Placeholder rendering logic for background
             RenderSystem.enableBlend();

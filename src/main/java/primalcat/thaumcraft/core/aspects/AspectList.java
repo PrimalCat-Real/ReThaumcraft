@@ -4,9 +4,7 @@ import com.google.gson.*;
 import primalcat.thaumcraft.core.registry.AspectRegistry;
 
 import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class AspectList implements JsonSerializer<AspectList>, JsonDeserializer<AspectList> {
     public LinkedHashMap<Aspect,Integer> aspects;
@@ -20,6 +18,29 @@ public class AspectList implements JsonSerializer<AspectList>, JsonDeserializer<
         return aspects.isEmpty();
     }
 
+    public AspectList sortByName() {
+        List<Map.Entry<Aspect, Integer>> sortedEntries = new ArrayList<>(aspects.entrySet());
+
+        // Sort the entries by the name of Aspect
+        Collections.sort(sortedEntries, new Comparator<Map.Entry<Aspect, Integer>>() {
+            @Override
+            public int compare(Map.Entry<Aspect, Integer> entry1, Map.Entry<Aspect, Integer> entry2) {
+                // Compare the names of the aspects in alphabetical order
+                return entry1.getKey().getName().compareTo(entry2.getKey().getName());
+            }
+        });
+
+        // Clear the existing map
+        aspects.clear();
+
+        // Populate the aspects map with the sorted entries
+        for (Map.Entry<Aspect, Integer> entry : sortedEntries) {
+            aspects.put(entry.getKey(), entry.getValue());
+        }
+
+        // Return this for chaining
+        return this;
+    }
 
     public AspectList add(Aspect aspect, int amount) {
         if (aspect != null && amount > 0 && !aspects.containsKey(aspect)) {
