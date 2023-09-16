@@ -6,7 +6,8 @@
   - Thaumcraft 6
 - I also can take mechanics from addons
 - I don't have permission, so it just project for me
-
+## Showcase
+[Thaumometer test version](https://www.youtube.com/watch?v=6C4maPwGPx4)
 ## Main Priority
 - [x] Config System
 - [ ] Lodestar, Jei, Curios, GekoLib dependency 
