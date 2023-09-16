@@ -79,7 +79,7 @@ public class ClientEvents {
             drawScreenEvent = event;
             if (ScanManager.isScanning()) {
                 ScanManager.drawInvScanProgress.renderScanningProgress(drawScreenEvent.getPoseStack(), drawScreenEvent.getMouseX(), drawScreenEvent.getMouseY(), ScanManager.getHoverTick() / (float) ClientConfig.THAUMOMETER_SCAN_DURATION.get());
-            } else if (ScanManager.isMouseHoldingThaumometer(Minecraft.getInstance().player) && ScanManager.isHoveringPlayer(event.getScreen(), event.getMouseX(), event.getMouseY())) {
+            } else if (ScanManager.isMouseHoldingThaumometer(Minecraft.getInstance().player) && ScanManager.isHoveringPlayer(event.getScreen(), event.getMouseX(), event.getMouseY()) && ScanManager.getPlayerScannedObjects().contains(Minecraft.getInstance().player.getUUID().toString())) {
                 renderPlayerAspects(drawScreenEvent.getPoseStack());
             } else if (tempSlot != null && ScanManager.isScannedObject(tempSlot.getItem().getItem().toString())) {
                 renderScannedObjectAspects(drawScreenEvent.getPoseStack());
