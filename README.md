@@ -26,7 +26,7 @@
 - [x] fix aabb clip result for thaumometer
 - [x] fix hud for event messages
 - [x] fix aspects commands
-- [ ] sort aspect before render in thaumometer
+- [x] sort aspect before render in thaumometer
 - [x] fix null error in overlay aspect get animation
 - [ ] optimize thaumometer related render code
 
