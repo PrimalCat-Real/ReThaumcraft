@@ -1,3 +1,4 @@
+## <code style="color : red">I stop developing for some time, for personal reasons. I will continue in winter</code>
 # ReThaumcraft
 ### This is my own try to port thaumcraft
 - I will not use the original textures (exception particles and maybe aspects)
@@ -33,4 +34,4 @@
 ## Additional features
 - [ ] scan aspects from all items in chest on scan
 - [ ] alloy smelter for brass
-- [ ] ignis crystal and inferno on second tier of heater for smelter
+- [ ] custom alloy smelter (note: ignis crystal and inferno for second tier of heater and smelter)
