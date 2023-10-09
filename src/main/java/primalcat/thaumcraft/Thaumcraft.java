@@ -28,6 +28,7 @@ import primalcat.thaumcraft.core.config.ClientConfig;
 import primalcat.thaumcraft.core.config.CommonConfig;
 import primalcat.thaumcraft.core.registry.*;
 import primalcat.thaumcraft.common.networking.PacketManager;
+import primalcat.thaumcraft.core.registry.particle.ParticlesRegistry;
 
 
 import java.util.stream.Collectors;

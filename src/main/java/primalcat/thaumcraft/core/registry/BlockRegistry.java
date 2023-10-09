@@ -9,11 +9,13 @@ import primalcat.thaumcraft.common.block.ObsidianOBJ;
 import primalcat.thaumcraft.Thaumcraft;
 import primalcat.thaumcraft.common.block.ThaumcraftBlockProperties;
 import primalcat.thaumcraft.common.block.light.Nitor;
+import primalcat.thaumcraft.common.block.node.Node;
 
 public class BlockRegistry {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Thaumcraft.MODID);
 
     public static final RegistryObject<Block> NITOR = BLOCKS.register("nitor", () -> new Nitor<>(ThaumcraftBlockProperties.NITOR().setCutoutRenderType().noOcclusion()).setBlockEntity(BlockEntityRegistry.NITOR));
+    public static final RegistryObject<Block> NODE = BLOCKS.register("node", () -> new Node<>(ThaumcraftBlockProperties.NODE().setCutoutRenderType().noOcclusion()).setBlockEntity(BlockEntityRegistry.NODE));
 
 //    public static final RegistryObject<Block> SOUL_VIAL = BLOCKS.register("soul_vial", () -> new Nitor<>(MalumBlockProperties.SOUL_VIAL().setCutoutRenderType().noOcclusion()).setBlockEntity(BlockEntityRegistry.SOUL_VIAL));
     public static final RegistryObject<Block> obsidanObj = BLOCKS.register("obsidian_obj", ObsidianOBJ::new);

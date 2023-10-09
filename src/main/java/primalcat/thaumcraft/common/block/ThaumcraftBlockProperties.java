@@ -11,5 +11,11 @@ public class ThaumcraftBlockProperties {
                 .noOcclusion()
                 .noCollission();
     }
+    public static LodestoneBlockProperties NODE() {
+        return new LodestoneBlockProperties(Material.GLASS, MaterialColor.COLOR_BLUE)
+                .strength(0.75f, 64f)
+                .noOcclusion()
+                .noCollission();
+    }
 
 }

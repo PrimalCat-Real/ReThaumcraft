@@ -2,14 +2,19 @@ package primalcat.thaumcraft.common.block.light;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.GlowLichenBlock;
+import net.minecraft.world.level.block.LanternBlock;
+import net.minecraft.world.level.block.TorchBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import team.lodestar.lodestone.systems.block.LodestoneEntityBlock;
 import team.lodestar.lodestone.systems.block.WaterLoggedEntityBlock;
 
-public class Nitor <T extends NitorEntity>  extends WaterLoggedEntityBlock<T> {
+public class Nitor <T extends NitorEntity>  extends LodestoneEntityBlock {
     public static final VoxelShape SHAPE = makeShape();
     public Nitor(Properties properties){
         super(properties);

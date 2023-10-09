@@ -16,6 +16,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.client.event.ScreenEvent;
@@ -26,6 +27,7 @@ import net.minecraftforge.fml.common.Mod;
 import primalcat.thaumcraft.Thaumcraft;
 import primalcat.thaumcraft.core.aspects.Aspect;
 import primalcat.thaumcraft.core.aspects.AspectList;
+import primalcat.thaumcraft.core.registry.particle.ParticlesRegistry;
 import primalcat.thaumcraft.core.scan.ScanManager;
 import primalcat.thaumcraft.core.config.ClientConfig;
 import primalcat.thaumcraft.core.registry.ItemRegistry;
@@ -48,6 +50,12 @@ public class ClientEvents {
         PlayerModel<?> model = event.getRenderer().getModel();
         boolean holdingYourItem = player.isHolding(ItemRegistry.THAUMOMETER.get());
         model.leftArmPose = holdingYourItem ? HumanoidModel.ArmPose.BOW_AND_ARROW : HumanoidModel.ArmPose.EMPTY;
+    }
+
+    @SubscribeEvent
+    public static void registerParticleFactory(RegisterParticleProvidersEvent event) {
+        ParticlesRegistry.registerParticleFactory(event);
+//        LodestoneScreenParticleRegistry.registerParticleFactory(event);
     }
 
     @SubscribeEvent
